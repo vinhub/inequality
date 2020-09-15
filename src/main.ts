@@ -3,16 +3,18 @@ import Phaser from 'phaser'
 import InequalityGameScene from './scenes/InequalityGameScene'
 
 const config: Phaser.Types.Core.GameConfig = {
+	title: 'Wealth Inequality',
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
 	physics: {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [InequalityGameScene]
+	scene: [InequalityGameScene],
+	transparent: true
 }
 
-export default new Phaser.Game(config)
+let game: Phaser.Game = new Phaser.Game(config)
+
+export default game
