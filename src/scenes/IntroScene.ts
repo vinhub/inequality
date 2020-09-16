@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { TextButton } from '../classes/TextButton';
+import Person from '../classes/person';
 
 export default class IntroScene extends Phaser.Scene
 {
@@ -10,39 +11,75 @@ export default class IntroScene extends Phaser.Scene
 
 	preload()
     {
+        this.load.image('normal-face', 'assets/normal-face.png')
+        this.load.image('smiley-face', 'assets/smiley-face.png')
+        this.load.image('unhappy-face', 'assets/unhappy-face.png')
+        this.load.image('coin', 'assets/dollar-coin.png')
+        this.load.image('dollar-note', 'assets/dollar-note.png')
     }
 
     create()
     {
         let style: Phaser.Types.GameObjects.Text.TextStyle =
         {
-            fontFamily: 'Georgia, Arial, Helvetica, sans-serif',
+            fontFamily: 'Arial, Helvetica, sans-serif',
             fontSize: '24px',
             color: '#000'
         }
 
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-        const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        const textX = 100;
-        const textY = 100;
+        const leftX = this.cameras.main.worldView.x + 100;
+        const topY = this.cameras.main.worldView.y + 100;
+        const rightX = this.cameras.main.worldView.x + this.cameras.main.width - 100
+        let curY = topY;
 
         const introText = [
-            'Here is probably the simplest game two people can play.',
+            'Here is one of the simplest game two people can play.',
             'Assume that you and a friend both have exactly one dollar to start with.',
             'You toss a coin, and the loser of the toss gives their one dollar to the winner.',
             'That\'s it. As simple as that!',
             'Want to play it?'
         ]
 
-        this.add.text(textX, textY, introText, style)
+        this.add.text(leftX, curY, introText, style)
 
-        this.add.existing(new TextButton(this, 300, 260, 'Play', () => { this.playSimpleGame() }))
+        curY += 180
 
-        this.add.existing(new TextButton(this, 600, 400, 'Next >>', () => { this.scene.start('InequalityGameScene') }))
+        this.add.existing(new TextButton(this, screenCenterX, curY, 'Play', () => { this.playSimpleGame() }))
+
+        curY += 50
+        const gameHeight = 400
+
+        this.createSimpleGame(leftX, curY, rightX - leftX, gameHeight)
+
+        curY += gameHeight
+
+        this.add.existing(new TextButton(this, rightX - 100, curY, 'Next >>', () => { this.scene.start('InequalityGameScene') }))
+    }
+
+    createSimpleGame(leftX: number, topY: number, width: number, height: number)
+    {
+        // draw persons
+        let person1: Person = new Person(1)
+        let person2: Person = new Person(2)
+
+        person1.add(this, leftX + 100, topY + height / 2)
+        person2.add(this, leftX + width - 100, topY + height / 2)
+
+        // draw coin
+        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + height / 2, 'coin').setOrigin(0.5, 0.5)
     }
 
     playSimpleGame()
     {
+        // show heads / tails choice
 
+        // coin flip animation
+
+        // show toss result
+
+        // move dollar note from loser to winner
+
+        // update wealth
     }
 }

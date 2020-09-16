@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 import { Constants } from './globals'
 
 export default class Person
@@ -30,5 +30,22 @@ export default class Person
 			imageColor = new Phaser.Display.Color(0x80, 0x80, 0x80)
 
 		return imageColor
+	}
+
+	add(scene: Scene, x: number, y: number)
+	{
+		let personImage: Phaser.GameObjects.Image = scene.add.image(x, y, this.imageKey()).setOrigin(0.5, 0.5)
+
+		personImage.setTintFill(this.imageColor().color32)
+
+		let style: Phaser.Types.GameObjects.Text.TextStyle =
+		{
+			fontFamily: 'Arial, Helvetica, sans-serif',
+			fontSize: '14px',
+			color: '#000'
+		}
+
+		let nameText: Phaser.GameObjects.Text = scene.add.text(x, y + personImage.height, 'Person ' + this.id, style).setOrigin(0.5, 0.5)
+		let wealthText: Phaser.GameObjects.Text = scene.add.text(x, y + personImage.height + 20, '(Wealth: $' + this.wealth + ')', style).setOrigin(0.5, 0.5)
     }
 }
