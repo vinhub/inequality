@@ -1,9 +1,10 @@
 import Phaser from 'phaser'
 
+import IntroScene from './scenes/IntroScene'
 import InequalityGameScene from './scenes/InequalityGameScene'
 
 const config: Phaser.Types.Core.GameConfig = {
-	title: 'Wealth Inequality',
+	title: 'Evolution of Wealth Inequality',
 	type: Phaser.AUTO,
 	physics: {
 		default: 'arcade',
@@ -11,7 +12,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [InequalityGameScene],
+	scene: [IntroScene, InequalityGameScene],
 	transparent: true
 }
 

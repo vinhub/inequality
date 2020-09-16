@@ -8,7 +8,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
     constructor()
 	{
-        super('inequality-game')
+        super('InequalityGameScene')
 
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
