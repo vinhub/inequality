@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-export default class Indiv
+export default class Person
 {
 	id: integer
 	wealth: integer
