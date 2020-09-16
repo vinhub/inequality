@@ -3,7 +3,7 @@ import Indiv from '../classes/indiv'
 
 export default class InequalityGameScene extends Phaser.Scene
 {
-    cIndivs: integer = 25;
+    cIndivs: integer = 16;
     indivs: Indiv[] = new Array()
 
     constructor()
@@ -28,13 +28,13 @@ export default class InequalityGameScene extends Phaser.Scene
         // create the circle of indivs
         let center: Phaser.Geom.Point = new Phaser.Geom.Point(400, 400) // center of circle
         let point: Phaser.Geom.Point = new Phaser.Geom.Point(400, 100)
-        const multiplier: number = Phaser.Math.DegToRad((360.0 / this.indivs.length) // place indivs around the circle uniformly
 
         // add all the indiv images
         for (let iIndiv: integer = 0; iIndiv < this.indivs.length; iIndiv++)
         {
-            let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, center.x, center.y, multiplier * iIndiv)
-            console.log(iIndiv, multiplier * iIndiv, position)
+            // place indivs around the circle uniformly
+            let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, center.x, center.y, Phaser.Math.PI2 * iIndiv / this.indivs.length)
+            console.log(iIndiv, Phaser.Math.PI2 * iIndiv / this.indivs.length, position)
 
             let indivImage: Phaser.GameObjects.Image = this.add.image(position.x, position.y, this.indivs[iIndiv].imageKey())
 
@@ -47,7 +47,6 @@ export default class InequalityGameScene extends Phaser.Scene
 
             indivImage.setTintFill(tintFill.color32)
         }
-
     }
 
     update()
