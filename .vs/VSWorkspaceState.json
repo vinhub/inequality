@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\public",
+    "\\public\\assets",
     "\\src",
+    "\\src\\classes",
     "\\src\\scenes"
   ],
-  "SelectedNode": "\\src\\scenes\\HelloWorldScene.ts",
+  "SelectedNode": "\\src\\classes\\globals.ts",
   "PreviewInSolutionExplorer": false
 }

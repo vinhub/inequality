@@ -27,7 +27,7 @@ export default class Person
 		else if (this.wealth <= Constants.unhappyWealthMax)
 			imageColor = new Phaser.Display.Color(0xe0 + (0x1f * Phaser.Math.SmoothStep(-this.wealth, 0, 100)), 0, 0)
 		else
-			imageColor = new Phaser.Display.Color(0, 0, 0)
+			imageColor = new Phaser.Display.Color(0x80, 0x80, 0x80)
 
 		return imageColor
     }
