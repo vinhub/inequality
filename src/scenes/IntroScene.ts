@@ -10,7 +10,6 @@ export default class IntroScene extends Phaser.Scene
 
 	preload()
     {
-        //this.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
     }
 
     create()
@@ -19,24 +18,31 @@ export default class IntroScene extends Phaser.Scene
         {
             fontFamily: 'Georgia, Arial, Helvetica, sans-serif',
             fontSize: '24px',
-            color: '#000',
+            color: '#000'
         }
 
-        this.add.text(20, 20, 'Here is probably the simplest game you can play.', style)
-        this.add.text(20, 50, 'Assume that you have just two players to start with.', style)
-        this.add.text(20, 80, 'Also assume that both the people have just one dollar to start with.', style)
-        this.add.text(20, 110, 'Then they toss a coin, and the loser of the toss gives their one dollar to the winner.', style)
-        this.add.text(20, 140, 'That\'s it. As simple as that!', style)
+        const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        const textX = 100;
+        const textY = 100;
 
-        let buttonStyle: Phaser.Types.GameObjects.Text.TextStyle =
-        {
-            fontFamily: 'Georgia, Arial, Helvetica, sans-serif',
-            fontSize: '24px',
-            color: '#000',
-        }
+        const introText = [
+            'Here is probably the simplest game two people can play.',
+            'Assume that you and a friend both have exactly one dollar to start with.',
+            'You toss a coin, and the loser of the toss gives their one dollar to the winner.',
+            'That\'s it. As simple as that!',
+            'Want to play it?'
+        ]
 
-        let nextButton = new TextButton(this, 400, 400, 'Next >>', buttonStyle, () => { this.scene.start('InequalityGameScene') })
-        this.add.existing(nextButton);
+        this.add.text(textX, textY, introText, style)
+
+        this.add.existing(new TextButton(this, 300, 260, 'Play', () => { this.playSimpleGame() }))
+
+        this.add.existing(new TextButton(this, 600, 400, 'Next >>', () => { this.scene.start('InequalityGameScene') }))
     }
 
+    playSimpleGame()
+    {
+
+    }
 }
