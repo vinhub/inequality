@@ -12,7 +12,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(iPerson)
+            this.persons[iPerson] = new Person(iPerson, Constants.startingWealth)
         }
 	}
 

@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { Constants } from '../classes/globals'
 import { TextButton } from '../classes/TextButton';
 import Person from '../classes/person';
 
@@ -24,7 +25,8 @@ export default class IntroScene extends Phaser.Scene
         {
             fontFamily: 'Arial, Helvetica, sans-serif',
             fontSize: '24px',
-            color: '#000'
+            color: '#000',
+            padding: { x: 0, y: 20 }
         }
 
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
@@ -34,21 +36,24 @@ export default class IntroScene extends Phaser.Scene
         let curY = topY;
 
         const introText = [
-            'Here is one of the simplest game two people can play.',
+            'Here is one of the simplest games two people can play.',
+            '',
             'Assume that you and a friend both have exactly one dollar to start with.',
             'You toss a coin, and the loser of the toss gives their one dollar to the winner.',
-            'That\'s it. As simple as that!',
+            'That\'s it. As simple as that! (Don\'t worry, it\'ll get very interesting in a minute.)',
+            '',
             'Want to play it?'
         ]
 
-        this.add.text(leftX, curY, introText, style)
+        let introTextObj: Phaser.GameObjects.Text = this.add.text(leftX, curY, introText, style)
 
-        curY += 180
+        curY += introTextObj.height + 20
 
-        this.add.existing(new TextButton(this, screenCenterX, curY, 'Play', () => { this.playSimpleGame() }))
+        let textButton: TextButton = new TextButton(this, screenCenterX, curY, 'Yes, let\'s play!', () => { this.playSimpleGame() }).setOrigin(0.5, 0.5)
+        this.add.existing(textButton)
+        curY += textButton.height
 
-        curY += 50
-        const gameHeight = 400
+        const gameHeight = 300
 
         this.createSimpleGame(leftX, curY, rightX - leftX, gameHeight)
 
@@ -60,14 +65,15 @@ export default class IntroScene extends Phaser.Scene
     createSimpleGame(leftX: number, topY: number, width: number, height: number)
     {
         // draw persons
-        let person1: Person = new Person(1)
-        let person2: Person = new Person(2)
+        let person1: Person = new Person(1, Constants.startingWealth)
+        let person2: Person = new Person(2, Constants.startingWealth)
 
-        person1.add(this, leftX + 100, topY + height / 2)
-        person2.add(this, leftX + width - 100, topY + height / 2)
+        person1.add(this, leftX + 100, topY + 60, 'Hi!')
+
+        person2.add(this, leftX + width - 100, topY + 60, 'Hello!')
 
         // draw coin
-        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + height / 2, 'coin').setOrigin(0.5, 0.5)
+        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'coin').setOrigin(0.5, 0)
     }
 
     playSimpleGame()

@@ -5,11 +5,16 @@ export default class Person
 {
 	id: integer
 	wealth: integer
+	message?: string
+	messageText?: Phaser.GameObjects.Text
+	nameText?: Phaser.GameObjects.Text
+	wealthText?: Phaser.GameObjects.Text
+	personImage?: Phaser.GameObjects.Image
 
-	constructor(id: integer)
+	constructor(id: integer, wealth: integer)
 	{
 		this.id = id
-		this.wealth = Constants.startingWealth
+		this.wealth = wealth
 	}
 
 	imageKey(): string
@@ -32,20 +37,30 @@ export default class Person
 		return imageColor
 	}
 
-	add(scene: Scene, x: number, y: number)
+	add(scene: Scene, x: number, y: number, message: string)
 	{
-		let personImage: Phaser.GameObjects.Image = scene.add.image(x, y, this.imageKey()).setOrigin(0.5, 0.5)
-
-		personImage.setTintFill(this.imageColor().color32)
+		this.message = message
 
 		let style: Phaser.Types.GameObjects.Text.TextStyle =
 		{
 			fontFamily: 'Arial, Helvetica, sans-serif',
 			fontSize: '14px',
-			color: '#000'
+			color: '#000',
+			padding: { x: 0, y: 4 }
 		}
 
-		let nameText: Phaser.GameObjects.Text = scene.add.text(x, y + personImage.height, 'Person ' + this.id, style).setOrigin(0.5, 0.5)
-		let wealthText: Phaser.GameObjects.Text = scene.add.text(x, y + personImage.height + 20, '(Wealth: $' + this.wealth + ')', style).setOrigin(0.5, 0.5)
+		let curY: number = y;
+
+		this.messageText = scene.add.text(x, curY, this.message, style).setOrigin(0.5, 0)
+		curY += this.messageText.height
+
+		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
+		this.personImage.setTintFill(this.imageColor().color32)
+		curY += this.personImage.height
+
+		this.nameText = scene.add.text(x, curY, 'Person ' + this.id, style).setOrigin(0.5, 0)
+		curY += this.nameText.height
+
+		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', style).setOrigin(0.5, 0)
     }
 }
