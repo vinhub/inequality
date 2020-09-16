@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { TextButton } from '../classes/TextButton';
 
 export default class IntroScene extends Phaser.Scene
 {
@@ -9,6 +10,7 @@ export default class IntroScene extends Phaser.Scene
 
 	preload()
     {
+        //this.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
     }
 
     create()
@@ -16,8 +18,8 @@ export default class IntroScene extends Phaser.Scene
         let style: Phaser.Types.GameObjects.Text.TextStyle =
         {
             fontFamily: 'Georgia, Arial, Helvetica, sans-serif',
+            fontSize: '24px',
             color: '#000',
-            fontSize: '24px'
         }
 
         this.add.text(20, 20, 'Here is probably the simplest game you can play.', style)
@@ -26,11 +28,15 @@ export default class IntroScene extends Phaser.Scene
         this.add.text(20, 110, 'Then they toss a coin, and the loser of the toss gives their one dollar to the winner.', style)
         this.add.text(20, 140, 'That\'s it. As simple as that!', style)
 
-        this.input.once('pointerup', (pointer) =>
+        let buttonStyle: Phaser.Types.GameObjects.Text.TextStyle =
         {
-            this.scene.start('InequalityGameScene');
-        }, this);
+            fontFamily: 'Georgia, Arial, Helvetica, sans-serif',
+            fontSize: '24px',
+            color: '#000',
+        }
 
+        let nextButton = new TextButton(this, 400, 400, 'Next >>', buttonStyle, () => { this.scene.start('InequalityGameScene') })
+        this.add.existing(nextButton);
     }
 
 }
