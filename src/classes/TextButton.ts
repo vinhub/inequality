@@ -2,9 +2,13 @@ import { Constants } from '../classes/globals'
 
 export default class TextButton extends Phaser.GameObjects.Text
 {
-    constructor(scene, leftX, topY, text, callback)
+    actionButton: boolean
+
+    constructor(scene, leftX, topY, text, callback, actionButton = false)
     {
-        super(scene, leftX, topY, text, Constants.buttonTextStyle);
+        super(scene, leftX, topY, text, actionButton ? Constants.actionButtonTextStyle : Constants.buttonTextStyle);
+
+        this.actionButton = actionButton
 
         this.setInteractive({ useHandCursor: true })
           .on('pointerover', () => this.enterButtonHoverState() )
@@ -14,17 +18,20 @@ export default class TextButton extends Phaser.GameObjects.Text
             this.enterButtonHoverState();
             callback();
           });
-  }
+    }
 
-  enterButtonHoverState() {
-      this.setStyle({ backgroundColor: '#33a6cc' });
-  }
+    enterButtonRestState() 
+    {
+        this.setStyle({ backgroundColor: this.actionButton ? '#5cb85c' : '#5bc0de' });
+    }
 
-  enterButtonRestState() {
-      this.setStyle({ backgroundColor: '#0099cc'});
-  }
+    enterButtonHoverState()
+    {
+        this.setStyle({ backgroundColor: this.actionButton ? '#449d44' : '#31b0d5' });
+    }
 
-  enterButtonActiveState() {
-      this.setStyle({ backgroundColor: '#33a6cc' });
-  }
+    enterButtonActiveState() 
+    {
+        this.setStyle({ backgroundColor: this.actionButton ? '#398439' : '#269abc' });
+    }
 }

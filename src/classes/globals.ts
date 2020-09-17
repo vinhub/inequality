@@ -30,7 +30,15 @@ export const Constants = {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '24px',
         color: '#ffffff',
-        backgroundColor: '#0099cc',
+        backgroundColor: '#5bc0de',
+        padding: { left: 12, right: 12, top: 6, bottom: 6 },
+    } as Phaser.Types.GameObjects.Text.TextStyle,
+    actionButtonTextStyle:
+    {
+        fontFamily: 'Arial, Helvetica, sans-serif',
+        fontSize: '24px',
+        color: '#ffffff',
+        backgroundColor: '#5cb85c',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
     } as Phaser.Types.GameObjects.Text.TextStyle,
     footerTextStyle:

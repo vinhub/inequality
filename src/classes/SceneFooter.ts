@@ -19,7 +19,7 @@ export default class SceneFooter
             this.prevButton = scene.add.existing(new TextButton(scene, leftX, topY + margin, '<< Prev', prevCallback).setOrigin(0, 0)) as TextButton
 
         if (actionCallback)
-            this.actionButton = scene.add.existing(new TextButton(scene, leftX + (rightX - leftX) / 2, topY + margin, 'Play Game', actionCallback).setOrigin(0.5, 0)) as TextButton
+            this.actionButton = scene.add.existing(new TextButton(scene, leftX + (rightX - leftX) / 2, topY + margin, 'Play Game', actionCallback, true).setOrigin(0.5, 0)) as TextButton
 
         if (nextCallback)
             this.nextButton = scene.add.existing(new TextButton(scene, rightX, topY + margin, 'Next >>', nextCallback).setOrigin(1, 0).setOrigin(1, 0)) as TextButton
