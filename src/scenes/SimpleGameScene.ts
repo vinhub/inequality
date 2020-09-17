@@ -41,7 +41,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, '', 'Next >>', () => { this.scene.start('InequalityGameScene') })
+        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX,
+            () => { this.scene.start('IntroScene') }, () => { this.playSimpleGame() }, () => { this.scene.start('InequalityGameScene') })
     }
 
     createSimpleGame(leftX: number, topY: number, width: number, height: number)

@@ -37,6 +37,6 @@ export default class IntroScene extends Phaser.Scene
 
         curY += introTextObj.height
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, '', 'Yes, let\'s play!', () => { this.scene.start('SimpleGameScene') })
+        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, null, null, () => { this.scene.start('SimpleGameScene') })
     }
 }

@@ -4,17 +4,20 @@ import TextButton from '../classes/TextButton';
 
 export default class SceneFooter
 {
-    footerText: Phaser.GameObjects.Text
-    navButton: TextButton
+    prevButton?: TextButton
+    nextButton?: TextButton
+    actionButton?: TextButton
 
-    constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, footerText: string, navButtonText: string, navCallback)
+    constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, prevCallback, actionCallback, nextCallback)
     {
-        this.footerText = scene.add.text(leftX, topY, footerText, Constants.footerTextStyle).setOrigin(0, 0)
-        this.navButton = scene.add.existing(new TextButton(scene, rightX, topY, navButtonText, navCallback).setOrigin(1, 0)) as TextButton
-    }
+        if (prevCallback)
+            this.prevButton = scene.add.existing(new TextButton(scene, leftX, topY, '<< Prev', prevCallback).setOrigin(0, 0)) as TextButton
 
-    height(): number
-    {
-        return this.navButton.height
+        if (actionCallback)
+            this.actionButton = scene.add.existing(new TextButton(scene, leftX + (rightX - leftX) / 2, topY, 'Play Game', actionCallback).setOrigin(0.5, 0)) as TextButton
+
+        if (nextCallback)
+            this.nextButton = scene.add.existing(new TextButton(scene, rightX, topY, 'Next >>', nextCallback).setOrigin(1, 0).setOrigin(1, 0)) as TextButton
+
     }
 }
