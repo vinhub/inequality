@@ -1,16 +1,10 @@
-export class TextButton extends Phaser.GameObjects.Text {
+import { Constants } from '../classes/globals'
+
+export default class TextButton extends Phaser.GameObjects.Text
+{
     constructor(scene, leftX, topY, text, callback)
     {
-        let style: Phaser.Types.GameObjects.Text.TextStyle =
-        {
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '24px',
-            color: '#ffffff',
-            backgroundColor: '#0099cc',
-            padding: { left: 12, right: 12, top: 6, bottom: 6 },
-        }
-
-    super(scene, leftX, topY, text, style);
+    super(scene, leftX, topY, text, Constants.buttonTextStyle);
 
     this.setInteractive({ useHandCursor: true })
       .on('pointerover', () => this.enterButtonHoverState() )

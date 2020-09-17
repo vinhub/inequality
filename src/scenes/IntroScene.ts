@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import { Constants } from '../classes/globals'
-import { TextButton } from '../classes/TextButton';
+import TextButton from '../classes/TextButton';
+import SceneHeader from '../classes/SceneHeader';
+import SceneFooter from '../classes/SceneFooter';
 import Person from '../classes/person';
 
 export default class IntroScene extends Phaser.Scene
@@ -21,19 +23,14 @@ export default class IntroScene extends Phaser.Scene
 
     create()
     {
-        let style: Phaser.Types.GameObjects.Text.TextStyle =
-        {
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '24px',
-            color: '#000',
-            padding: { x: 0, y: 20 }
-        }
-
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const leftX = this.cameras.main.worldView.x + 100;
         const topY = this.cameras.main.worldView.y + 100;
         const rightX = this.cameras.main.worldView.x + this.cameras.main.width - 100
         let curY = topY;
+
+        let header: SceneHeader = new SceneHeader(this, leftX, curY, 'Evolution of Wealth Inequality')
+        curY += header.height()
 
         const introText = [
             'Here is one of the simplest games two people can play.',
@@ -45,13 +42,13 @@ export default class IntroScene extends Phaser.Scene
             'Want to play it?'
         ]
 
-        let introTextObj: Phaser.GameObjects.Text = this.add.text(leftX, curY, introText, style)
+        let introTextObj: Phaser.GameObjects.Text = this.add.text(leftX, curY, introText, Constants.bodyTextStyle)
 
-        curY += introTextObj.height + 20
+        curY += introTextObj.height + 30
 
-        let textButton: TextButton = new TextButton(this, screenCenterX, curY, 'Yes, let\'s play!', () => { this.playSimpleGame() }).setOrigin(0.5, 0.5)
+        let textButton: TextButton = new TextButton(this, screenCenterX, curY, 'Yes, let\'s play!', () => { this.playSimpleGame() }).setOrigin(0.5, 0)
         this.add.existing(textButton)
-        curY += textButton.height
+        curY += textButton.height + 30
 
         const gameHeight = 300
 
@@ -59,7 +56,7 @@ export default class IntroScene extends Phaser.Scene
 
         curY += gameHeight
 
-        this.add.existing(new TextButton(this, rightX - 100, curY, 'Next >>', () => { this.scene.start('InequalityGameScene') }))
+        let footer: SceneFooter = new SceneFooter(this, leftX, curY, rightX, '', () => { this.scene.start('InequalityGameScene') })
     }
 
     createSimpleGame(leftX: number, topY: number, width: number, height: number)

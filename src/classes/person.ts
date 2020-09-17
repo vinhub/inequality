@@ -41,26 +41,18 @@ export default class Person
 	{
 		this.message = message
 
-		let style: Phaser.Types.GameObjects.Text.TextStyle =
-		{
-			fontFamily: 'Arial, Helvetica, sans-serif',
-			fontSize: '14px',
-			color: '#000',
-			padding: { x: 0, y: 4 }
-		}
-
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, this.message, style).setOrigin(0.5, 0)
+		this.messageText = scene.add.text(x, curY, this.message, Constants.smallTextStyle).setOrigin(0.5, 0)
 		curY += this.messageText.height
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
 		this.personImage.setTintFill(this.imageColor().color32)
 		curY += this.personImage.height
 
-		this.nameText = scene.add.text(x, curY, 'Person ' + this.id, style).setOrigin(0.5, 0)
+		this.nameText = scene.add.text(x, curY, 'Person ' + this.id, Constants.smallTextStyle).setOrigin(0.5, 0)
 		curY += this.nameText.height
 
-		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', style).setOrigin(0.5, 0)
+		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
     }
 }
