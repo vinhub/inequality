@@ -5,16 +5,21 @@ export default class Person
 {
 	name: string
 	wealth: integer
-	message?: string
-	messageText?: Phaser.GameObjects.Text
-	nameText?: Phaser.GameObjects.Text
-	wealthText?: Phaser.GameObjects.Text
-	personImage?: Phaser.GameObjects.Image
+	message: string
+	messageText: Phaser.GameObjects.Text
+	nameText: Phaser.GameObjects.Text
+	wealthText: Phaser.GameObjects.Text
+	personImage: Phaser.GameObjects.Image
 
 	constructor(name: string, wealth: integer)
 	{
 		this.name = name
 		this.wealth = wealth
+		this.message = ''
+		this.messageText = {} as any
+		this.nameText = {} as any
+		this.wealthText = {} as any
+		this.personImage = {} as any
 	}
 
 	imageKey(): string

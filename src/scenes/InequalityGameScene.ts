@@ -32,7 +32,7 @@ export default class InequalityGameScene extends Phaser.Scene
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, 'A More Interesting Game')
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'A More Interesting Game')
         curY += header.height()
 
         const descText = 'Click the "Play Game" button to get started.'
@@ -41,9 +41,9 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += descTextObj.height + 30
 
-        const gameHeight = 800
+        const gameHeight = 650
 
-        this.createGame(utils.leftX, curY, utils.width, gameHeight)
+        this.createGame(utils.leftX + 50, curY, utils.width, gameHeight)
 
         curY += gameHeight
 
@@ -66,7 +66,7 @@ export default class InequalityGameScene extends Phaser.Scene
             // place persons around the circle uniformly
             let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, center.x, center.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
-            let personImage: Phaser.GameObjects.Image = this.add.image(position.x, position.y, person.imageKey())
+            let personImage: Phaser.GameObjects.Image = this.add.image(position.x, position.y, person.imageKey()).setOrigin(0.5, 0.5)
 
             personImage.setTintFill(person.imageColor().color32)
         }

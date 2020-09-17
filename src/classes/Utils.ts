@@ -15,4 +15,71 @@ export default class Utils
 
         this.topY = scene.cameras.main.worldView.y + 20
     }
+
+    setText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text: string)
+    {
+        timeline.add(
+        {
+            targets: textObj,
+            alpha: { from: 1, to: 0 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 1000,
+            repeat: 0,
+            yoyo: false,
+            onComplete: () => { textObj.text = text }
+        })
+
+        timeline.add(
+        {
+            targets: textObj,
+            alpha: { from: 0, to: 1 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 1000,
+            repeat: 0,
+            yoyo: false,
+        })
+    }
+
+    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text)
+    {
+        timeline.add(
+        {
+            targets: textObj,
+            scale: { from: 1, to: 1.5 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 300,
+            repeat: 0,
+            yoyo: false,
+        })
+
+        timeline.add(
+        {
+            targets: textObj,
+            scale: { from: 1.5, to: 1 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 300,
+            repeat: 0,
+            yoyo: false,
+        })
+
+        timeline.add(
+        {
+            targets: textObj,
+            scale: { from: 1, to: 1.5 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 300,
+            repeat: 0,
+            yoyo: false,
+        })
+
+        timeline.add(
+        {
+            targets: textObj,
+            scale: { from: 1.5, to: 1 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 300,
+            repeat: 0,
+            yoyo: false,
+        })
+    }
 }

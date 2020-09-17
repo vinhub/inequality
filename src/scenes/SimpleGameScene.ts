@@ -7,9 +7,16 @@ import Person from '../classes/person';
 
 export default class SimpleGameScene extends Phaser.Scene
 {
+    utils: Utils
+    descText: Phaser.GameObjects.Text
+    timeline: Phaser.Tweens.Timeline
+
     constructor()
     {
         super('SimpleGameScene')
+        this.utils = {} as any
+        this.descText = {} as any
+        this.timeline = {} as any
     }
 
     preload()
@@ -23,25 +30,24 @@ export default class SimpleGameScene extends Phaser.Scene
 
     create()
     {
-        let utils: Utils = new Utils(this)
-        let curY = utils.topY;
+        this.utils = new Utils(this)
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Coin Toss Game')
+        let curY = this.utils.topY;
+
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Coin Toss Game')
         curY += header.height()
 
-        const descText = 'Click the "Play Game" button to get started.'
+        this.descText = this.add.text(this.utils.leftX, curY, 'Click the "Play Game" button to get started.', Constants.bodyTextStyle)
 
-        let descTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, descText, Constants.bodyTextStyle)
-
-        curY += descTextObj.height + 30
+        curY += this.descText.height + 30
 
         const gameHeight = 300
 
-        this.createSimpleGame(utils.leftX, curY, utils.width, gameHeight)
+        this.createSimpleGame(this.utils.leftX, curY, this.utils.width, gameHeight)
 
         curY += gameHeight
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX,
+        let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX,
             () => { this.scene.start('IntroScene') }, () => { this.playSimpleGame() }, () => { this.scene.start('InequalityGameScene') })
     }
 
@@ -59,11 +65,13 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // draw coin
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'coin').setOrigin(0.5, 0)
-    }
 
-    playSimpleGame()
-    {
-        // show heads / tails choice
+        // set up all the animations in the game
+        this.timeline = this.tweens.createTimeline();
+
+        this.utils.setText(this.timeline, this.descText, 'We have two players, A and B, each with $1.')
+        this.utils.flashText(this.timeline, person1.wealthText)
+        this.utils.flashText(this.timeline, person2.wealthText)
 
         // coin flip animation
 
@@ -73,4 +81,12 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // update wealth
     }
+
+    playSimpleGame()
+    {
+        // play animations
+        this.timeline.play()
+        this.timeline.resetTweens(true)
+    }
+
 }
