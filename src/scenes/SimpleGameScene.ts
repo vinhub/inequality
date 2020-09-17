@@ -26,10 +26,10 @@ export default class SimpleGameScene extends Phaser.Scene
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, 'Evolution of Wealth Inequality')
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Coin Toss Game')
         curY += header.height()
 
-        const descText = 'Let\'s say we have 2 people: A and B.'
+        const descText = 'Click the "Play Game" button to get started.'
 
         let descTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, descText, Constants.bodyTextStyle)
 

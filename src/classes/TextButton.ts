@@ -4,16 +4,16 @@ export default class TextButton extends Phaser.GameObjects.Text
 {
     constructor(scene, leftX, topY, text, callback)
     {
-    super(scene, leftX, topY, text, Constants.buttonTextStyle);
+        super(scene, leftX, topY, text, Constants.buttonTextStyle);
 
-    this.setInteractive({ useHandCursor: true })
-      .on('pointerover', () => this.enterButtonHoverState() )
-      .on('pointerout', () => this.enterButtonRestState() )
-      .on('pointerdown', () => this.enterButtonActiveState() )
-      .on('pointerup', () => {
-        this.enterButtonHoverState();
-        callback();
-      });
+        this.setInteractive({ useHandCursor: true })
+          .on('pointerover', () => this.enterButtonHoverState() )
+          .on('pointerout', () => this.enterButtonRestState() )
+          .on('pointerdown', () => this.enterButtonActiveState() )
+          .on('pointerup', () => {
+            this.enterButtonHoverState();
+            callback();
+          });
   }
 
   enterButtonHoverState() {
