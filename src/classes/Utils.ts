@@ -40,8 +40,11 @@ export default class Utils
         })
     }
 
-    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text)
+    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string)
     {
+        if (text)
+            this.setText(timeline, textObj, text)
+
         timeline.add(
         {
             targets: textObj,

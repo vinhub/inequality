@@ -74,12 +74,23 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, person2.wealthText)
 
         // coin flip animation
+        this.utils.setText(this.timeline, this.descText, 'They toss a coin. A chooses Heads, B chooses Tails.')
+        this.utils.setText(this.timeline, person1.messageText, 'Heads!')
+        this.utils.setText(this.timeline, person2.messageText, 'Tails!')
 
         // show toss result
+        this.utils.setText(this.timeline, this.descText, 'It\'s Heads! A wins, B loses. So $1 is transferred from B to A.')
+        this.utils.setText(this.timeline, person1.messageText, 'I win!')
+        this.utils.setText(this.timeline, person2.messageText, 'I lose!')
 
         // move dollar note from loser to winner
 
         // update wealth
+        this.utils.setText(this.timeline, this.descText, 'Now A has $2 and B has nothing.')
+        person1.addWealth(this.utils, this.timeline, 1)
+        person2.addWealth(this.utils, this.timeline, -1)
+        this.utils.setText(this.timeline, person1.messageText, 'I\'m rich!')
+        this.utils.setText(this.timeline, person2.messageText, 'I\'m poor!')
     }
 
     playSimpleGame()

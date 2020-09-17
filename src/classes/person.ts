@@ -1,5 +1,6 @@
 import Phaser, { Scene } from 'phaser'
 import { Constants } from './globals'
+import Utils from '../classes/Utils'
 
 export default class Person
 {
@@ -59,5 +60,11 @@ export default class Person
 		curY += this.nameText.height
 
 		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
+	}
+
+	addWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
+	{
+		this.wealth += amount
+		utils.flashText(timeline, this.wealthText, '(Wealth: $' + this.wealth + ')')
     }
 }
