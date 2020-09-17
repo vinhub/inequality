@@ -3,6 +3,7 @@ export const Constants = {
     happyWealthMin: 2 as integer,
     unhappyWealthMax: 0 as integer,
     startingWealth: 1 as integer,
+
     bodyTextStyle:
     {
         fontFamily: 'Arial, Helvetica, sans-serif',
@@ -41,4 +42,3 @@ export const Constants = {
     } as Phaser.Types.GameObjects.Text.TextStyle,
 
 } as const
-

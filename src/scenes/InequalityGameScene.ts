@@ -1,6 +1,9 @@
 import Phaser from 'phaser'
 import { Constants } from '../classes/globals'
+import Utils from '../classes/Utils'
 import Person from '../classes/person'
+import SceneHeader from '../classes/SceneHeader';
+import SceneFooter from '../classes/SceneFooter';
 
 export default class InequalityGameScene extends Phaser.Scene
 {
@@ -12,7 +15,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(iPerson, Constants.startingWealth)
+            this.persons[iPerson] = new Person(iPerson.toString(), Constants.startingWealth)
         }
 	}
 
@@ -26,9 +29,33 @@ export default class InequalityGameScene extends Phaser.Scene
 
     create()
     {
+        let utils: Utils = new Utils(this)
+        let curY = utils.topY;
+
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, 'Evolution of Wealth Inequality')
+        curY += header.height()
+
+        const descText = 'Let\'s say we have 2 people: A and B.'
+
+        let descTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, descText, Constants.bodyTextStyle)
+
+        curY += descTextObj.height + 30
+
+        const gameHeight = 800
+
+        this.createGame(utils.leftX, curY, utils.width, gameHeight)
+
+        curY += gameHeight
+
+        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, '', 'Next >>', () => { this.scene.start('InequalityGameScene') })
+    }
+
+    createGame(leftX: number, topY: number, width: number, height: number)
+    {
         // create the circle of persons
-        let center: Phaser.Geom.Point = new Phaser.Geom.Point(400, 400) // center of circle
-        let point: Phaser.Geom.Point = new Phaser.Geom.Point(400, 100)
+        const radius: number = 300
+        let center: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY + radius) // center of circle
+        let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY)
 
         // add all the person images
         for (let iPerson: integer = 0; iPerson < this.persons.length; iPerson++)
@@ -42,10 +69,5 @@ export default class InequalityGameScene extends Phaser.Scene
 
             personImage.setTintFill(person.imageColor().color32)
         }
-    }
-
-    update()
-    {
-
     }
 }

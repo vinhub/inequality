@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import IntroScene from './scenes/IntroScene'
+import SimpleGameScene from './scenes/SimpleGameScene'
 import InequalityGameScene from './scenes/InequalityGameScene'
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -12,7 +13,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [IntroScene, InequalityGameScene],
+	scene: [IntroScene, SimpleGameScene, InequalityGameScene],
 	transparent: true
 }
 

@@ -3,7 +3,7 @@ import { Constants } from './globals'
 
 export default class Person
 {
-	id: integer
+	name: string
 	wealth: integer
 	message?: string
 	messageText?: Phaser.GameObjects.Text
@@ -11,9 +11,9 @@ export default class Person
 	wealthText?: Phaser.GameObjects.Text
 	personImage?: Phaser.GameObjects.Image
 
-	constructor(id: integer, wealth: integer)
+	constructor(name: string, wealth: integer)
 	{
-		this.id = id
+		this.name = name
 		this.wealth = wealth
 	}
 
@@ -50,7 +50,7 @@ export default class Person
 		this.personImage.setTintFill(this.imageColor().color32)
 		curY += this.personImage.height
 
-		this.nameText = scene.add.text(x, curY, 'Person ' + this.id, Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0)
 		curY += this.nameText.height
 
 		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
