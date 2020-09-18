@@ -3,6 +3,7 @@ import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
 import SceneHeader from '../classes/SceneHeader';
 import SceneFooter from '../classes/SceneFooter';
+import TextButton from '../classes/TextButton';
 
 export default class IntroScene extends Phaser.Scene
 {
@@ -37,6 +38,11 @@ export default class IntroScene extends Phaser.Scene
 
         curY += introTextObj.height
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, null, null, () => { this.scene.start('SimpleGameScene') })
+        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play Game',
+            () => { this.scene.start('SimpleGameScene') }, true).setOrigin(0.5, 0)) as TextButton
+
+        curY += actionButton.height + 20
+
+        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
     }
 }

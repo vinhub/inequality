@@ -1,26 +1,26 @@
-import Phaser from 'phaser'
-import TextButton from '../classes/TextButton';
+import Phaser, { Scene } from 'phaser'
+import NavButton from '../classes/NavButton';
 
 export default class SceneFooter
 {
     line: Phaser.GameObjects.Line
-    prevButton?: TextButton
-    nextButton?: TextButton
-    actionButton?: TextButton
 
-    constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, prevCallback, actionCallback, nextCallback)
+    constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, bottomY: number)
     {
-        this.line = scene.add.line(0, 0, leftX, topY, 2 * rightX, topY, 0x000000, 0.2);
+        let curY: number = bottomY - 65
+
+        this.line = scene.add.line(0, 0, leftX, curY, 2 * rightX, curY, 0x000000, 0.2);
         this.line.setLineWidth(1)
-        const margin: number = 16
+        curY += 24
 
-        if (prevCallback)
-            this.prevButton = scene.add.existing(new TextButton(scene, leftX, topY + margin, '<< Prev', prevCallback).setOrigin(0, 0)) as TextButton
+        let scenes: Scene[] = scene.scene.manager.scenes as Scene[]
+        let curX: number = leftX + (rightX - leftX) / 2 - (scenes.length * 40) / 2
 
-        if (actionCallback)
-            this.actionButton = scene.add.existing(new TextButton(scene, leftX + (rightX - leftX) / 2, topY + margin, 'Play Game', actionCallback, true).setOrigin(0.5, 0)) as TextButton
-
-        if (nextCallback)
-            this.nextButton = scene.add.existing(new TextButton(scene, rightX, topY + margin, 'Next >>', nextCallback).setOrigin(1, 0).setOrigin(1, 0)) as TextButton
+        for (let iScene: number = 0; iScene < scenes.length; iScene++)
+        {
+            const sceneKey: string = scenes[iScene].scene.key
+            scene.add.existing(new NavButton(scene, curX, curY, () => { scene.scene.start(sceneKey) }, scene.scene.key == sceneKey))
+            curX += 40
+        }
     }
 }

@@ -47,8 +47,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX,
-            () => { this.scene.start('SimpleGameScene') }, () => { this.playGame() }, null)
+        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
     }
 
     createGame(leftX: number, topY: number, width: number, height: number)
