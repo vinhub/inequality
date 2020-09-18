@@ -4,21 +4,18 @@ import Utils from '../classes/Utils'
 
 export default class Person
 {
-	name: string
+	name?: string
 	wealth: integer
-	message: string
-	messageText: Phaser.GameObjects.Text
-	nameText: Phaser.GameObjects.Text
+	message?: string
+	messageText?: Phaser.GameObjects.Text
+	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
 	personImage: Phaser.GameObjects.Image
 
-	constructor(name: string, wealth: integer)
+	constructor(name?: string, wealth?: integer)
 	{
 		this.name = name
-		this.wealth = wealth
-		this.message = ''
-		this.messageText = {} as any
-		this.nameText = {} as any
+		this.wealth = (wealth ? wealth : Constants.startingWealth)
 		this.wealthText = {} as any
 		this.personImage = {} as any
 	}
@@ -43,29 +40,35 @@ export default class Person
 		return imageColor
 	}
 
-	add(scene: Scene, x: number, y: number, message: string)
+	add(scene: Scene, x: number, y: number, message?: string)
 	{
-		this.message = message
-
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, this.message, Constants.smallTextStyle).setOrigin(0.5, 0)
-		curY += this.messageText.height
+		if (message)
+		{
+			this.message = message
+
+			this.messageText = scene.add.text(x, curY, this.message, Constants.smallTextStyle).setOrigin(0.5, 0)
+			curY += this.messageText.height
+        }
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
 		this.personImage.setTintFill(this.imageColor().color32)
 		curY += this.personImage.height
 
-		this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0)
-		curY += this.nameText.height
+		if (this.name)
+		{
+			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0)
+			curY += this.nameText.height
+		}
 
-		this.wealthText = scene.add.text(x, curY, '(Wealth: $' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.wealthText = scene.add.text(x, curY, '($' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
 	}
 
-	addWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
+	incrementWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
 	{
 		this.wealth += amount
-		utils.flashText(timeline, this.wealthText, '(Wealth: $' + this.wealth + ')')
+		utils.flashText(timeline, this.wealthText, '($' + this.wealth + ')')
 		timeline.add(
 		{
 			targets: this.personImage,
@@ -74,8 +77,8 @@ export default class Person
 			duration: 0,
 			repeat: 0,
 			yoyo: false,
-				onStart: () =>
-				{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
+			onStart: () =>
+			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
 		})
     }
 }

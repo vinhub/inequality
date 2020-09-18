@@ -107,8 +107,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // update wealth
         this.utils.setText(this.timeline, this.descText, 'Now A has $2 and B has nothing.')
-        person1.addWealth(this.utils, this.timeline, 1)
-        person2.addWealth(this.utils, this.timeline, -1)
+        person1.incrementWealth(this.utils, this.timeline, 1)
+        person2.incrementWealth(this.utils, this.timeline, -1)
         this.utils.setText(this.timeline, person1.messageText, 'I\'m rich!')
         this.utils.setText(this.timeline, person2.messageText, 'I\'m poor!')
     }
