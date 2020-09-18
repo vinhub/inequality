@@ -2,19 +2,17 @@ export default class Utils
 {
     leftX: number
     rightX: number
-    width: number
     topY: number
     bottomY: number
 
     constructor(scene: Phaser.Scene)
     {
-        const screenCenterX = scene.cameras.main.worldView.x + scene.cameras.main.width / 2;
+        // const screenCenterX = scene.cameras.main.worldView.x + scene.cameras.main.width / 2;
         const main = scene.cameras.main
         const worldView = main.worldView
 
         this.leftX = worldView.x + 20
         this.rightX = worldView.x + main.width - 20
-        this.width = this.rightX - this.leftX
 
         this.topY = worldView.y + 20
         this.bottomY = worldView.y + main.height - 20

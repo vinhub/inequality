@@ -4,6 +4,7 @@ import Utils from '../classes/Utils'
 import SceneHeader from '../classes/SceneHeader';
 import SceneFooter from '../classes/SceneFooter';
 import Person from '../classes/Person';
+import TextButton from '../classes/TextButton';
 
 export default class SimpleGameScene extends Phaser.Scene
 {
@@ -37,15 +38,20 @@ export default class SimpleGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Coin Toss Game')
         curY += header.height()
 
-        this.descText = this.add.text(this.utils.leftX, curY, 'Click the "Play Game" button to get started.', Constants.bodyTextStyle)
+        this.descText = this.add.text(this.utils.leftX, curY, 'Click "Play" to get started.', Constants.bodyTextStyle)
 
         curY += this.descText.height + 30
 
         const gameHeight = 300
 
-        this.createSimpleGame(this.utils.leftX, curY, this.utils.width, gameHeight)
+        this.createSimpleGame(this.utils.leftX, curY, this.utils.rightX - this.utils.leftX, gameHeight)
 
         curY += gameHeight
+
+        let actionButton: TextButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2, curY, 'Play',
+            () => { this.playSimpleGame() }, true).setOrigin(0.5, 0)) as TextButton
+
+        curY += actionButton.height + 20
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
     }
