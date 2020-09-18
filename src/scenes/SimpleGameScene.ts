@@ -77,6 +77,15 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.setText(this.timeline, this.descText, 'They toss a coin. A chooses Heads, B chooses Tails.')
         this.utils.setText(this.timeline, person1.messageText, 'Heads!')
         this.utils.setText(this.timeline, person2.messageText, 'Tails!')
+        this.timeline.add(
+        {
+            targets: coin,
+            scaleX: { from: 1, to: 0.05 },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 300,
+            repeat: 10,
+            yoyo: true,
+        })
 
         // show toss result
         this.utils.setText(this.timeline, this.descText, 'It\'s Heads! A wins, B loses. So $1 is transferred from B to A.')
@@ -84,6 +93,17 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.setText(this.timeline, person2.messageText, 'I lose!')
 
         // move dollar note from loser to winner
+        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, person2.wealthText.x, person2.wealthText.y + 50, 'dollar-note')
+        this.timeline.add(
+        {
+            targets: dollarNote,
+            x: { from: person2.messageText.x, to: person1.messageText.x },
+            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 1000,
+            repeat: 0,
+            yoyo: false,
+            onStart: () => { this.add.existing(dollarNote) }
+        })
 
         // update wealth
         this.utils.setText(this.timeline, this.descText, 'Now A has $2 and B has nothing.')
