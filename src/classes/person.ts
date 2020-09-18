@@ -66,5 +66,16 @@ export default class Person
 	{
 		this.wealth += amount
 		utils.flashText(timeline, this.wealthText, '(Wealth: $' + this.wealth + ')')
+		timeline.add(
+		{
+			targets: this.personImage,
+			scale: { from: 1, to: 1 },
+			ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+			duration: 0,
+			repeat: 0,
+			yoyo: false,
+				onStart: () =>
+				{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
+		})
     }
 }
