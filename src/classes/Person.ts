@@ -1,5 +1,5 @@
 import Phaser, { Scene } from 'phaser'
-import { Constants } from './globals'
+import { Constants } from './Globals'
 import Utils from '../classes/Utils'
 
 export default class Person

@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
-import { Constants } from '../classes/globals'
+import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
 import SceneHeader from '../classes/SceneHeader';
 import SceneFooter from '../classes/SceneFooter';
-import Person from '../classes/person';
+import Person from '../classes/Person';
 
 export default class SimpleGameScene extends Phaser.Scene
 {

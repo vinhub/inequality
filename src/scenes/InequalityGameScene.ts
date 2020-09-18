@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-import { Constants } from '../classes/globals'
+import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
-import Person from '../classes/person'
+import Person from '../classes/Person'
 import SceneHeader from '../classes/SceneHeader';
 import SceneFooter from '../classes/SceneFooter';
 

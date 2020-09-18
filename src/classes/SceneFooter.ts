@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import { Constants } from '../classes/globals'
 import TextButton from '../classes/TextButton';
 
 export default class SceneFooter

@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { Constants } from '../classes/globals'
+import { Constants } from '../classes/Globals'
 
 export default class SceneHeader
 {

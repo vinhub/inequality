@@ -1,4 +1,4 @@
-import { Constants } from '../classes/globals'
+import { Constants } from '../classes/Globals'
 
 export default class TextButton extends Phaser.GameObjects.Text
 {
