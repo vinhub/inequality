@@ -6,9 +6,14 @@ import InequalityGameScene from './scenes/InequalityGameScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: 'Evolution of Wealth Inequality',
-	type: Phaser.AUTO,
 	width: 800,
-	height: 900,
+	height: 800,
+	type: Phaser.AUTO,
+	parent: 'game',
+	scale: {
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH
+	},
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -16,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		}
 	},
 	scene: [IntroScene, SimpleGameScene, InequalityGameScene],
-	transparent: true
+	transparent: true,
 }
 
 let game: Phaser.Game = new Phaser.Game(config)

@@ -40,7 +40,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         let descTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, descText, Constants.bodyTextStyle)
 
-        curY += descTextObj.height + 20
+        curY += descTextObj.height
 
         const gameHeight = 600
 
@@ -48,10 +48,8 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play',
-            () => { this.playGame() }, true).setOrigin(0.5, 0)) as TextButton
-
-        curY += actionButton.height + 20
+        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.rightX - 60, curY - 100, 'Play',
+            () => { this.playGame() }, true).setOrigin(1, 0)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
     }
