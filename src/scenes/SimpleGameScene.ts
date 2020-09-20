@@ -23,7 +23,7 @@ export default class SimpleGameScene extends Phaser.Scene
     preload()
     {
         this.load.image('normal-face', 'assets/normal-face.png')
-        this.load.image('smiley-face', 'assets/smiley-face.png')
+        this.load.image('happy-face', 'assets/happy-face.png')
         this.load.image('unhappy-face', 'assets/unhappy-face.png')
         this.load.image('coin', 'assets/dollar-coin.png')
         this.load.image('dollar-note', 'assets/dollar-note.png')
