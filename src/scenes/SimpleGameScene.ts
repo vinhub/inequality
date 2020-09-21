@@ -83,41 +83,49 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.setText(this.timeline, this.descText, 'They toss a coin. A chooses Heads, B chooses Tails.')
         this.utils.setText(this.timeline, person1.messageText, 'Heads!')
         this.utils.setText(this.timeline, person2.messageText, 'Tails!')
+
+        const numFlips: number = Math.round(Math.random()) + 9; // 9 or 10 flips randomly
         this.timeline.add(
         {
             targets: coin,
             scaleX: { from: 1, to: 0.05 },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 500,
-            repeat: 10,
+            duration: 300,
+            repeat: numFlips,
             yoyo: true,
             onYoyo: () => { coin.setTexture((coin.texture.key == 'heads') ? 'tails' : 'heads') }
         })
 
         // show toss result
-        this.utils.setText(this.timeline, this.descText, 'It\'s Heads! A wins, B loses. So $1 is transferred from B to A.')
-        this.utils.setText(this.timeline, person1.messageText, 'I win!')
-        this.utils.setText(this.timeline, person2.messageText, 'I lose!')
+        const itsHeads: boolean = ((numFlips % 2) == 1)
+        const winner: Person = itsHeads ? person1 : person2
+        const loser: Person = itsHeads ? person2 : person1
+        this.utils.setText(this.timeline, this.descText,
+            `It\'s ${itsHeads ? 'Heads' : 'Tails'}! ${winner.name} wins, ${loser.name} loses. So $1 is transferred from ${loser.name} to ${winner.name}.`)
+        this.utils.setText(this.timeline, winner.messageText, 'I win!')
+        this.utils.setText(this.timeline, loser.messageText, 'I lose!')
 
         // move dollar note from loser to winner
-        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, person2.wealthText.x, person2.wealthText.y + 50, 'dollar-note')
+        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.x, loser.personImage.y, 'dollar-note')
         this.timeline.add(
         {
             targets: dollarNote,
-            x: { from: person2.messageText.x, to: person1.messageText.x },
+            x: { from: loser.personImage.x, to: winner.personImage.x },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             duration: 1000,
             repeat: 0,
             yoyo: false,
-            onStart: () => { this.add.existing(dollarNote) }
+            onStart: () => { this.add.existing(dollarNote) },
+            completeDelay: 1000,
+            onComplete: () => { dollarNote.destroy() }
         })
 
         // update wealth
-        this.utils.setText(this.timeline, this.descText, 'Now A has $2 and B has nothing.')
-        person1.incrementWealth(this.utils, this.timeline, 1)
-        person2.incrementWealth(this.utils, this.timeline, -1)
-        this.utils.setText(this.timeline, person1.messageText, 'I\'m rich!')
-        this.utils.setText(this.timeline, person2.messageText, 'I\'m poor!')
+        this.utils.setText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`)
+        winner.incrementWealth(this.utils, this.timeline, 1)
+        loser.incrementWealth(this.utils, this.timeline, -1)
+        this.utils.setText(this.timeline, winner.messageText, 'I\'m rich!')
+        this.utils.setText(this.timeline, loser.messageText, 'I\'m poor!')
     }
 
     playSimpleGame()

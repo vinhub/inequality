@@ -7,7 +7,7 @@ export default class Person
 	name?: string
 	wealth: integer
 	message?: string
-	messageText?: Phaser.GameObjects.Text
+	messageText: Phaser.GameObjects.Text
 	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
 	personImage: Phaser.GameObjects.Image
@@ -18,6 +18,7 @@ export default class Person
 		this.wealth = (wealth ? wealth : Constants.startingWealth)
 		this.wealthText = {} as any
 		this.personImage = {} as any
+		this.messageText = {} as any
 	}
 
 	imageKey(): string
