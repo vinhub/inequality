@@ -53,8 +53,8 @@ export default class Person
         }
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
-		this.personImage.setSize(64, 64)
-		this.personImage.setDisplaySize(64, 64)
+		this.personImage
+		this.personImage
 		this.personImage.setTintFill(this.imageColor().color32)
 		curY += this.personImage.height
 
@@ -80,7 +80,7 @@ export default class Person
 			repeat: 0,
 			yoyo: false,
 			onStart: () =>
-			{ this.personImage.setTexture(this.imageKey()); this.personImage.setDisplaySize(64, 64).setTintFill(this.imageColor().color32) }
+			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
 		})
     }
 }

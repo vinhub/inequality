@@ -25,7 +25,8 @@ export default class SimpleGameScene extends Phaser.Scene
         this.load.image('normal-face', 'assets/normal-face.png')
         this.load.image('happy-face', 'assets/happy-face.png')
         this.load.image('unhappy-face', 'assets/unhappy-face.png')
-        this.load.image('coin', 'assets/dollar-coin.png')
+        this.load.image('heads', 'assets/heads.png')
+        this.load.image('tails', 'assets/tails.png')
         this.load.image('dollar-note', 'assets/dollar-note.png')
     }
 
@@ -69,7 +70,7 @@ export default class SimpleGameScene extends Phaser.Scene
         person2.add(this, leftX + width - 100, topY + 60, 'Hello! I\'m ' + person2Name + '.')
 
         // draw coin
-        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'coin').setOrigin(0.5, 0)
+        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
 
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline();
@@ -87,9 +88,10 @@ export default class SimpleGameScene extends Phaser.Scene
             targets: coin,
             scaleX: { from: 1, to: 0.05 },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 300,
+            duration: 500,
             repeat: 10,
             yoyo: true,
+            onYoyo: () => { coin.setTexture((coin.texture.key == 'heads') ? 'tails' : 'heads') }
         })
 
         // show toss result
