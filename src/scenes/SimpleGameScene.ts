@@ -27,8 +27,8 @@ export default class SimpleGameScene extends Phaser.Scene
         this.load.image('normal-face', 'assets/normal-face.png')
         this.load.image('happy-face', 'assets/happy-face.png')
         this.load.image('unhappy-face', 'assets/unhappy-face.png')
-        this.load.image('heads', 'assets/heads.png')
-        this.load.image('tails', 'assets/tails.png')
+        this.load.image('heads', 'assets/heads.jpg')
+        this.load.image('tails', 'assets/tails.jpg')
         this.load.image('dollar-note', 'assets/dollar-note.png')
     }
 
@@ -41,7 +41,7 @@ export default class SimpleGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Coin Toss Game')
         curY += header.height()
 
-        this.descText = this.add.text(this.utils.leftX, curY, 'We have two players, A and B, each with $1. Toss the coin.', Constants.bodyTextStyle)
+        this.descText = this.add.text(this.utils.leftX, curY, 'We have two players, A and B, each with $1. Press the "Toss the coin" button.', Constants.bodyTextStyle)
 
         curY += this.descText.height + 30
 
