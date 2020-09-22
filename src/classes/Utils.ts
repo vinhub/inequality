@@ -20,47 +20,25 @@ export default class Utils
         this.bottomY = worldView.y + main.height - 20
     }
 
-    setText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text: string)
+    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string, onComplete?: () => any)
     {
         timeline.add(
         {
             targets: textObj,
             alpha: { from: 1, to: 0 },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 1000,
+            duration: 300,
+            delay: 300,
             repeat: 0,
             yoyo: false,
-            onComplete: () => { textObj.text = text }
+            onComplete: () => { if (text) textObj.text = text }
         })
 
         timeline.add(
         {
             targets: textObj,
             alpha: { from: 0, to: 1 },
-            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 1000,
-            repeat: 0,
-            yoyo: false,
-        })
-    }
-
-    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string, onComplete?: () => any)
-    {
-        timeline.add(
-        {
-            targets: textObj,
-            scale: { from: 1, to: 1.5 },
-            ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 300,
-            repeat: 0,
-            yoyo: false,
-            onStart: () => { if (text) textObj.text = text }
-        })
-
-        timeline.add(
-        {
-            targets: textObj,
-            scale: { from: 1.5, to: 1 },
+            backgroundColor: { from: 0xffffff, to: 0x00ffff },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             duration: 300,
             repeat: 0,
@@ -70,7 +48,8 @@ export default class Utils
         timeline.add(
         {
             targets: textObj,
-            scale: { from: 1, to: 1.5 },
+            alpha: { from: 1, to: 0 },
+            backgroundColor: { from: 0x00ffff, to: 0xffffff },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             duration: 300,
             repeat: 0,
@@ -80,17 +59,14 @@ export default class Utils
         timeline.add(
         {
             targets: textObj,
-            scale: { from: 1.5, to: 1 },
+            alpha: { from: 0, to: 1 },
+            backgroundColor: { from: 0xffffff, to: 0x00ffff }
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             duration: 300,
             repeat: 0,
             yoyo: false,
-            onComplete: () => { if (onComplete) onComplete() }
+            onComplete: () => { if (onComplete) onComplete() },
+            completeDelay: 300
         })
-    }
-
-    updateActionButton(timeline: Phaser.Tweens.Timeline, actionButton: TextButton, text: string, callback: () => void)
-    {
-        timeline.setCallback('onComplete', () => { console.log('complete'); actionButton.text = text; actionButton.callback = callback }, [timeline], timeline)
     }
 }

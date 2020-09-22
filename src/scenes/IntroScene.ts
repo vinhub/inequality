@@ -27,8 +27,8 @@ export default class IntroScene extends Phaser.Scene
         const introText = [
             'Here is one of the simplest games two people can play.',
             '',
-            '1. Assume that you and a friend both have exactly one dollar to start with.',
-            '2. You toss a coin, and the loser of the toss gives their one dollar to the winner.',
+            '1. Assume that both people have exactly one dollar to start with.',
+            '2. They toss a coin, and the loser of the toss gives their one dollar to the winner.',
             '3. That\'s it. As simple as that! (Don\'t worry, it\'ll get very interesting in a minute.)',
             '',
             'Want to play it?'

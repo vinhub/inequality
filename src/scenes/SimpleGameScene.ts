@@ -10,11 +10,7 @@ export default class SimpleGameScene extends Phaser.Scene
 {
     utils: Utils
     descText: Phaser.GameObjects.Text
-    timeline1: Phaser.Tweens.Timeline
-    timeline2: Phaser.Tweens.Timeline
-    timeline3: Phaser.Tweens.Timeline
-    timeline4: Phaser.Tweens.Timeline
-    timeline5: Phaser.Tweens.Timeline
+    timeline: Phaser.Tweens.Timeline
     actionButton: TextButton
 
     constructor()
@@ -22,7 +18,7 @@ export default class SimpleGameScene extends Phaser.Scene
         super('SimpleGameScene')
         this.utils = {} as any
         this.descText = {} as any
-        this.timeline1 = this.timeline2 = this.timeline3 = this.timeline4 = this.timeline5 = {} as any
+        this.timeline = {} as any
         this.actionButton = {} as any
     }
 
@@ -45,7 +41,7 @@ export default class SimpleGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Coin Toss Game')
         curY += header.height()
 
-        this.descText = this.add.text(this.utils.leftX, curY, 'Click "Play" to get started.', Constants.bodyTextStyle)
+        this.descText = this.add.text(this.utils.leftX, curY, 'We have two players, A and B, each with $1. Toss the coin.', Constants.bodyTextStyle)
 
         curY += this.descText.height + 30
 
@@ -55,8 +51,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2, curY, 'Play',
-            () => { this.timeline1.play() }, true).setOrigin(0.5, 0)) as TextButton
+        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2, curY, 'Toss the coin',
+            () => { this.timeline.play() }, true).setOrigin(0.5, 0)) as TextButton
 
         curY += this.actionButton.height + 20
 
@@ -79,20 +75,15 @@ export default class SimpleGameScene extends Phaser.Scene
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
 
         // set up all the animations in the game
-        this.timeline1 = this.tweens.createTimeline();
-
-        this.utils.flashText(this.timeline1, this.descText, 'We have two players, A and B, each with $1.')
-        this.utils.flashText(this.timeline1, person1.wealthText)
-        this.utils.flashText(this.timeline1, person2.wealthText, undefined, () => { this.actionButton.text = 'Next Step'; this.actionButton.callback = () => { this.timeline2.play() } })
+        this.timeline = this.tweens.createTimeline();
 
         // coin flip animation
-        this.timeline2 = this.tweens.createTimeline();
-        this.utils.flashText(this.timeline2, this.descText, 'They toss a coin. A chooses Heads, B chooses Tails.')
-        this.utils.flashText(this.timeline2, person1.messageText, 'Heads!')
-        this.utils.flashText(this.timeline2, person2.messageText, 'Tails!')
+        this.utils.flashText(this.timeline, this.descText, 'A chooses Heads, B chooses Tails.')
+        this.utils.flashText(this.timeline, person1.messageText, 'Heads!')
+        this.utils.flashText(this.timeline, person2.messageText, 'Tails!')
 
         const numFlips: number = Math.round(Math.random()) + 9; // 9 or 10 flips randomly
-        this.timeline2.add(
+        this.timeline.add(
         {
             targets: coin,
             scaleX: { from: 1, to: 0.05 },
@@ -101,27 +92,26 @@ export default class SimpleGameScene extends Phaser.Scene
             repeat: numFlips,
             yoyo: true,
             onYoyo: () => { coin.setTexture((coin.texture.key == 'heads') ? 'tails' : 'heads') },
-            onComplete: () => { this.actionButton.callback = () => { this.timeline3.play() } }
+            completeDelay: 300
         })
 
         // show toss result
-        this.timeline3 = this.tweens.createTimeline();
         const itsHeads: boolean = ((numFlips % 2) == 1)
         const winner: Person = itsHeads ? person1 : person2
         const loser: Person = itsHeads ? person2 : person1
-        this.utils.flashText(this.timeline3, this.descText,
+        this.utils.flashText(this.timeline, this.descText,
             `It\'s ${itsHeads ? 'Heads' : 'Tails'}! ${winner.name} wins, ${loser.name} loses. So $1 is transferred from ${loser.name} to ${winner.name}.`)
-        this.utils.flashText(this.timeline3, winner.messageText, 'I win!')
-        this.utils.flashText(this.timeline3, loser.messageText, 'I lose!', () => { this.actionButton.callback = () => { this.timeline4.play() } })
+        this.utils.flashText(this.timeline, winner.messageText, 'I win!')
+        this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
         // move dollar note from loser to winner
-        this.timeline4 = this.tweens.createTimeline();
-        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.x, loser.personImage.y, 'dollar-note')
-        this.timeline4.add(
+        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.x, loser.personImage.y + 150, 'dollar-note')
+        this.timeline.add(
         {
             targets: dollarNote,
             x: { from: loser.personImage.x, to: winner.personImage.x },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            delay: 300,
             duration: 1000,
             repeat: 0,
             yoyo: false,
@@ -130,17 +120,15 @@ export default class SimpleGameScene extends Phaser.Scene
             onComplete: () =>
             {
                 dollarNote.destroy();
-                winner.incrementWealth(this.utils, this.timeline5, 1)
-                loser.incrementWealth(this.utils, this.timeline5, -1)
-                this.actionButton.callback = () => { this.timeline5.play() }
             }
         })
 
         // update wealth
-        this.timeline5 = this.tweens.createTimeline();
-        this.utils.flashText(this.timeline5, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`)
-        this.utils.flashText(this.timeline5, winner.messageText, 'I\'m rich!')
-        this.utils.flashText(this.timeline5, loser.messageText, 'I\'m poor!',
-            () => { this.actionButton.text = 'Got it? Now let\'s play a more interesting game >>>'; this.actionButton.callback = () => { this.scene.start('InequalityGameScene') } })
+        winner.incrementWealth(this.utils, this.timeline, 1)
+        loser.incrementWealth(this.utils, this.timeline, -1)
+        this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`)
+        this.utils.flashText(this.timeline, winner.messageText, 'I\'m rich!')
+        this.utils.flashText(this.timeline, loser.messageText, 'I\'m poor!',
+            () => { this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>', () => { this.scene.start('InequalityGameScene') }) })
     }
 }
