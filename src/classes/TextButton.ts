@@ -1,14 +1,17 @@
 import { Constants } from '../classes/Globals'
+import { Scene } from 'phaser';
 
 export default class TextButton extends Phaser.GameObjects.Text
 {
     actionButton: boolean
+    callback: () => void
 
-    constructor(scene, leftX, topY, text, callback, actionButton = false)
+    constructor(scene: Scene, leftX: number, topY: number, text: string, callback: () => void, actionButton: boolean = false)
     {
         super(scene, leftX, topY, text, actionButton ? Constants.actionButtonTextStyle : Constants.buttonTextStyle);
 
         this.actionButton = actionButton
+        this.callback = callback
 
         this.setInteractive({ useHandCursor: true })
           .on('pointerover', () => this.enterButtonHoverState() )
@@ -16,7 +19,7 @@ export default class TextButton extends Phaser.GameObjects.Text
           .on('pointerdown', () => this.enterButtonActiveState() )
           .on('pointerup', () => {
             this.enterButtonHoverState();
-            callback();
+            this.callback();
           });
     }
 

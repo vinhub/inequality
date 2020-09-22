@@ -1,3 +1,5 @@
+import TextButton from './TextButton'
+
 export default class Utils
 {
     leftX: number
@@ -42,11 +44,8 @@ export default class Utils
         })
     }
 
-    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string)
+    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string, onComplete?: () => any)
     {
-        if (text)
-            this.setText(timeline, textObj, text)
-
         timeline.add(
         {
             targets: textObj,
@@ -55,6 +54,7 @@ export default class Utils
             duration: 300,
             repeat: 0,
             yoyo: false,
+            onStart: () => { if (text) textObj.text = text }
         })
 
         timeline.add(
@@ -85,6 +85,12 @@ export default class Utils
             duration: 300,
             repeat: 0,
             yoyo: false,
+            onComplete: () => { if (onComplete) onComplete() }
         })
+    }
+
+    updateActionButton(timeline: Phaser.Tweens.Timeline, actionButton: TextButton, text: string, callback: () => void)
+    {
+        timeline.setCallback('onComplete', () => { console.log('complete'); actionButton.text = text; actionButton.callback = callback }, [timeline], timeline)
     }
 }
