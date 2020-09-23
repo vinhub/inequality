@@ -2,6 +2,14 @@ import Phaser, { Scene } from 'phaser'
 import { Constants } from './Globals'
 import Utils from '../classes/Utils'
 
+enum PersonState
+{
+	Normal,
+	Selected,
+	Happy,
+	Unhappy,
+}
+
 export default class Person
 {
 	name?: string
@@ -11,7 +19,7 @@ export default class Person
 	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
 	personImage: Phaser.GameObjects.Image
-	isHighlighted: boolean
+	state: PersonState
 
 	constructor(name?: string, wealth?: integer)
 	{
@@ -20,7 +28,7 @@ export default class Person
 		this.wealthText = {} as any
 		this.personImage = {} as any
 		this.messageText = {} as any
-		this.isHighlighted = false
+		this.state = PersonState.Normal
 	}
 
 	imageKey(): string
@@ -33,14 +41,25 @@ export default class Person
 	{
 		let imageColor: Phaser.Display.Color
 
-		if (this.isHighlighted)
-			imageColor = new Phaser.Display.Color(0x00, 0x00, 0xff)
-		else if (this.wealth >= Constants.happyWealthMin)
-			imageColor = new Phaser.Display.Color(0, 0xa0, 0, 0)
-		else if (this.wealth <= Constants.unhappyWealthMax)
-			imageColor = new Phaser.Display.Color(0xc0, 0, 0, 0)
-		else
-			imageColor = new Phaser.Display.Color(0x70, 0x70, 0x70, 0)
+		switch (this.state)
+		{
+			default:
+			case PersonState.Normal:
+				imageColor = new Phaser.Display.Color(0x70, 0x70, 0x70, 0)
+				break
+
+			case PersonState.Selected:
+				imageColor = new Phaser.Display.Color(0x1e, 0x90, 0xff)
+				break
+
+			case PersonState.Happy:
+				imageColor = new Phaser.Display.Color(0, 0xa0, 0, 0)
+				break
+
+			case PersonState.Unhappy:
+				imageColor = new Phaser.Display.Color(0xc0, 0, 0, 0)
+				break
+        }
 
 		return imageColor
 	}
@@ -83,7 +102,9 @@ export default class Person
 		//	onStart: () => { this.wealth += amount }
 		//})
 
-		this.wealth += amount
+		// TODO: this should be done on the timeline
+		this.wealth += amount 
+		this.setState(false)
 
 		utils.flashText(timeline, this.wealthText, '($' + this.wealth + ')')
 
@@ -100,7 +121,7 @@ export default class Person
 	}
 
 	// add tweens to the given timeline to highlight (or unhighlight) the person
-	setHighlighted(timeline: Phaser.Tweens.Timeline, isHighlighted: boolean)
+	setSelected(timeline: Phaser.Tweens.Timeline, isSelected: boolean)
 	{
 		timeline.add(
 		{
@@ -111,14 +132,26 @@ export default class Person
 			yoyo: false,
 			onStart: () =>
 			{
-				this.isHighlighted = isHighlighted
+				this.setState(isSelected)
 				this.personImage.setTintFill(this.imageColor().color32)
 			}
 		})
 	}
 
-	getHighlighted(): boolean
+	setState(isSelected: boolean)
 	{
-		return this.isHighlighted
+		if (isSelected)
+			this.state = PersonState.Selected
+		else if (this.wealth >= Constants.happyWealthMin)
+			this.state = PersonState.Happy
+		else if (this.wealth <= Constants.unhappyWealthMax)
+			this.state = PersonState.Unhappy
+		else
+			this.state = PersonState.Normal
+	}
+
+	getState(): PersonState
+	{
+		return this.state
     }
 }

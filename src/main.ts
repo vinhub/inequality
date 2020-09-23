@@ -6,7 +6,7 @@ import InequalityGameScene from './scenes/InequalityGameScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: 'Evolution of Wealth Inequality',
-	width: 800,
+	width: 1000,
 	height: 800,
 	type: Phaser.AUTO,
 	parent: 'game',
