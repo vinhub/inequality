@@ -61,6 +61,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
     createGame(leftX: number, topY: number, width: number, height: number)
     {
+        let graphics: Phaser.GameObjects.Graphics = this.add.graphics()
+
         // create persons
         const person1Name: string = 'A'
         const person2Name: string = 'B'
@@ -73,6 +75,14 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // draw coin
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
+
+        // create line that will be used to connect the two people
+        //let line: Phaser.GameObjects.Line = this.add.line(person1.personImage.x, person1.personImage.y, person1.personImage.x, person1.personImage.y, person2.personImage.x, person2.personImage.y, 0x00ff00)
+        let line: Phaser.Curves.Line = new Phaser.Curves.Line(new Phaser.Math.Vector2(person1.personImage.getBottomRight().x, person1.personImage.getBottomRight().y),
+            new Phaser.Math.Vector2(person2.personImage.getBottomLeft().x, person2.personImage.getBottomLeft().y))
+        graphics.lineStyle(1, Constants.blueColor)
+
+        line.draw(graphics)
 
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline()
@@ -105,11 +115,11 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
         // move dollar note from loser to winner
-        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.x, loser.personImage.y + 150, 'dollar-note')
+        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.getBottomCenter().x, loser.personImage.getBottomCenter().y, 'dollar-note').setTintFill(Constants.greenColor)
         this.timeline.add(
         {
             targets: dollarNote,
-            x: { from: loser.personImage.x, to: winner.personImage.x },
+            x: { from: loser.personImage.getBottomCenter().x, to: winner.personImage.getBottomCenter().x },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             delay: 300,
             duration: 1000,

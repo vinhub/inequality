@@ -37,27 +37,27 @@ export default class Person
 			(this.wealth <= Constants.unhappyWealthMax) ? 'unhappy-face' : 'normal-face'
 	}
 
-	private imageColor(): Phaser.Display.Color
+	private imageColor(): number
 	{
-		let imageColor: Phaser.Display.Color
+		let imageColor: number
 
 		switch (this.state)
 		{
 			default:
 			case PersonState.Normal:
-				imageColor = new Phaser.Display.Color(0x70, 0x70, 0x70, 0)
+				imageColor = Constants.grayColor
 				break
 
 			case PersonState.Selected:
-				imageColor = new Phaser.Display.Color(0x1e, 0x90, 0xff)
+				imageColor = Constants.blueColor
 				break
 
 			case PersonState.Happy:
-				imageColor = new Phaser.Display.Color(0, 0xa0, 0, 0)
+				imageColor = Constants.greenColor
 				break
 
 			case PersonState.Unhappy:
-				imageColor = new Phaser.Display.Color(0xc0, 0, 0, 0)
+				imageColor = Constants.redColor
 				break
         }
 
@@ -77,7 +77,7 @@ export default class Person
         }
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
-		this.personImage.setTintFill(this.imageColor().color32)
+		this.personImage.setTintFill(this.imageColor())
 		curY += this.personImage.height
 
 		if (this.name)
@@ -116,7 +116,7 @@ export default class Person
 			repeat: 0,
 			yoyo: false,
 			onStart: () =>
-			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
+			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor()) }
 		})
 	}
 
@@ -133,7 +133,7 @@ export default class Person
 			onStart: () =>
 			{
 				this.setState(isSelected)
-				this.personImage.setTintFill(this.imageColor().color32)
+				this.personImage.setTintFill(this.imageColor())
 			}
 		})
 	}

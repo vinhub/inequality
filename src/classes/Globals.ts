@@ -4,6 +4,12 @@ export const Constants = {
     unhappyWealthMax: 0 as integer,
     startingWealth: 1 as integer,
 
+    // standard colors
+    grayColor: 0x707070 as number,
+    blueColor: 0x1e90ff as number,
+    redColor: 0xa00000 as number,
+    greenColor: 0x00c000 as number,
+
     bodyTextStyle:
     {
         fontFamily: 'Arial, Helvetica, sans-serif',

@@ -69,4 +69,16 @@ export default class Utils
             completeDelay: 300
         })
     }
+
+    flashLine(timeline: Phaser.Tweens.Timeline, line: Phaser.GameObjects.Line)
+    {
+        //timeline.add(
+        //    {
+        //        duration: 0,
+        //        delay: 300,
+        //        repeat: 0,
+        //        yoyo: false,
+        //        onStart: () => {  }
+        //    })
+    }
 }
