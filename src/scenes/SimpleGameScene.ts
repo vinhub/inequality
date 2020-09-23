@@ -12,6 +12,7 @@ export default class SimpleGameScene extends Phaser.Scene
     descText: Phaser.GameObjects.Text
     timeline: Phaser.Tweens.Timeline
     actionButton: TextButton
+    graphics: Phaser.GameObjects.Graphics
 
     constructor()
     {
@@ -20,6 +21,7 @@ export default class SimpleGameScene extends Phaser.Scene
         this.descText = {} as any
         this.timeline = {} as any
         this.actionButton = {} as any
+        this.graphics = {} as any
     }
 
     preload()
@@ -61,7 +63,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
     createGame(leftX: number, topY: number, width: number, height: number)
     {
-        let graphics: Phaser.GameObjects.Graphics = this.add.graphics()
+        this.graphics = this.add.graphics()
 
         // create persons
         const person1Name: string = 'A'
@@ -70,22 +72,18 @@ export default class SimpleGameScene extends Phaser.Scene
         let person2: Person = new Person(person2Name, Constants.startingWealth)
 
         person1.add(this, leftX + 100, topY + 60, 'Hi! I\'m ' + person1Name + '.')
-
         person2.add(this, leftX + width - 100, topY + 60, 'Hello! I\'m ' + person2Name + '.')
 
         // draw coin
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
 
-        // create line that will be used to connect the two people
-        //let line: Phaser.GameObjects.Line = this.add.line(person1.personImage.x, person1.personImage.y, person1.personImage.x, person1.personImage.y, person2.personImage.x, person2.personImage.y, 0x00ff00)
-        let line: Phaser.Curves.Line = new Phaser.Curves.Line(new Phaser.Math.Vector2(person1.personImage.getBottomRight().x, person1.personImage.getBottomRight().y),
-            new Phaser.Math.Vector2(person2.personImage.getBottomLeft().x, person2.personImage.getBottomLeft().y))
-        graphics.lineStyle(1, Constants.blueColor)
-
-        line.draw(graphics)
-
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline()
+
+        // show the persons selected and draw a line connecting them
+        person1.setSelected(this.timeline, true)
+        person2.setSelected(this.timeline, true)
+        this.addConnectingLine(person1, person2)
 
         // coin flip animation
         this.utils.flashText(this.timeline, this.descText, 'A chooses Heads, B chooses Tails.')
@@ -136,9 +134,46 @@ export default class SimpleGameScene extends Phaser.Scene
         // update wealth
         winner.incrementWealth(this.utils, this.timeline, 1)
         loser.incrementWealth(this.utils, this.timeline, -1)
-        this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`)
-        this.utils.flashText(this.timeline, winner.messageText, 'I\'m rich!')
-        this.utils.flashText(this.timeline, loser.messageText, 'I\'m poor!',
-            () => { this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>', () => { this.timeline.resetTweens(true); this.scene.start('InequalityGameScene') }) })
+
+        // unselect them
+        person1.setSelected(this.timeline, false)
+        person2.setSelected(this.timeline, false)
+
+        this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`,
+            () =>
+            {
+                this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>',
+                    () =>
+                    {
+                        this.graphics.clear()
+                        this.timeline.resetTweens(true)
+                        this.scene.start('InequalityGameScene')
+                    })
+            })
     }
+
+    addConnectingLine(person1: Person, person2: Person)
+    {
+        const tempObj = { val: 0 }
+
+        this.timeline.add(
+            {
+                targets: tempObj,
+                val: 1,
+                duration: 0,
+                delay: 300,
+                repeat: 0,
+                yoyo: false,
+                onStart: () =>
+                {
+                    // create line that will be used to connect the two people
+                    const line: Phaser.Curves.Line = new Phaser.Curves.Line(new Phaser.Math.Vector2(person1.personImage.getBottomRight().x, person1.personImage.getBottomRight().y),
+                        new Phaser.Math.Vector2(person2.personImage.getBottomLeft().x, person2.personImage.getBottomLeft().y))
+
+                    this.graphics.lineStyle(1, Constants.blueColor)
+                    line.draw(this.graphics)
+                }
+            })
+    }
+
 }
