@@ -124,6 +124,9 @@ export default class InequalityGameScene extends Phaser.Scene
             this.utils.flashText(this.timeline, winner.messageText, 'I win!')
             this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
+            // move dollar note from loser to winner
+            this.moveMoney(loser, winner, center)
+
             winner.incrementWealth(this.utils, this.timeline, 1)
             loser.incrementWealth(this.utils, this.timeline, -1)
 
@@ -165,25 +168,60 @@ export default class InequalityGameScene extends Phaser.Scene
             yoyo: false,
             onStart: () =>
             {
-                // start / end points are close to the players in the direction of the center of the circle
-                let startPoint: Phaser.Math.Vector2 = player1.personImage.getCenter()
-                let endPoint: Phaser.Math.Vector2 = player2.personImage.getCenter()
-
-                startPoint.x = startPoint.x + (center.x - startPoint.x) / 10
-                startPoint.y = startPoint.y + (center.y - startPoint.y) / 10
-                endPoint.x = endPoint.x + (center.x - endPoint.x) / 10
-                endPoint.y = endPoint.y + (center.y - endPoint.y) / 10
-
-                // control points are halfway to the center of the circle
-                const controlPoint1: Phaser.Math.Vector2 = new Phaser.Math.Vector2(startPoint.x + (center.x - startPoint.x) / 2, startPoint.y + (center.y - startPoint.y) / 2) 
-                const controlPoint2: Phaser.Math.Vector2 = new Phaser.Math.Vector2(endPoint.x + (center.x - endPoint.x) / 2, endPoint.y + (center.y - endPoint.y) / 2) 
-
-                // create the bezier and draw it
-                this.connectingCurve = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
+                this.connectingCurve = this.createCurve(player1, player2, center)
                 this.graphics.lineStyle(1, Constants.blueColor, 1)
-
                 this.connectingCurve.draw(this.graphics)
             }
         })
+    }
+
+    moveMoney(loser: Person, winner: Person, center: Phaser.Geom.Point)
+    {
+        let dollarNote: Phaser.GameObjects.Image
+        let curve: Phaser.Curves.CubicBezier
+        const tempObj = { val: 0 }
+
+        this.timeline.add(
+        {
+            targets: tempObj,
+            val: 1,
+            duration: 1000,
+            delay: 300,
+            repeat: 0,
+            yoyo: false,
+            onStart: () =>
+            {
+                curve = this.createCurve(loser, winner, center)
+                const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
+                dollarNote = new Phaser.GameObjects.Image(this, startPoint.x, startPoint.y, 'dollar-note').setTintFill(Constants.greenColor)
+                this.add.existing(dollarNote)
+            },
+            onUpdate: (tween: Phaser.Tweens.Tween, target: any) =>
+            {
+                const position = curve.getPoint(target.val);
+                dollarNote.x = position.x;
+                dollarNote.y = position.y;
+            },
+            onComplete: () => { dollarNote.destroy() }
+        })
+    }
+
+    private createCurve(personFrom: Person, personTo: Person, center: Phaser.Geom.Point): Phaser.Curves.CubicBezier 
+    {
+        let startPoint: Phaser.Math.Vector2 = personFrom.personImage.getCenter()
+        let endPoint: Phaser.Math.Vector2 = personTo.personImage.getCenter()
+
+        startPoint.x = startPoint.x + (center.x - startPoint.x) / 10
+        startPoint.y = startPoint.y + (center.y - startPoint.y) / 10
+        endPoint.x = endPoint.x + (center.x - endPoint.x) / 10
+        endPoint.y = endPoint.y + (center.y - endPoint.y) / 10
+
+        // control points are halfway to the center of the circle
+        const controlPoint1: Phaser.Math.Vector2 = new Phaser.Math.Vector2(startPoint.x + (center.x - startPoint.x) / 2, startPoint.y + (center.y - startPoint.y) / 2)
+        const controlPoint2: Phaser.Math.Vector2 = new Phaser.Math.Vector2(endPoint.x + (center.x - endPoint.x) / 2, endPoint.y + (center.y - endPoint.y) / 2)
+
+        // create the bezier
+        const curve: Phaser.Curves.CubicBezier = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
+        return curve
     }
 }

@@ -139,6 +139,6 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`)
         this.utils.flashText(this.timeline, winner.messageText, 'I\'m rich!')
         this.utils.flashText(this.timeline, loser.messageText, 'I\'m poor!',
-            () => { this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>', () => { this.scene.start('InequalityGameScene') }) })
+            () => { this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>', () => { this.timeline.resetTweens(true); this.scene.start('InequalityGameScene') }) })
     }
 }
