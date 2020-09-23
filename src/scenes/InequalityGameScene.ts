@@ -11,6 +11,8 @@ export default class InequalityGameScene extends Phaser.Scene
     persons: Person[] = new Array()
     timeline: Phaser.Tweens.Timeline
     utils: Utils
+    graphics: Phaser.GameObjects.Graphics
+    connectingCurve: Phaser.Curves.CubicBezier
 
     constructor()
 	{
@@ -23,6 +25,8 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.timeline = {} as any
         this.utils = {} as any
+        this.graphics = {} as any
+        this.connectingCurve = {} as any
     }
 
 	preload()
@@ -37,6 +41,8 @@ export default class InequalityGameScene extends Phaser.Scene
 
     create()
     {
+        this.graphics = this.add.graphics()
+
         this.utils = new Utils(this)
         let curY = this.utils.topY;
 
@@ -82,6 +88,12 @@ export default class InequalityGameScene extends Phaser.Scene
             person.add(this, position.x, position.y, 'P' + iPerson)
         }
 
+        const startPoint = new Phaser.Math.Vector2(50, 260)
+        const controlPoint1 = new Phaser.Math.Vector2(200, 265)
+        const controlPoint2 = new Phaser.Math.Vector2(200, 275)
+        const endPoint = new Phaser.Math.Vector2(50, 280)
+        this.connectingCurve = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
+
         this.timeline = this.tweens.createTimeline()
 
         // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
@@ -95,23 +107,10 @@ export default class InequalityGameScene extends Phaser.Scene
             const player1: Person = players.pop() as Person
             const player2: Person = players.pop() as Person
 
-            // speed up animation for subsequent pairs
-            if (iPair == 1)
-            {
-                this.timeline.add(
-                    {
-                        targets: player1.personImage,
-                        scale: { from: 1, to: 1 },
-                        duration: 0,
-                        repeat: 0,
-                        yoyo: false,
-                        onStart: () => { this.timeline.timeScale = 3 }
-                    })
-            }
-
             // select them
             player1.setSelected(this.timeline, true)
             player2.setSelected(this.timeline, true)
+            this.addConnectingCurve(player1, player2, center)
 
             // show heads / tails
             this.utils.flashText(this.timeline, player1.messageText, 'Heads!')
@@ -133,8 +132,58 @@ export default class InequalityGameScene extends Phaser.Scene
             player2.setSelected(this.timeline, false)
 
             // update chart
+
+            // clean up / set up next iteration
+            this.timeline.add(
+            {
+                targets: player1.personImage,
+                scale: { from: 1, to: 1 },
+                duration: 0,
+                repeat: 0,
+                yoyo: false,
+                onStart: () =>
+                {
+                    this.graphics.clear()
+                    if (iPair == 0) // speed up animation after the first one
+                        this.timeline.timeScale = 3
+                }
+            })
         }
 
         // set up next play
+    }
+
+    addConnectingCurve(player1: Person, player2: Person, center: Phaser.Geom.Point)
+    {
+        this.timeline.add(
+        {
+            targets: player1.personImage,
+            scale: { from: 1, to: 1 },
+            duration: 0,
+            delay: 300,
+            repeat: 0,
+            yoyo: false,
+            onStart: () =>
+            {
+                // start / end points are close to the players in the direction of the center of the circle
+                let startPoint: Phaser.Math.Vector2 = player1.personImage.getCenter()
+                let endPoint: Phaser.Math.Vector2 = player2.personImage.getCenter()
+
+                startPoint.x = startPoint.x + (center.x - startPoint.x) / 10
+                startPoint.y = startPoint.y + (center.y - startPoint.y) / 10
+                endPoint.x = endPoint.x + (center.x - endPoint.x) / 10
+                endPoint.y = endPoint.y + (center.y - endPoint.y) / 10
+
+                // control points are halfway to the center of the circle
+                const controlPoint1: Phaser.Math.Vector2 = new Phaser.Math.Vector2(startPoint.x + (center.x - startPoint.x) / 2, startPoint.y + (center.y - startPoint.y) / 2) 
+                const controlPoint2: Phaser.Math.Vector2 = new Phaser.Math.Vector2(endPoint.x + (center.x - endPoint.x) / 2, endPoint.y + (center.y - endPoint.y) / 2) 
+
+                // create the bezier and draw it
+                this.connectingCurve = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
+                this.graphics.lineStyle(1, Constants.blueColor, 1)
+
+                this.connectingCurve.draw(this.graphics)
+            }
+        })
     }
 }
