@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
-import SceneHeader from '../classes/SceneHeader';
-import SceneFooter from '../classes/SceneFooter';
-import Person from '../classes/Person';
-import TextButton from '../classes/TextButton';
+import SceneHeader from '../classes/SceneHeader'
+import SceneFooter from '../classes/SceneFooter'
+import Person from '../classes/Person'
+import TextButton from '../classes/TextButton'
 
 export default class SimpleGameScene extends Phaser.Scene
 {
@@ -36,7 +36,7 @@ export default class SimpleGameScene extends Phaser.Scene
     {
         this.utils = new Utils(this)
 
-        let curY = this.utils.topY;
+        let curY = this.utils.topY
 
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Coin Toss Game')
         curY += header.height()
@@ -75,14 +75,14 @@ export default class SimpleGameScene extends Phaser.Scene
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
 
         // set up all the animations in the game
-        this.timeline = this.tweens.createTimeline();
+        this.timeline = this.tweens.createTimeline()
 
         // coin flip animation
         this.utils.flashText(this.timeline, this.descText, 'A chooses Heads, B chooses Tails.')
         this.utils.flashText(this.timeline, person1.messageText, 'Heads!')
         this.utils.flashText(this.timeline, person2.messageText, 'Tails!')
 
-        const numFlips: number = Math.round(Math.random()) + 9; // 9 or 10 flips randomly
+        const numFlips: number = Math.round(Math.random()) + 5 // 5 or 6 flips randomly
         this.timeline.add(
         {
             targets: coin,
@@ -119,7 +119,7 @@ export default class SimpleGameScene extends Phaser.Scene
             completeDelay: 1000,
             onComplete: () =>
             {
-                dollarNote.destroy();
+                dollarNote.destroy()
             }
         })
 

@@ -9,6 +9,8 @@ import SceneFooter from '../classes/SceneFooter';
 export default class InequalityGameScene extends Phaser.Scene
 {
     persons: Person[] = new Array()
+    timeline: Phaser.Tweens.Timeline
+    utils: Utils
 
     constructor()
 	{
@@ -18,13 +20,16 @@ export default class InequalityGameScene extends Phaser.Scene
         {
             this.persons[iPerson] = new Person()
         }
-	}
+
+        this.timeline = {} as any
+        this.utils = {} as any
+    }
 
 	preload()
     {
-        this.load.image('normal-face', 'assets/normal-face.png')
-        this.load.image('happy-face', 'assets/happy-face.png')
-        this.load.image('unhappy-face', 'assets/unhappy-face.png')
+        this.load.image('normal-face', 'assets/normal-face-small.png')
+        this.load.image('happy-face', 'assets/happy-face-small.png')
+        this.load.image('unhappy-face', 'assets/unhappy-face-small.png')
         this.load.image('dollar-note', 'assets/dollar-note.png')
         this.load.image('heads', 'assets/heads.png')
         this.load.image('tails', 'assets/tails.png')
@@ -32,36 +37,39 @@ export default class InequalityGameScene extends Phaser.Scene
 
     create()
     {
-        let utils: Utils = new Utils(this)
-        let curY = utils.topY;
+        this.utils = new Utils(this)
+        let curY = this.utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'A More Interesting Game')
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'A More Interesting Game')
         curY += header.height()
 
-        const descText = 'Click "Play" to get started.'
+        const descText = [
+            `Here we have ${Constants.numPersons} players. Each player will choose someone to play the Coin Toss game.`,
+            'Press the "Start" button.'
+        ]
 
-        let descTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, descText, Constants.bodyTextStyle)
+        let descTextObj: Phaser.GameObjects.Text = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle)
 
-        curY += descTextObj.height
+        curY += descTextObj.height + 20
 
-        const gameHeight = 600
+        const gameHeight = 400
 
-        this.createGame(utils.leftX, curY, utils.rightX - utils.leftX, gameHeight)
+        this.createGame(this.utils.leftX + 20, curY, this.utils.rightX - this.utils.leftX, gameHeight)
 
-        curY += gameHeight
+        curY += gameHeight + 20
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.rightX - 60, curY - 100, 'Play',
-            () => { this.playGame() }, true).setOrigin(1, 0)) as TextButton
+        let actionButton: TextButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2, curY, 'Start',
+            () => { this.timeline.play() }, true).setOrigin(0.5, 0)) as TextButton
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
     }
 
     createGame(leftX: number, topY: number, width: number, height: number)
     {
         // create the circle of persons
-        const radius: number = 240
-        let center: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + (width / 2) + radius - 250, topY + radius) // center of circle
-        let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + (width / 2) + radius - 250, topY)
+        const radius: number = 150
+        let center: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY + radius) // center of circle
+        let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY)
 
         // add all the person images
         for (let iPerson: integer = 0; iPerson < this.persons.length; iPerson++)
@@ -73,10 +81,38 @@ export default class InequalityGameScene extends Phaser.Scene
 
             person.add(this, position.x, position.y)
         }
-    }
 
-    playGame()
-    {
+        this.timeline = this.tweens.createTimeline()
 
+        // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
+        let players: Person[] = this.persons.filter((person: Person) => { return person.wealth > 0 }).sort(() => Math.random() - 0.5)
+        let numPlayersLeft: number = players.length
+
+        // loop over all remaining pairs
+        for (let iPair: number = 0; iPair < numPlayersLeft / 2; iPair++)
+        {
+            // pop 2 players
+            const player1: Person = players.pop() as Person
+            const player2: Person = players.pop() as Person
+
+            // highlight them
+            player1.setHighlighted(this.timeline, true)
+            player2.setHighlighted(this.timeline, true)
+
+            // set up coin toss, determine winner, transfer money from loser to winner
+            const toss: boolean = (Math.random() > 0.5)
+            const winner: Person = toss ? player1 : player2
+            const loser: Person = toss ? player2 : player1
+            winner.incrementWealth(this.utils, this.timeline, 1)
+            loser.incrementWealth(this.utils, this.timeline, -1)
+
+            // unhighlight them
+            player1.setHighlighted(this.timeline, false)
+            player2.setHighlighted(this.timeline, false)
+
+            // update chart
+        }
+
+        // set up next play
     }
 }

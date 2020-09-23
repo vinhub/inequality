@@ -11,6 +11,7 @@ export default class Person
 	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
 	personImage: Phaser.GameObjects.Image
+	isHighlighted: boolean
 
 	constructor(name?: string, wealth?: integer)
 	{
@@ -19,6 +20,7 @@ export default class Person
 		this.wealthText = {} as any
 		this.personImage = {} as any
 		this.messageText = {} as any
+		this.isHighlighted = false
 	}
 
 	imageKey(): string
@@ -27,11 +29,13 @@ export default class Person
 			(this.wealth <= Constants.unhappyWealthMax) ? 'unhappy-face' : 'normal-face'
 	}
 
-	imageColor(): Phaser.Display.Color
+	private imageColor(): Phaser.Display.Color
 	{
 		let imageColor: Phaser.Display.Color
 
-		if (this.wealth >= Constants.happyWealthMin)
+		if (this.isHighlighted)
+			imageColor = new Phaser.Display.Color(0x00, 0x00, 0xff)
+		else if (this.wealth >= Constants.happyWealthMin)
 			imageColor = new Phaser.Display.Color(0, 0xa0, 0, 0)
 		else if (this.wealth <= Constants.unhappyWealthMax)
 			imageColor = new Phaser.Display.Color(0xc0, 0, 0, 0)
@@ -54,8 +58,6 @@ export default class Person
         }
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
-		this.personImage
-		this.personImage
 		this.personImage.setTintFill(this.imageColor().color32)
 		curY += this.personImage.height
 
@@ -68,20 +70,55 @@ export default class Person
 		this.wealthText = scene.add.text(x, curY, '($' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
 	}
 
+	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
 	incrementWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
 	{
+		//timeline.add(
+		//{
+		//	targets: this.wealthText,
+		//	scale: { from: 1, to: 1 },
+		//	duration: 0,
+		//	repeat: 0,
+		//	yoyo: false,
+		//	onStart: () => { this.wealth += amount }
+		//})
+
 		this.wealth += amount
+
 		utils.flashText(timeline, this.wealthText, '($' + this.wealth + ')')
+
 		timeline.add(
 		{
 			targets: this.personImage,
 			scale: { from: 1, to: 1 },
-			ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
 			duration: 0,
 			repeat: 0,
 			yoyo: false,
 			onStart: () =>
 			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor().color32) }
 		})
+	}
+
+	// add tweens to the given timeline to highlight (or unhighlight) the person
+	setHighlighted(timeline: Phaser.Tweens.Timeline, isHighlighted: boolean)
+	{
+		timeline.add(
+		{
+			targets: this.wealthText,
+			scale: { from: 1, to: 1 },
+			duration: 0,
+			repeat: 0,
+			yoyo: false,
+			onStart: () =>
+			{
+				this.isHighlighted = isHighlighted
+				this.personImage.setTintFill(this.imageColor().color32)
+			}
+		})
+	}
+
+	getHighlighted(): boolean
+	{
+		return this.isHighlighted
     }
 }

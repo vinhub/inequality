@@ -60,7 +60,7 @@ export default class Utils
         {
             targets: textObj,
             alpha: { from: 0, to: 1 },
-            backgroundColor: { from: 0xffffff, to: 0x00ffff }
+            backgroundColor: { from: 0xffffff, to: 0x00ffff },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             duration: 300,
             repeat: 0,
