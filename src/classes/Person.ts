@@ -12,6 +12,7 @@ enum PersonState
 
 export default class Person
 {
+	isSmall: boolean
 	name?: string
 	wealth: integer
 	message?: string
@@ -21,10 +22,12 @@ export default class Person
 	personImage: Phaser.GameObjects.Image
 	state: PersonState
 
-	constructor(name?: string, wealth?: integer)
+	constructor(name?: string, wealth?: integer, isSmall?: boolean)
 	{
 		this.name = name
 		this.wealth = (wealth ? wealth : Constants.startingWealth)
+		this.isSmall = isSmall ? isSmall : false
+
 		this.wealthText = {} as any
 		this.personImage = {} as any
 		this.messageText = {} as any
@@ -33,8 +36,13 @@ export default class Person
 
 	imageKey(): string
 	{
-		return (this.wealth >= Constants.happyWealthMin) ? 'happy-face' :
+		let key: string = (this.wealth >= Constants.happyWealthMin) ? 'happy-face' :
 			(this.wealth <= Constants.unhappyWealthMax) ? 'unhappy-face' : 'normal-face'
+
+		if (this.isSmall)
+			key += '-small'
+
+		return key
 	}
 
 	private imageColor(): number

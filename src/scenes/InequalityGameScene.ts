@@ -18,11 +18,6 @@ export default class InequalityGameScene extends Phaser.Scene
 	{
         super('InequalityGameScene')
 
-        for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
-        {
-            this.persons[iPerson] = new Person()
-        }
-
         this.timeline = {} as any
         this.utils = {} as any
         this.graphics = {} as any
@@ -31,16 +26,21 @@ export default class InequalityGameScene extends Phaser.Scene
 
 	preload()
     {
-        this.load.image('normal-face', 'assets/normal-face-small.png')
-        this.load.image('happy-face', 'assets/happy-face-small.png')
-        this.load.image('unhappy-face', 'assets/unhappy-face-small.png')
-        this.load.image('dollar-note', 'assets/dollar-note.png')
+        this.load.image('normal-face-small', 'assets/normal-face-small.png')
+        this.load.image('happy-face-small', 'assets/happy-face-small.png')
+        this.load.image('unhappy-face-small', 'assets/unhappy-face-small.png')
+        this.load.image('dollar-note-small', 'assets/dollar-note-small.png')
         this.load.image('heads', 'assets/heads.png')
         this.load.image('tails', 'assets/tails.png')
     }
 
     create()
     {
+        for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
+        {
+            this.persons[iPerson] = new Person(undefined, 1, true)
+        }
+
         this.graphics = this.add.graphics()
 
         this.utils = new Utils(this)
@@ -193,7 +193,7 @@ export default class InequalityGameScene extends Phaser.Scene
             {
                 curve = this.createCurve(loser, winner, center)
                 const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
-                dollarNote = new Phaser.GameObjects.Image(this, startPoint.x, startPoint.y, 'dollar-note').setTintFill(Constants.greenColor)
+                dollarNote = new Phaser.GameObjects.Image(this, startPoint.x, startPoint.y, 'dollar-note-small').setTintFill(Constants.greenColor)
                 this.add.existing(dollarNote)
             },
             onUpdate: (tween: Phaser.Tweens.Tween, target: any) =>
