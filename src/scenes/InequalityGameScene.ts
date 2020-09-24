@@ -13,6 +13,8 @@ export default class InequalityGameScene extends Phaser.Scene
     utils: Utils
     graphics: Phaser.GameObjects.Graphics
     connectingCurve: Phaser.Curves.CubicBezier
+    actionButton: TextButton
+    gameCircleCenter: Phaser.Geom.Point
 
     constructor()
 	{
@@ -22,6 +24,8 @@ export default class InequalityGameScene extends Phaser.Scene
         this.utils = {} as any
         this.graphics = {} as any
         this.connectingCurve = {} as any
+        this.actionButton = {} as any
+        this.gameCircleCenter = {} as any
     }
 
 	preload()
@@ -64,7 +68,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2 - 20, curY, 'Start',
+        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2 - 20, curY, 'Start',
             () => { this.timeline.play() }, true).setOrigin(0.5, 0.5)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
@@ -74,7 +78,7 @@ export default class InequalityGameScene extends Phaser.Scene
     {
         // create the circle of persons
         const radius: number = 220
-        let center: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY + radius) // center of circle
+        this.gameCircleCenter = new Phaser.Geom.Point(leftX + radius, topY + radius) // center of circle
         let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY)
 
         // add all the person images
@@ -83,25 +87,29 @@ export default class InequalityGameScene extends Phaser.Scene
             let person: Person = this.persons[iPerson]
 
             // place persons around the circle uniformly
-            let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, center.x, center.y, Phaser.Math.PI2 * iPerson / this.persons.length)
+            let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, this.gameCircleCenter.x, this.gameCircleCenter.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
             person.add(this, position.x, position.y, 'P' + iPerson)
         }
 
-        const startPoint = new Phaser.Math.Vector2(50, 260)
-        const controlPoint1 = new Phaser.Math.Vector2(200, 265)
-        const controlPoint2 = new Phaser.Math.Vector2(200, 275)
-        const endPoint = new Phaser.Math.Vector2(50, 280)
-        this.connectingCurve = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
+        this.setupTimeline(true)
+    }
 
+    setupTimeline(firstRound: boolean)
+    {
         this.timeline = this.tweens.createTimeline()
+        const tempObj = { val: 0 }
+
+        // for subsequent rounds we need to speed up
+        if (!firstRound)
+            this.timeline.timeScale = 4
 
         // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
         let players: Person[] = this.persons.filter((person: Person) => { return person.wealth > 0 }).sort(() => Math.random() - 0.5)
         let numPlayersLeft: number = players.length
 
         // loop over all remaining pairs
-        for (let iPair: number = 0; iPair < numPlayersLeft / 2; iPair++)
+        for (let iPair: number = 0; iPair < Math.floor(numPlayersLeft / 2); iPair++)
         {
             // pop 2 players
             const player1: Person = players.pop() as Person
@@ -110,7 +118,7 @@ export default class InequalityGameScene extends Phaser.Scene
             // select them
             player1.setSelected(this.timeline, true)
             player2.setSelected(this.timeline, true)
-            this.addConnectingCurve(player1, player2, center)
+            this.addConnectingCurve(player1, player2, this.gameCircleCenter)
 
             // show heads / tails
             this.utils.flashText(this.timeline, player1.messageText, 'Heads!')
@@ -125,7 +133,7 @@ export default class InequalityGameScene extends Phaser.Scene
             this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
             // move dollar note from loser to winner
-            this.moveMoney(loser, winner, center)
+            this.moveMoney(loser, winner, this.gameCircleCenter)
 
             winner.incrementWealth(this.utils, this.timeline, 1)
             loser.incrementWealth(this.utils, this.timeline, -1)
@@ -139,21 +147,33 @@ export default class InequalityGameScene extends Phaser.Scene
             // clean up / set up next iteration
             this.timeline.add(
             {
-                targets: player1.personImage,
-                scale: { from: 1, to: 1 },
+                targets: tempObj,
+                val: { from: 0, to: 1 },
                 duration: 0,
                 repeat: 0,
                 yoyo: false,
                 onStart: () =>
                 {
                     this.graphics.clear()
-                    if (iPair == 0) // speed up animation after the first one
-                        this.timeline.timeScale = 3
+
+                    if (firstRound && (iPair == 0)) // speed up animation after the first one
+                        this.timeline.timeScale = 4
                 }
             })
         }
 
-        // set up next play
+        this.timeline.add(
+        {
+            targets: tempObj,
+            val: { from: 0, to: 1 },
+            duration: 0,
+            repeat: 0,
+            yoyo: false,
+            onStart: () =>
+            {
+                this.actionButton.setCallback('Next Round', () => { this.setupTimeline(); this.timeline.play() })
+            }
+        })
     }
 
     addConnectingCurve(player1: Person, player2: Person, center: Phaser.Geom.Point)
