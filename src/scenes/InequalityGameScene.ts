@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import { Chart } from 'phaser3-rex-plugins/templates/ui/ui-components.js'
+
 import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
 import Person from '../classes/Person'
@@ -15,6 +17,7 @@ export default class InequalityGameScene extends Phaser.Scene
     connectingCurve: Phaser.Curves.CubicBezier
     actionButton: TextButton
     gameCircleCenter: Phaser.Geom.Point
+    chart: Chart
 
     constructor()
 	{
@@ -26,10 +29,13 @@ export default class InequalityGameScene extends Phaser.Scene
         this.connectingCurve = {} as any
         this.actionButton = {} as any
         this.gameCircleCenter = {} as any
+        this.chart = {} as any
     }
 
 	preload()
     {
+        this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js');
+
         this.load.image('normal-face-small', 'assets/normal-face-small.png')
         this.load.image('happy-face-small', 'assets/happy-face-small.png')
         this.load.image('unhappy-face-small', 'assets/unhappy-face-small.png')
@@ -62,9 +68,11 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += descTextObj.height + 20
 
+        const gameWidth = 500
         const gameHeight = 500
 
-        this.createGame(this.utils.leftX, curY, this.utils.rightX - this.utils.leftX, gameHeight)
+        this.createGame(this.utils.leftX, curY, gameWidth, gameHeight)
+        this.createChart(this.utils.leftX + gameWidth, curY, this.utils.rightX - this.utils.leftX - gameWidth, gameHeight)
 
         curY += gameHeight
 
@@ -93,6 +101,52 @@ export default class InequalityGameScene extends Phaser.Scene
         }
 
         this.setupTimeline(true)
+    }
+
+    createChart(leftX: number, topY: number, width: number, height: number)
+    {
+        //Chart.default.global.hover.mode = 'nearest'
+
+        const config = {
+            type: 'bar',
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: { beginAtZero: true, stepsize: 1, precision: 0 }
+                    }]
+                },
+                layout: {
+                    padding: { left: 20, right: 20 }
+                }
+            },
+            data: {
+                datasets: [
+                    {
+                        labels: [],
+                        data: [],
+                        backgroundColor: [],
+                        borderColor: []
+                    }]
+            }
+        }
+
+        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, height, config)
+        this.add.existing(this.chart)
+
+        this.chart.chart.data.datasets[0].label = 'Wealth (in $)'
+        this.chart.chart.data.datasets[0].borderWidth = 1
+
+        for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
+        {
+            const person: Person = this.persons[iPerson]
+
+            this.chart.chart.data.labels[iPerson] = `P${iPerson}`
+            this.chart.chart.data.datasets[0].data[iPerson] = person.wealth as integer
+            this.chart.chart.data.datasets[0].backgroundColor[iPerson] = 'rgba(54, 162, 235, 0.2)'
+            this.chart.chart.data.datasets[0].borderColor[iPerson] = 'rgba(54, 162, 235, 1)'
+        }
+
+        this.chart.updateChart()
     }
 
     setupTimeline(firstRound: boolean)
