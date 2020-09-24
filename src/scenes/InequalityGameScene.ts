@@ -130,7 +130,7 @@ export default class InequalityGameScene extends Phaser.Scene
             }
         }
 
-        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, height, config)
+        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, 2 * height / 3, config)
         this.add.existing(this.chart)
 
         this.chart.chart.data.datasets[0].label = 'Wealth (in $)'
