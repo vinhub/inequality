@@ -112,7 +112,7 @@ export default class InequalityGameScene extends Phaser.Scene
             options: {
                 scales: {
                     yAxes: [{
-                        ticks: { beginAtZero: true, stepsize: 1, precision: 0 }
+                        ticks: { beginAtZero: true, stepsize: 1, precision: 0, suggestedMax: this.persons.length }
                     }]
                 },
                 layout: {
@@ -216,6 +216,7 @@ export default class InequalityGameScene extends Phaser.Scene
             })
         }
 
+        // set up next round
         this.timeline.add(
         {
             targets: tempObj,
@@ -225,7 +226,7 @@ export default class InequalityGameScene extends Phaser.Scene
             yoyo: false,
             onStart: () =>
             {
-                this.actionButton.setCallback('Next Round', () => { this.setupTimeline(); this.timeline.play() })
+                this.actionButton.setCallback('Next Round', () => { this.setupTimeline(false); this.timeline.play() })
             }
         })
     }

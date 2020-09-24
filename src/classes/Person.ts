@@ -94,38 +94,36 @@ export default class Person
 			curY += this.nameText.height
 		}
 
-		this.wealthText = scene.add.text(x, curY, '($' + this.wealth + ')', Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0)
 	}
 
 	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
 	incrementWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
 	{
-		//timeline.add(
-		//{
-		//	targets: this.wealthText,
-		//	scale: { from: 1, to: 1 },
-		//	duration: 0,
-		//	repeat: 0,
-		//	yoyo: false,
-		//	onStart: () => { this.wealth += amount }
-		//})
-
-		// TODO: this should be done on the timeline
-		this.wealth += amount 
-		this.setState(false)
-
-		utils.flashText(timeline, this.wealthText, '($' + this.wealth + ')')
+		const tempObj = { val: 0 }
 
 		timeline.add(
 		{
-			targets: this.personImage,
-			scale: { from: 1, to: 1 },
+			targets: tempObj,
+			val: 1,
+			duration: 0,
+			repeat: 0,
+			yoyo: false,
+			onStart: () => { this.wealth += amount; this.wealthText.text = `($${this.wealth})`; this.setState(false) }
+		})
+
+		timeline.add(
+		{
+			targets: tempObj,
+			val: 1,
 			duration: 0,
 			repeat: 0,
 			yoyo: false,
 			onStart: () =>
-			{ this.personImage.setTexture(this.imageKey()); this.personImage.setTintFill(this.imageColor()) }
+			{ this.personImage.setTexture(this.imageKey()).setTintFill(this.imageColor()) }
 		})
+
+		utils.flashText(timeline, this.wealthText)
 	}
 
 	// add tweens to the given timeline to highlight (or unhighlight) the person
