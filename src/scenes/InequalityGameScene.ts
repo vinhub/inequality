@@ -13,7 +13,8 @@ export default class InequalityGameScene extends Phaser.Scene
     descTextObj: Phaser.GameObjects.Text
     persons: Person[] = new Array()
     startingWealth: integer
-    wagerAmount: integer
+    wagerAmountMin: integer
+    wagerAmountMax: integer
     timeline: Phaser.Tweens.Timeline
     utils: Utils
     graphics: Phaser.GameObjects.Graphics
@@ -28,7 +29,7 @@ export default class InequalityGameScene extends Phaser.Scene
         super('InequalityGameScene')
 
         this.startingWealth = 1 // we start with this amount per person
-        this.wagerAmount = 1 // loser of the toss sends this amount to winner
+        this.wagerAmountMin = this.wagerAmountMax = 1 // loser of the toss sends this amount to winner
         this.cRoundsCompleted = 0
 
         this.descTextObj = {} as any
@@ -194,28 +195,60 @@ export default class InequalityGameScene extends Phaser.Scene
                 this.updateChart()
 
                 // update description
-                switch (this.cRoundsCompleted++)
+                if (this.startingWealth == 1)
                 {
-                    case 0:
-                        this.descTextObj.setText([`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.`,
-                            'Press the "Next Round" button to play the next round. We will speed up the rounds now.'])
-                        break
+                    switch (this.cRoundsCompleted++)
+                    {
+                        case 0:
+                            this.descTextObj.setText([`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.`,
+                                'Press the "Next Round" button to play the another round.'])
+                            this.actionButton.setCallback('Next Round', () => { this.setupTimeline(false); this.timeline.play() })
+                            break
 
-                    default:
-                        if (this.isConverging())
-                        {
-                            this.descTextObj.setText(['As you can see, even with a game involving completely random chance, wealth starts to concentrate in a small number of hands',
-                                'and most people end up with nothing. You can play a few more rounds to convince yourself or move on to a more interesting game.'])
-                        }
-                        else
-                        {
-                            this.descTextObj.setText(['With each subsequent round, smaller and smaller number of players accumulate most of the wealth',
-                                'and more and more people end up with nothing. Press the "Next Round" button to play the next round.'])
-                        }
-                        break
+                        default:
+                            if (this.isConverging())
+                            {
+                                this.descTextObj.setText(['As you can see, even with random chance, wealth starts to concentrate in a small number of hands and',
+                                    'most people end up with nothing. Now let us move on to an even more interesting game.'])
+
+                                this.actionButton.setCallback('More Interesting Game', () =>
+                                {
+                                    this.startingWealth = 5; this.wagerAmountMin = 2; this.wagerAmountMax = 4; this.setupTimeline(false); this.timeline.play()
+                                })
+                            }
+                            else
+                            {
+                                this.descTextObj.setText(['With each subsequent round, smaller and smaller number of players accumulate most of the wealth',
+                                    'and more and more people end up with nothing. Press the "Next Round" button to play another round.'])
+
+                                this.actionButton.setCallback('Next Round', () =>
+                                {
+                                    this.setupTimeline(false); this.timeline.play()
+                                })
+                            }
+                            break
+                    }
                 }
+                else
+                {
+                    if (this.isConverging())
+                    {
+                        this.descTextObj.setText(['Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.',
+                            'Press the "Conclusion" button to move on.'])
 
-                this.actionButton.setCallback('Next Round', () => { this.setupTimeline(false); this.timeline.play() })
+                        this.actionButton.setCallback('Conclusion >>>', () => { })
+                    }
+                else
+                    {
+                        this.descTextObj.setText(['With each subsequent round, smaller and smaller number of players accumulate most of the wealth',
+                            'and more and more people end up with nothing. Press the "Next Round" button to play another round.'])
+
+                        this.actionButton.setCallback('Next Round', () =>
+                        {
+                            this.setupTimeline(false); this.timeline.play() 
+                        })
+                    }
+                }
             }
         })
     }
@@ -257,7 +290,8 @@ export default class InequalityGameScene extends Phaser.Scene
             {
                 curve = this.createCurve(loser, winner, center)
                 const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
-                wagerAmountText = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${this.wagerAmount}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
+                const wagerAmount: number = this.wagerAmountMin + Math.floor(Math.random() * Math.floor(this.wagerAmountMax - this.wagerAmountMin))
+                wagerAmountText = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${wagerAmount}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
                 this.add.existing(wagerAmountText)
             },
             onUpdate: (tween: Phaser.Tweens.Tween, target: any) =>
@@ -345,7 +379,10 @@ export default class InequalityGameScene extends Phaser.Scene
 
     isConverging(): boolean
     {
+        if (this.cRoundsCompleted <= 3)
+            return false
+
         const numPoor: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
-        return numPoor >= 3 * this.persons.length / 4 
+        return numPoor >= 5 * this.persons.length / 8 
     }
 }
