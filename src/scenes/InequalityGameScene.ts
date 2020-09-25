@@ -73,6 +73,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.createGame(this.utils.leftX, curY, gameWidth, gameHeight)
         this.createChart(this.utils.leftX + gameWidth, curY, this.utils.rightX - this.utils.leftX - gameWidth, gameHeight)
+        this.updateChart()
 
         curY += gameHeight
 
@@ -101,52 +102,6 @@ export default class InequalityGameScene extends Phaser.Scene
         }
 
         this.setupTimeline(true)
-    }
-
-    createChart(leftX: number, topY: number, width: number, height: number)
-    {
-        //Chart.default.global.hover.mode = 'nearest'
-
-        const config = {
-            type: 'bar',
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: { beginAtZero: true, stepsize: 1, precision: 0, suggestedMax: this.persons.length }
-                    }]
-                },
-                layout: {
-                    padding: { left: 20, right: 20 }
-                }
-            },
-            data: {
-                datasets: [
-                    {
-                        labels: [],
-                        data: [],
-                        backgroundColor: [],
-                        borderColor: []
-                    }]
-            }
-        }
-
-        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, 2 * height / 3, config)
-        this.add.existing(this.chart)
-
-        this.chart.chart.data.datasets[0].label = 'Wealth (in $)'
-        this.chart.chart.data.datasets[0].borderWidth = 1
-
-        for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
-        {
-            const person: Person = this.persons[iPerson]
-
-            this.chart.chart.data.labels[iPerson] = `P${iPerson}`
-            this.chart.chart.data.datasets[0].data[iPerson] = person.wealth as integer
-            this.chart.chart.data.datasets[0].backgroundColor[iPerson] = 'rgba(54, 162, 235, 0.2)'
-            this.chart.chart.data.datasets[0].borderColor[iPerson] = 'rgba(54, 162, 235, 1)'
-        }
-
-        this.chart.updateChart()
     }
 
     setupTimeline(firstRound: boolean)
@@ -196,8 +151,6 @@ export default class InequalityGameScene extends Phaser.Scene
             player1.setSelected(this.timeline, false)
             player2.setSelected(this.timeline, false)
 
-            // update chart
-
             // clean up / set up next iteration
             this.timeline.add(
             {
@@ -208,6 +161,9 @@ export default class InequalityGameScene extends Phaser.Scene
                 yoyo: false,
                 onStart: () =>
                 {
+                    // update chart
+                    this.updateChart()
+
                     this.graphics.clear()
 
                     if (firstRound && (iPair == 0)) // speed up animation after the first one
@@ -226,6 +182,9 @@ export default class InequalityGameScene extends Phaser.Scene
             yoyo: false,
             onStart: () =>
             {
+                // update chart
+                this.updateChart()
+
                 this.actionButton.setCallback('Next Round', () => { this.setupTimeline(false); this.timeline.play() })
             }
         })
@@ -298,5 +257,59 @@ export default class InequalityGameScene extends Phaser.Scene
         // create the bezier
         const curve: Phaser.Curves.CubicBezier = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint)
         return curve
+    }
+
+    createChart(leftX: number, topY: number, width: number, height: number)
+    {
+        //Chart.default.global.hover.mode = 'nearest'
+
+        const config = {
+            type: 'bar',
+            options: {
+                title: {
+                    display: true,
+                    text: 'Wealth Distribution Chart'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: { beginAtZero: true, stepsize: 1, precision: 0, suggestedMax: this.persons.length }
+                    }]
+                },
+                layout: {
+                    padding: { left: 20, right: 20 }
+                }
+            },
+            data: {
+                datasets: [
+                    {
+                        labels: [],
+                        data: [],
+                        backgroundColor: [],
+                        borderColor: []
+                    }]
+            }
+        }
+
+        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, 2 * height / 3, config)
+        this.add.existing(this.chart)
+
+        this.chart.chart.data.datasets[0].label = '(x: amount, y: number of people)'
+        this.chart.chart.data.datasets[0].borderWidth = 1
+    }
+
+    updateChart()
+    {
+        for (let amount: number = 0; amount < 17; amount++)
+        {
+            const numPersons: integer = this.persons.filter((person: Person) => { return person.wealth == amount }).length
+
+            this.chart.chart.data.labels[amount] = `$${ amount }`
+            this.chart.chart.data.datasets[0].data[amount] = numPersons
+
+            this.chart.chart.data.datasets[0].backgroundColor[amount] = 'rgba(54, 162, 235, 0.2)'
+            this.chart.chart.data.datasets[0].borderColor[amount] = 'rgba(54, 162, 235, 1)'
+        }
+
+        this.chart.updateChart()
     }
 }
