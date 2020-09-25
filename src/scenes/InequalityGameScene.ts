@@ -13,6 +13,7 @@ export default class InequalityGameScene extends Phaser.Scene
     descTextObj: Phaser.GameObjects.Text
     persons: Person[] = new Array()
     startingWealth: integer
+    wagerAmount: integer
     timeline: Phaser.Tweens.Timeline
     utils: Utils
     graphics: Phaser.GameObjects.Graphics
@@ -20,14 +21,15 @@ export default class InequalityGameScene extends Phaser.Scene
     actionButton: TextButton
     gameCircleCenter: Phaser.Geom.Point
     chart: Chart
-    numRounds: number // number of rounds we have played
+    cRoundsCompleted: number // number of rounds we have played
 
     constructor()
 	{
         super('InequalityGameScene')
 
-        this.startingWealth = 1 // we start with $1 per person
-        this.numRounds = 0
+        this.startingWealth = 1 // we start with this amount per person
+        this.wagerAmount = 1 // loser of the toss sends this amount to winner
+        this.cRoundsCompleted = 0
 
         this.descTextObj = {} as any
         this.timeline = {} as any
@@ -46,7 +48,6 @@ export default class InequalityGameScene extends Phaser.Scene
         this.load.image('normal-face-small', 'assets/normal-face-small.png')
         this.load.image('happy-face-small', 'assets/happy-face-small.png')
         this.load.image('unhappy-face-small', 'assets/unhappy-face-small.png')
-        this.load.image('dollar-note-small', 'assets/dollar-note-small.png')
         this.load.image('heads', 'assets/heads.png')
         this.load.image('tails', 'assets/tails.png')
     }
@@ -193,7 +194,7 @@ export default class InequalityGameScene extends Phaser.Scene
                 this.updateChart()
 
                 // update description
-                switch (this.numRounds++)
+                switch (this.cRoundsCompleted++)
                 {
                     case 0:
                         this.descTextObj.setText([`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.`,
@@ -240,7 +241,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
     moveMoney(loser: Person, winner: Person, center: Phaser.Geom.Point)
     {
-        let dollarNote: Phaser.GameObjects.Image
+        let wagerAmountText: Phaser.GameObjects.Text
         let curve: Phaser.Curves.CubicBezier
         const tempObj = { val: 0 }
 
@@ -256,16 +257,16 @@ export default class InequalityGameScene extends Phaser.Scene
             {
                 curve = this.createCurve(loser, winner, center)
                 const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
-                dollarNote = new Phaser.GameObjects.Image(this, startPoint.x, startPoint.y, 'dollar-note-small').setTintFill(Constants.greenColor)
-                this.add.existing(dollarNote)
+                wagerAmountText = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${this.wagerAmount}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
+                this.add.existing(wagerAmountText)
             },
             onUpdate: (tween: Phaser.Tweens.Tween, target: any) =>
             {
                 const position = curve.getPoint(target.val);
-                dollarNote.x = position.x;
-                dollarNote.y = position.y;
+                wagerAmountText.x = position.x;
+                wagerAmountText.y = position.y;
             },
-            onComplete: () => { dollarNote.destroy() }
+            onComplete: () => { wagerAmountText.destroy() }
         })
     }
 

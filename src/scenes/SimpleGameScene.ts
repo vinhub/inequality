@@ -31,7 +31,6 @@ export default class SimpleGameScene extends Phaser.Scene
         this.load.image('unhappy-face', 'assets/unhappy-face.png')
         this.load.image('heads', 'assets/heads.jpg')
         this.load.image('tails', 'assets/tails.jpg')
-        this.load.image('dollar-note', 'assets/dollar-note.png')
     }
 
     create()
@@ -96,7 +95,7 @@ export default class SimpleGameScene extends Phaser.Scene
             targets: coin,
             scaleX: { from: 1, to: 0.05 },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 300,
+            duration: 200,
             repeat: numFlips,
             yoyo: true,
             onYoyo: () => { coin.setTexture((coin.texture.key == 'heads') ? 'tails' : 'heads') },
@@ -112,22 +111,23 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, winner.messageText, 'I win!')
         this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
-        // move dollar note from loser to winner
-        let dollarNote: Phaser.GameObjects.Image = new Phaser.GameObjects.Image(this, loser.personImage.getBottomCenter().x, loser.personImage.getBottomCenter().y, 'dollar-note').setTintFill(Constants.greenColor)
+        // move wager amount from loser to winner
+        let wagerAmountText: Phaser.GameObjects.Text =
+            new Phaser.GameObjects.Text(this, loser.wealthText.getTopCenter().x, loser.wealthText.getTopCenter().y, '$1', Constants.bodyTextStyle).setTintFill(Constants.greenColor)
         this.timeline.add(
         {
-            targets: dollarNote,
-            x: { from: loser.personImage.getBottomCenter().x, to: winner.personImage.getBottomCenter().x },
+            targets: wagerAmountText,
+            x: { from: loser.wealthText.getTopCenter().x, to: winner.wealthText.getTopCenter().x },
             ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
             delay: 300,
             duration: 1000,
             repeat: 0,
             yoyo: false,
-            onStart: () => { this.add.existing(dollarNote) },
+            onStart: () => { this.add.existing(wagerAmountText) },
             completeDelay: 1000,
             onComplete: () =>
             {
-                dollarNote.destroy()
+                wagerAmountText.destroy()
             }
         })
 

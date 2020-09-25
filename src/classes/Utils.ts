@@ -20,7 +20,7 @@ export default class Utils
         this.bottomY = worldView.y + main.height - 20
     }
 
-    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string, onComplete?: () => any)
+    flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string | string[], onComplete?: () => any)
     {
         timeline.add(
         {
@@ -31,7 +31,7 @@ export default class Utils
             delay: 300,
             repeat: 0,
             yoyo: false,
-            onComplete: () => { if (text) textObj.text = text }
+            onComplete: () => { if (text) textObj.setText(text) }
         })
 
         timeline.add(
