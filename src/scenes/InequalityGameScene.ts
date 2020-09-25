@@ -10,7 +10,9 @@ import SceneFooter from '../classes/SceneFooter';
 
 export default class InequalityGameScene extends Phaser.Scene
 {
+    descTextObj: Phaser.GameObjects.Text
     persons: Person[] = new Array()
+    startingWealth: integer
     timeline: Phaser.Tweens.Timeline
     utils: Utils
     graphics: Phaser.GameObjects.Graphics
@@ -18,11 +20,16 @@ export default class InequalityGameScene extends Phaser.Scene
     actionButton: TextButton
     gameCircleCenter: Phaser.Geom.Point
     chart: Chart
+    numRounds: number // number of rounds we have played
 
     constructor()
 	{
         super('InequalityGameScene')
 
+        this.startingWealth = 1 // we start with $1 per person
+        this.numRounds = 0
+
+        this.descTextObj = {} as any
         this.timeline = {} as any
         this.utils = {} as any
         this.graphics = {} as any
@@ -48,7 +55,7 @@ export default class InequalityGameScene extends Phaser.Scene
     {
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(undefined, 1, true)
+            this.persons[iPerson] = new Person(undefined, this.startingWealth, true)
         }
 
         this.graphics = this.add.graphics()
@@ -60,13 +67,13 @@ export default class InequalityGameScene extends Phaser.Scene
         curY += header.height()
 
         const descText = [
-            `Here we have ${Constants.numPersons} players. We will ask the players to pair up and play the same Coin Toss game.`,
-            'Press the "Start" button to start the first round.'
+            `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.`,
+            'You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.'
         ]
 
-        let descTextObj: Phaser.GameObjects.Text = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle)
+        this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle)
 
-        curY += descTextObj.height + 20
+        curY += this.descTextObj.height + 20
 
         const gameWidth = 500
         const gameHeight = 500
@@ -184,6 +191,28 @@ export default class InequalityGameScene extends Phaser.Scene
             {
                 // update chart
                 this.updateChart()
+
+                // update description
+                switch (this.numRounds++)
+                {
+                    case 0:
+                        this.descTextObj.setText([`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.`,
+                            'Press the "Next Round" button to play the next round. We will speed up the rounds now.'])
+                        break
+
+                    default:
+                        if (this.isConverging())
+                        {
+                            this.descTextObj.setText(['As you can see, even with a game involving completely random chance, wealth starts to concentrate in a small number of hands',
+                                'and most people end up with nothing. You can play a few more rounds to convince yourself or move on to a more interesting game.'])
+                        }
+                        else
+                        {
+                            this.descTextObj.setText(['With each subsequent round, smaller and smaller number of players accumulate most of the wealth',
+                                'and more and more people end up with nothing. Press the "Next Round" button to play the next round.'])
+                        }
+                        break
+                }
 
                 this.actionButton.setCallback('Next Round', () => { this.setupTimeline(false); this.timeline.play() })
             }
@@ -311,5 +340,11 @@ export default class InequalityGameScene extends Phaser.Scene
         }
 
         this.chart.updateChart()
+    }
+
+    isConverging(): boolean
+    {
+        const numPoor: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
+        return numPoor >= 3 * this.persons.length / 4 
     }
 }
