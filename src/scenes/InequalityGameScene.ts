@@ -88,8 +88,8 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += gameHeight
 
-        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2 - 20, curY, 'Start',
-            () => { this.timeline.play() }, true).setOrigin(0.5, 0.5)) as TextButton
+        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + gameWidth + 40, curY, 'Start',
+            () => { this.timeline.play() }, true).setOrigin(0, 0)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
     }

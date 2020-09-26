@@ -7,11 +7,11 @@ export default class SceneFooter
 
     constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, bottomY: number)
     {
-        let curY: number = bottomY - 65
+        let curY: number = bottomY - 60
 
         this.line = scene.add.line(0, 0, leftX, curY, 2 * rightX, curY, 0x000000, 0.2);
         this.line.setLineWidth(1)
-        curY += 24
+        curY += 30
 
         let scenes: Scene[] = scene.scene.manager.scenes as Scene[]
         let curX: number = leftX + (rightX - leftX) / 2 - (scenes.length * 40) / 2
