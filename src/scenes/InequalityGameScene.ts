@@ -22,6 +22,7 @@ export default class InequalityGameScene extends Phaser.Scene
     actionButton: TextButton
     gameCircleCenter: Phaser.Geom.Point
     chart: Chart
+    chartDesc: Phaser.GameObjects.Text
     cRoundsCompleted: number // number of rounds we have played
 
     constructor()
@@ -40,6 +41,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.actionButton = {} as any
         this.gameCircleCenter = {} as any
         this.chart = {} as any
+        this.chartDesc = {} as any
     }
 
 	preload()
@@ -359,6 +361,9 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.chart.chart.data.datasets[0].label = '(x: amount, y: number of people)'
         this.chart.chart.data.datasets[0].borderWidth = 1
+
+        this.chartDesc = new Phaser.GameObjects.Text(this, leftX + 40, topY + 5 * height / 6, this.describeChart(), Constants.smallTextStyle)
+        this.add.existing(this.chartDesc)
     }
 
     updateChart()
@@ -375,6 +380,17 @@ export default class InequalityGameScene extends Phaser.Scene
         }
 
         this.chart.updateChart()
+
+        this.chartDesc.setText(this.describeChart())
+    }
+
+    describeChart(): string
+    {
+        const cBroke = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
+        const maxWealth = this.persons.sort((p1: Person, p2: Person) => { return p1.wealth - p2.wealth })[this.persons.length - 1].wealth
+        const desc: string = `No. of broke people: ${cBroke}, Max. wealth: $${ maxWealth }`
+
+        return desc
     }
 
     isConverging(): boolean
