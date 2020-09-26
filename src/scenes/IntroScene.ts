@@ -25,16 +25,22 @@ export default class IntroScene extends Phaser.Scene
         curY += header.height()
 
         const introText = [
-            'Here is one of the simplest games two people can play:',
+            'Wealth inequality has been in the news a lot lately. Here is a very simple way to see how wealth inequality emerges in a society and what factors contribute to it.',
             '',
-            '1. Assume that both people have exactly one dollar to start with.',
+            '',
+            'The purpose of this exercise is purely to educate people about this important topic so they can make informed decisions about how to deal with it.',
+            '',
+            '',
+            'Let us start with a very simple game:',
+            '',
+            '1. Assume that you have two people with exactly one dollar each.',
             '2. They toss a coin, and the loser of the toss gives their one dollar to the winner.',
             '3. That\'s it. As simple as that! (Don\'t worry, it\'ll get very interesting in a minute.)',
             '',
             'Want to play it?'
         ]
 
-        let introTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, introText, Constants.bodyTextStyle)
+        let introTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, introText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, true)
 
         curY += introTextObj.height + 20
 
