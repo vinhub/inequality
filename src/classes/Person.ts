@@ -97,6 +97,13 @@ export default class Person
 		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0)
 	}
 
+	setWealth(amount: number)
+	{
+		this.wealth = amount
+		this.wealthText.text = `($${this.wealth})`
+		this.setState(false)
+	}
+
 	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
 	incrementWealth(utils: Utils, timeline: Phaser.Tweens.Timeline, amount: integer)
 	{
@@ -109,7 +116,7 @@ export default class Person
 			duration: 0,
 			repeat: 0,
 			yoyo: false,
-			onStart: () => { this.wealth += amount; this.wealthText.text = `($${this.wealth})`; this.setState(false) }
+			onStart: () => { this.setWealth(this.wealth + amount) }
 		})
 
 		timeline.add(
