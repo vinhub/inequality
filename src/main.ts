@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import IntroScene from './scenes/IntroScene'
 import SimpleGameScene from './scenes/SimpleGameScene'
 import InequalityGameScene from './scenes/InequalityGameScene'
+import ConclusionScene from './scenes/ConclusionScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: 'Evolution of Wealth Inequality',
@@ -20,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [IntroScene, SimpleGameScene, InequalityGameScene],
+	scene: [IntroScene, SimpleGameScene, InequalityGameScene, ConclusionScene],
 	transparent: true,
 }
 

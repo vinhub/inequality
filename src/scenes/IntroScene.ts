@@ -25,7 +25,7 @@ export default class IntroScene extends Phaser.Scene
         curY += header.height()
 
         const introText = [
-            'Here is one of the simplest games two people can play.',
+            'Here is one of the simplest games two people can play:',
             '',
             '1. Assume that both people have exactly one dollar to start with.',
             '2. They toss a coin, and the loser of the toss gives their one dollar to the winner.',
@@ -36,7 +36,7 @@ export default class IntroScene extends Phaser.Scene
 
         let introTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, introText, Constants.bodyTextStyle)
 
-        curY += introTextObj.height
+        curY += introTextObj.height + 20
 
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Next >>>',
             () => { this.scene.start('SimpleGameScene') }, true).setOrigin(0.5, 0)) as TextButton

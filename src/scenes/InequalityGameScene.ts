@@ -238,7 +238,7 @@ export default class InequalityGameScene extends Phaser.Scene
                         this.descTextObj.setText(['Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.',
                             'Press the "Conclusion" button to move on.'])
 
-                        this.actionButton.setCallback('Conclusion >>>', () => { })
+                        this.actionButton.setCallback('Conclusion >>>', () => { this.scene.start('ConclusionScene') })
                     }
                 else
                     {
