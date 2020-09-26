@@ -184,7 +184,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     this.graphics.clear()
 
                     if (firstRound && (iPair == 0)) // speed up animation after the first one
-                        this.timeline.timeScale = 4
+                        this.timeline.timeScale = 10
                 }
             })
         }
@@ -205,7 +205,7 @@ export default class InequalityGameScene extends Phaser.Scene
                 // update description
                 if (this.startingWealth == 1)
                 {
-                    switch (this.cRoundsCompleted++)
+                    switch (this.cRoundsCompleted)
                     {
                         case 0:
                             this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.
@@ -242,14 +242,14 @@ export default class InequalityGameScene extends Phaser.Scene
                     if (this.isConverging())
                     {
                         this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.
-                            Press the "Conclusion" button to move on.`)
+                            Press the "Conclusion >>>" button to see the conclusion.`)
 
                         this.actionButton.setCallback('Conclusion >>>', () => { this.scene.start('ConclusionScene') })
                     }
                 else
                     {
-                        this.descTextObj.setText(`With each subsequent round, smaller and smaller number of players accumulate most of the wealth
-                            and more and more people end up with nothing. Press the "Next Round" button to play another round.`)
+                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but soon it starts to spread out. Soon, people start to go broke one by one, and 
+                            a smaller and smaller number of people end up with more and more of the wealth. Press the "Next Round" button to play another round.`)
 
                         this.actionButton.setCallback('Next Round', () =>
                         {
@@ -257,6 +257,8 @@ export default class InequalityGameScene extends Phaser.Scene
                         })
                     }
                 }
+
+                this.cRoundsCompleted++
             }
         })
     }
@@ -401,7 +403,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
     updateChart()
     {
-        for (let amount: number = 0; amount < 17; amount++)
+        for (let amount: number = 0; amount < this.persons.length * this.startingWealth + 1; amount++)
         {
             const numPersons: integer = this.persons.filter((person: Person) => { return person.wealth == amount }).length
 
@@ -431,7 +433,7 @@ export default class InequalityGameScene extends Phaser.Scene
         if (this.cRoundsCompleted <= 3)
             return false
 
-        const numPoor: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
-        return numPoor >= 5 * this.persons.length / 8 
+        const numBroke: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
+        return numBroke >= 5 * this.persons.length / 8 
     }
 }
