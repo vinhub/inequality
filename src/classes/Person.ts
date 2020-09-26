@@ -15,7 +15,6 @@ export default class Person
 	isSmall: boolean
 	name?: string
 	wealth: integer
-	message?: string
 	messageText: Phaser.GameObjects.Text
 	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
@@ -76,13 +75,8 @@ export default class Person
 	{
 		let curY: number = y;
 
-		if (message)
-		{
-			this.message = message
-
-			this.messageText = scene.add.text(x, curY, this.message, Constants.smallTextStyle).setOrigin(0.5, 0)
-			curY += this.messageText.height
-        }
+		this.messageText = scene.add.text(x, curY, message ?? '', Constants.smallTextStyle).setOrigin(0.5, 0)
+		curY += this.messageText.height
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
 		this.personImage.setTintFill(this.imageColor())
@@ -102,6 +96,7 @@ export default class Person
 		this.wealth = amount
 		this.wealthText.text = `($${this.wealth})`
 		this.setState(false)
+		this.personImage.setTexture(this.imageKey()).setTintFill(this.imageColor())
 	}
 
 	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
@@ -117,17 +112,6 @@ export default class Person
 			repeat: 0,
 			yoyo: false,
 			onStart: () => { this.setWealth(this.wealth + amount) }
-		})
-
-		timeline.add(
-		{
-			targets: tempObj,
-			val: 1,
-			duration: 0,
-			repeat: 0,
-			yoyo: false,
-			onStart: () =>
-			{ this.personImage.setTexture(this.imageKey()).setTintFill(this.imageColor()) }
 		})
 
 		utils.flashText(timeline, this.wealthText)

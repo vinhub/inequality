@@ -108,7 +108,7 @@ export default class InequalityGameScene extends Phaser.Scene
             // place persons around the circle uniformly
             let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, this.gameCircleCenter.x, this.gameCircleCenter.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
-            person.add(this, position.x, position.y, 'P' + iPerson)
+            person.add(this, position.x, position.y, '')
         }
 
         this.setupTimeline(true)
@@ -121,7 +121,10 @@ export default class InequalityGameScene extends Phaser.Scene
 
         // for subsequent rounds we need to speed up
         if (!firstRound)
-            this.timeline.timeScale = 4
+            this.timeline.timeScale = 10
+
+        // for debugging purposes
+        this.timeline.timeScale = 10
 
         // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
         let players: Person[] = this.persons.filter((person: Person) => { return person.wealth > 0 }).sort(() => Math.random() - 0.5)
@@ -143,6 +146,10 @@ export default class InequalityGameScene extends Phaser.Scene
             this.utils.flashText(this.timeline, player1.messageText, 'Heads!')
             this.utils.flashText(this.timeline, player2.messageText, 'Tails!')
 
+            // select wager amount: random amount between minimum and maximum wager amounts, but can't wager more than what each one of them has
+            const wagerAmountMax = Math.min(this.wagerAmountMax, player1.wealth, player2.wealth)
+            const wagerAmount: number = this.wagerAmountMin + Math.floor(Math.random() * (wagerAmountMax - this.wagerAmountMin))
+
             // set up coin toss, determine winner, transfer money from loser to winner
             const toss: boolean = (Math.random() > 0.5)
             const winner: Person = toss ? player1 : player2
@@ -151,11 +158,11 @@ export default class InequalityGameScene extends Phaser.Scene
             this.utils.flashText(this.timeline, winner.messageText, 'I win!')
             this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
 
-            // move dollar note from loser to winner
-            this.moveMoney(loser, winner, this.gameCircleCenter)
+            // move wager amount from loser to winner
+            this.moveMoney(loser, winner, wagerAmount, this.gameCircleCenter)
 
-            winner.incrementWealth(this.utils, this.timeline, 1)
-            loser.incrementWealth(this.utils, this.timeline, -1)
+            winner.incrementWealth(this.utils, this.timeline, wagerAmount)
+            loser.incrementWealth(this.utils, this.timeline, -wagerAmount)
 
             // unselect them
             player1.setSelected(this.timeline, false)
@@ -214,7 +221,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
                                 this.actionButton.setCallback('More Interesting Game', () =>
                                 {
-                                    this.reinitGameParams(5, 2, 4)
+                                    this.reinitGameParams(5, 1, 3)
                                 })
                             }
                             else
@@ -264,6 +271,7 @@ export default class InequalityGameScene extends Phaser.Scene
         for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
         {
             this.persons[iPerson].setWealth(startingWealth)
+            this.persons[iPerson].messageText.text = ''
         }
 
         this.cRoundsCompleted = 0
@@ -273,9 +281,11 @@ export default class InequalityGameScene extends Phaser.Scene
         this.descTextObj.setText(`Now we will start each person with $${startingWealth}. And at each coin toss, we will let them wager between $${wagerAmountMin} and $${wagerAmountMax} at random. 
             Let us see if this changes the results. Press the "Start" button to start.`)
 
+        this.setupTimeline(true); 
+
         this.actionButton.setCallback('Start', () =>
         {
-            this.setupTimeline(true); this.timeline.play()
+            this.timeline.play()
         })
     }
 
@@ -298,7 +308,7 @@ export default class InequalityGameScene extends Phaser.Scene
         })
     }
 
-    moveMoney(loser: Person, winner: Person, center: Phaser.Geom.Point)
+    moveMoney(loser: Person, winner: Person, wagerAmount: number, center: Phaser.Geom.Point)
     {
         let wagerAmountText: Phaser.GameObjects.Text
         let curve: Phaser.Curves.CubicBezier
@@ -316,7 +326,6 @@ export default class InequalityGameScene extends Phaser.Scene
             {
                 curve = this.createCurve(loser, winner, center)
                 const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
-                const wagerAmount: number = this.wagerAmountMin + Math.floor(Math.random() * Math.floor(this.wagerAmountMax - this.wagerAmountMin))
                 wagerAmountText = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${wagerAmount}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
                 this.add.existing(wagerAmountText)
             },
