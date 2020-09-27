@@ -75,13 +75,13 @@ export default class InequalityGameScene extends Phaser.Scene
         const gameWidth = 500
         const gameHeight = 500
 
-        this.createGame(this.utils.leftX, curY, gameWidth, gameHeight)
-        this.createChart(this.utils.leftX + gameWidth, curY, this.utils.rightX - this.utils.leftX - gameWidth, gameHeight)
+        this.createGame(this.utils.leftX + 20, curY, gameWidth, gameHeight)
+        this.createChart(this.utils.leftX + 20 + gameWidth, curY, this.utils.rightX - this.utils.leftX - gameWidth - 20, gameHeight)
         this.updateChart()
 
         curY += gameHeight
 
-        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + gameWidth + 40, curY, 'Start',
+        this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + gameWidth + 50, curY, 'Start',
             () => { this.timeline.play() }, true).setOrigin(0, 0)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
@@ -182,6 +182,11 @@ export default class InequalityGameScene extends Phaser.Scene
                     this.updateChart()
 
                     this.graphics.clear()
+
+                    for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
+                    {
+                        this.persons[iPerson].updateStateMessage()
+                    }
 
                     if (firstRound && (iPair == 0)) // speed up animation after the first one
                         this.timeline.timeScale = 10

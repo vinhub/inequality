@@ -139,6 +139,10 @@ export default class SimpleGameScene extends Phaser.Scene
         person1.setSelected(this.timeline, false)
         person2.setSelected(this.timeline, false)
 
+        // update messages
+        this.utils.flashText(this.timeline, winner.messageText, `Doin' well!`)
+        this.utils.flashText(this.timeline, loser.messageText, `I'm broke!`)
+
         this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`,
             () =>
             {

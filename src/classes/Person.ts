@@ -170,5 +170,28 @@ export default class Person
 	getState(): PersonState
 	{
 		return this.state
+	}
+
+	updateStateMessage()
+	{
+		let message: string
+
+		switch (this.state)
+		{
+			default:
+			case PersonState.Normal:
+				message = `I'm ok.`
+				break
+
+			case PersonState.Happy:
+				message = `Doin' well!`
+				break
+
+			case PersonState.Unhappy:
+				message = `I'm broke!`
+				break
+		}
+
+		this.messageText.text = message
     }
 }
