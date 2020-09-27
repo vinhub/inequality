@@ -180,7 +180,7 @@ export default class Person
 		{
 			default:
 			case PersonState.Normal:
-				message = `I'm ok.`
+				message = `Gettin' by.`
 				break
 
 			case PersonState.Happy:

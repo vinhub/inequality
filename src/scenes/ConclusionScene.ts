@@ -21,12 +21,10 @@ export default class ConclusionScene extends Phaser.Scene
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Evolution of Wealth Inequality')
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Conclusion: Evolution of Wealth Inequality')
         curY += header.height()
 
         const conclusionText = [
-            'Conclusion:',
-            '',
             `As you can see, in every case, extreme wealth inequality emerges in spite of this being a completely randomized game.
              We did not need to introduce any other factor such as skill or hard work or social status etc. into the game and yet it emerged.`,
             '',

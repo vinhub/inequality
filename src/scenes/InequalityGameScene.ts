@@ -62,7 +62,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.utils = new Utils(this)
         let curY = this.utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'A More Interesting Game')
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Wealth Inequality Game')
         curY += header.height()
 
         const descText = `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.
@@ -253,7 +253,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but soon it starts to spread out. Soon, people start to go broke one by one, and 
+                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but soon it starts to get lopsided. People start to go broke one by one, and 
                             a smaller and smaller number of people end up with more and more of the wealth. Press the "Next Round" button to play another round.`)
 
                         this.actionButton.setCallback('Next Round', () =>
