@@ -57,6 +57,8 @@ export default class InequalityGameScene extends Phaser.Scene
 
     create()
     {
+        this.cameras.main.fadeIn(500, 0xff, 0xff, 0xff)
+
         this.graphics = this.add.graphics()
 
         this.utils = new Utils(this)
@@ -249,7 +251,7 @@ export default class InequalityGameScene extends Phaser.Scene
                         this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.
                             Press the "Conclusion >>>" button to see the conclusion.`)
 
-                        this.actionButton.setCallback('Conclusion >>>', () => { this.scene.start('ConclusionScene') })
+                        this.actionButton.setCallback('Conclusion >>>', () => { this.utils.sceneTransition(this, 'ConclusionScene') })
                     }
                 else
                     {

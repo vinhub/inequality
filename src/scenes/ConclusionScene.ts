@@ -18,6 +18,8 @@ export default class ConclusionScene extends Phaser.Scene
 
     create()
     {
+        this.cameras.main.fadeIn(500, 0xff, 0xff, 0xff)
+
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
@@ -54,7 +56,7 @@ export default class ConclusionScene extends Phaser.Scene
         curY += conclusionTextObj.height + 20
 
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play Again? >>>',
-            () => { this.scene.start('IntroScene') }, true).setOrigin(0.5, 0)) as TextButton
+            () => { utils.sceneTransition(this, 'IntroScene') }, true).setOrigin(0.5, 0)) as TextButton
 
         curY += actionButton.height + 20
 

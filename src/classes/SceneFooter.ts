@@ -1,12 +1,16 @@
 import Phaser, { Scene } from 'phaser'
-import NavButton from '../classes/NavButton';
+import Utils from '../classes/Utils'
+import NavButton from '../classes/NavButton'
 
 export default class SceneFooter
 {
+    utils: Utils
     line: Phaser.GameObjects.Line
 
     constructor(scene: Phaser.Scene, leftX: number, topY: number, rightX: number, bottomY: number)
     {
+        this.utils = new Utils(scene)
+
         let curY: number = bottomY - 60
 
         this.line = scene.add.line(0, 0, leftX, curY, 2 * rightX, curY, 0x000000, 0.2);
@@ -19,7 +23,7 @@ export default class SceneFooter
         for (let iScene: number = 0; iScene < scenes.length; iScene++)
         {
             const sceneKey: string = scenes[iScene].scene.key
-            scene.add.existing(new NavButton(scene, curX, curY, () => { scene.scene.start(sceneKey) }, scene.scene.key == sceneKey))
+            scene.add.existing(new NavButton(scene, curX, curY, () => { this.utils.sceneTransition(scene, sceneKey) }, scene.scene.key == sceneKey))
             curX += 40
         }
     }

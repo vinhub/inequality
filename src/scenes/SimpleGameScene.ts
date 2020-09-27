@@ -35,6 +35,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
     create()
     {
+        this.cameras.main.fadeIn(500, 0xff, 0xff, 0xff)
+
         this.utils = new Utils(this)
 
         let curY = this.utils.topY
@@ -151,7 +153,7 @@ export default class SimpleGameScene extends Phaser.Scene
                     {
                         this.graphics.clear()
                         this.timeline.resetTweens(true)
-                        this.scene.start('InequalityGameScene')
+                        this.utils.sceneTransition(this, 'InequalityGameScene')
                     })
             })
     }

@@ -69,4 +69,13 @@ export default class Utils
             completeDelay: 300
         })
     }
+
+    sceneTransition(curScene: Phaser.Scene, transitionTo: string)
+    {
+        curScene.cameras.main.fadeOut(500, 0xff, 0xff, 0xff)
+        curScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) =>
+        {
+            curScene.scene.start(transitionTo)
+        })
+    }
 }
