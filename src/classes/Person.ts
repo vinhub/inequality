@@ -12,31 +12,51 @@ enum PersonState
 
 export default class Person
 {
-	isSmall: boolean
-	name?: string
 	wealth: integer
+	name?: string
+	isSmall: boolean
+
 	messageText: Phaser.GameObjects.Text
 	nameText?: Phaser.GameObjects.Text
 	wealthText: Phaser.GameObjects.Text
 	personImage: Phaser.GameObjects.Image
 	state: PersonState
 
-	constructor(name?: string, wealth?: integer, isSmall?: boolean)
+	startingAmount: number
+
+	constructor(wealth: integer, isSmall: boolean, name?: string)
 	{
 		this.name = name
-		this.wealth = (wealth ? wealth : Constants.startingWealth)
-		this.isSmall = isSmall ? isSmall : false
+		this.wealth = wealth
+		this.isSmall = isSmall
 
 		this.wealthText = {} as any
 		this.personImage = {} as any
 		this.messageText = {} as any
 		this.state = PersonState.Normal
+
+		this.startingAmount = wealth
 	}
 
 	imageKey(): string
 	{
-		let key: string = (this.wealth >= Constants.happyWealthMin) ? 'happy-face' :
-			(this.wealth <= Constants.unhappyWealthMax) ? 'unhappy-face' : 'normal-face'
+		let key: string
+
+		switch (this.state)
+		{
+			default:
+			case PersonState.Normal:
+				key = 'normal-face'
+				break
+
+			case PersonState.Happy:
+				key = 'happy-face'
+				break
+
+			case PersonState.Unhappy:
+				key = 'unhappy-face'
+				break
+		}
 
 		if (this.isSmall)
 			key += '-small'
@@ -139,9 +159,9 @@ export default class Person
 	{
 		if (isSelected)
 			this.state = PersonState.Selected
-		else if (this.wealth >= Constants.happyWealthMin)
+		else if (this.wealth > this.startingAmount)
 			this.state = PersonState.Happy
-		else if (this.wealth <= Constants.unhappyWealthMax)
+		else if (this.wealth <= 0)
 			this.state = PersonState.Unhappy
 		else
 			this.state = PersonState.Normal

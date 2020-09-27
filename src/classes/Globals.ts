@@ -1,8 +1,5 @@
 export const Constants = {
     numPersons: 16 as integer,
-    happyWealthMin: 2 as integer,
-    unhappyWealthMax: 0 as integer,
-    startingWealth: 1 as integer,
 
     // standard colors
     grayColor: 0x707070 as number,

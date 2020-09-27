@@ -92,7 +92,7 @@ export default class InequalityGameScene extends Phaser.Scene
         // create persons
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(undefined, this.startingWealth, true)
+            this.persons[iPerson] = new Person(this.startingWealth, true)
         }
 
         // create the circle of persons

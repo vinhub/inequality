@@ -67,8 +67,8 @@ export default class SimpleGameScene extends Phaser.Scene
         // create persons
         const person1Name: string = 'A'
         const person2Name: string = 'B'
-        let person1: Person = new Person(person1Name, Constants.startingWealth)
-        let person2: Person = new Person(person2Name, Constants.startingWealth)
+        let person1: Person = new Person(1, false, person1Name)
+        let person2: Person = new Person(1, false, person2Name)
 
         person1.add(this, leftX + 100, topY + 60, 'Hi! I\'m ' + person1Name + '.')
         person2.add(this, leftX + width - 100, topY + 60, 'Hello! I\'m ' + person2Name + '.')
