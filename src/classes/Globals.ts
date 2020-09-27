@@ -11,7 +11,7 @@ export const Constants = {
     {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '20px',
-        color: '#000',
+        color: '#606060',
         padding: { left: 0, bottom: 10 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     bodyBoldTextStyle:
@@ -26,14 +26,14 @@ export const Constants = {
     {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '24px',
-        color: '#000',
+        color: '#606060',
         padding: { left: 0, bottom: 10 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     smallTextStyle:
     {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '14px',
-        color: '#000',
+        color: '#606060',
         padding: { left: 0, top: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     buttonTextStyle:
@@ -51,13 +51,5 @@ export const Constants = {
         color: '#ffffff',
         backgroundColor: '#5cb85c',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
-    } as Phaser.Types.GameObjects.Text.TextStyle,
-    footerTextStyle:
-    {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '24px',
-        color: '#000',
-        padding: { left: 0, top: 10 },
-    } as Phaser.Types.GameObjects.Text.TextStyle,
-
+    } as Phaser.Types.GameObjects.Text.TextStyle
 } as const
