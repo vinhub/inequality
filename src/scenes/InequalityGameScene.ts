@@ -382,7 +382,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }]
                 },
                 layout: {
-                    padding: { left: 20, right: 20 }
+                    padding: { left: 0, right: 0 }
                 }
             },
             data: {
