@@ -235,8 +235,8 @@ export default class InequalityGameScene extends Phaser.Scene
                     {
                         case 0:
                             this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.
-                                Press the "Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
-                            this.actionButton.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
+                                Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
+                            this.actionButton.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
                             break
 
                         default:
@@ -253,9 +253,9 @@ export default class InequalityGameScene extends Phaser.Scene
                             else
                             {
                                 this.descTextObj.setText(`With each subsequent round, smaller and smaller number of players accumulate most of the wealth
-                                    and more and more people end up with nothing. Press the "Round ${ this.cRoundsCompleted + 2 }" button to play another round.`)
+                                    and more and more people end up with nothing. Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play another round.`)
 
-                                this.actionButton.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
+                                this.actionButton.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
                                 {
                                     this.setupTimeline(false); this.timeline.play()
                                 })
@@ -275,9 +275,9 @@ export default class InequalityGameScene extends Phaser.Scene
                 else
                     {
                         this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and 
-                            a small number of people end up with more and more of the wealth. You'll need to play a total of about 10 rounds of this to see how the distribution changes over time.`)
+                            a small number of people end up with more and more of the wealth. You'll need to play at least 10 rounds of this to see how the distribution changes over time.`)
 
-                        this.actionButton.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
+                        this.actionButton.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
                         {
                             this.setupTimeline(false); this.timeline.play() 
                         })
@@ -431,7 +431,7 @@ export default class InequalityGameScene extends Phaser.Scene
         if (this.cRoundsCompleted <= 3)
             return false
 
-        if (this.cRoundsCompleted >= 10)
+        if (this.cRoundsCompleted >= 9)
             return true
 
         const numBroke: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
