@@ -70,12 +70,12 @@ export default class Utils
         })
     }
 
-    sceneTransition(curScene: Phaser.Scene, transitionTo: string)
+    sceneTransition(curScene: Phaser.Scene, transitionTo: string, data?: object | undefined)
     {
         curScene.cameras.main.fadeOut(500, 0xff, 0xff, 0xff)
         curScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) =>
         {
-            curScene.scene.start(transitionTo)
+            curScene.scene.start(transitionTo, data)
         })
     }
 }

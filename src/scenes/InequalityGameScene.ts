@@ -44,6 +44,20 @@ export default class InequalityGameScene extends Phaser.Scene
         this.chartDesc = {} as any
     }
 
+    init(data?: any)
+    {
+        if (!data || !data.startingWealth)
+        {
+            this.startingWealth = this.wagerAmountMin = this.wagerAmountMax = 1
+        }
+        else
+        {
+            this.startingWealth = data.startingWealth
+            this.wagerAmountMin = data.wagerAmountMin
+            this.wagerAmountMax = data.wagerAmountMax
+        }
+    }
+
 	preload()
     {
         this.load.script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js');
@@ -67,8 +81,10 @@ export default class InequalityGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Wealth Inequality Game')
         curY += header.height()
 
-        const descText = `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.
-             You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.`
+        const descText = this.startingWealth == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.
+             You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.` :
+            `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random. 
+             Let us see if this changes the results. Press the "Start" button to start.`
 
         this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, true)
 
@@ -228,7 +244,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
                                 this.actionButton.setCallback('More Interesting Game', () =>
                                 {
-                                    this.reinitGameParams(5, 1, 3)
+                                    this.scene.start(this.scene.key, { startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 })
                                 })
                             }
                             else
@@ -255,8 +271,8 @@ export default class InequalityGameScene extends Phaser.Scene
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but soon it starts to get lopsided. People start to go broke one by one, and 
-                            a smaller and smaller number of people end up with more and more of the wealth. Press the "Next Round" button to play another round.`)
+                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and 
+                            a small number of people end up with more and more of the wealth. You'll need to play a total of about 10 rounds of this to see how the distribution changes over time.`)
 
                         this.actionButton.setCallback('Next Round', () =>
                         {
@@ -267,34 +283,6 @@ export default class InequalityGameScene extends Phaser.Scene
 
                 this.cRoundsCompleted++
             }
-        })
-    }
-
-    reinitGameParams(startingWealth: number, wagerAmountMin: number, wagerAmountMax: number)
-    {
-        this.startingWealth = startingWealth
-        this.wagerAmountMin = wagerAmountMin
-        this.wagerAmountMax = wagerAmountMax
-
-        // update persons
-        for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
-        {
-            this.persons[iPerson].setWealth(startingWealth)
-            this.persons[iPerson].messageText.text = ''
-        }
-
-        this.cRoundsCompleted = 0
-
-        this.updateChart()
-
-        this.descTextObj.setText(`Now we will start each person with $${startingWealth}. And at each coin toss, we will let them wager between $${wagerAmountMin} and $${wagerAmountMax} at random. 
-            Let us see if this changes the results. Press the "Start" button to start.`)
-
-        this.setupTimeline(true); 
-
-        this.actionButton.setCallback('Start', () =>
-        {
-            this.timeline.play()
         })
     }
 
@@ -439,6 +427,9 @@ export default class InequalityGameScene extends Phaser.Scene
     {
         if (this.cRoundsCompleted <= 3)
             return false
+
+        if (this.cRoundsCompleted >= 10)
+            return true
 
         const numBroke: integer = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
         return numBroke >= 5 * this.persons.length / 8 
