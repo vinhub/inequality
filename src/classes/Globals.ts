@@ -2,10 +2,10 @@ export const Constants = {
     numPersons: 16 as integer,
 
     // standard colors
-    grayColor: 0x707070 as number,
+    grayColor: 0x606060 as number,
     blueColor: 0x1e90ff as number,
     redColor: 0xa00000 as number,
-    greenColor: 0x00c000 as number,
+    greenColor: 0x009900 as number,
 
     bodyTextStyle:
     {

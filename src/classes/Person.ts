@@ -100,7 +100,7 @@ export default class Person
 		curY += this.messageText.height
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
-		this.personImage.setTintFill(this.imageColor())
+		//this.personImage.setTintFill(this.imageColor())
 		curY += this.personImage.height
 
 		if (this.name)
@@ -117,7 +117,7 @@ export default class Person
 		this.wealth = amount
 		this.wealthText.text = `($${this.wealth})`
 		this.setState(false)
-		this.personImage.setTexture(this.imageKey()).setTintFill(this.imageColor())
+		this.personImage.setTexture(this.imageKey())
 	}
 
 	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
@@ -151,7 +151,7 @@ export default class Person
 			onStart: () =>
 			{
 				this.setState(isSelected)
-				this.personImage.setTintFill(this.imageColor())
+				//this.personImage.setTintFill(this.imageColor())
 			}
 		})
 	}
