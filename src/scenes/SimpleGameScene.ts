@@ -72,8 +72,8 @@ export default class SimpleGameScene extends Phaser.Scene
         let person1: Person = new Person(1, false, person1Name)
         let person2: Person = new Person(1, false, person2Name)
 
-        person1.add(this, leftX + 100, topY + 60, 'Hi! I\'m ' + person1Name + '.')
-        person2.add(this, leftX + width - 100, topY + 60, 'Hello! I\'m ' + person2Name + '.')
+        person1.add(this, leftX + 100, topY + 60)
+        person2.add(this, leftX + width - 100, topY + 60)
 
         // draw coin
         let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
@@ -88,8 +88,8 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // coin flip animation
         this.utils.flashText(this.timeline, this.descText, 'A chooses Heads, B chooses Tails.')
-        this.utils.flashText(this.timeline, person1.messageText, 'Heads!')
-        this.utils.flashText(this.timeline, person2.messageText, 'Tails!')
+        this.utils.flashText(this.timeline, person1.messageText, '"Heads!"')
+        this.utils.flashText(this.timeline, person2.messageText, '"Tails!"')
 
         const numFlips: number = Math.round(Math.random()) + 5 // 5 or 6 flips randomly
         this.timeline.add(
@@ -110,8 +110,8 @@ export default class SimpleGameScene extends Phaser.Scene
         const loser: Person = itsHeads ? person2 : person1
         this.utils.flashText(this.timeline, this.descText,
             `It\'s ${itsHeads ? 'Heads' : 'Tails'}! ${winner.name} wins, ${loser.name} loses. So $1 is transferred from ${loser.name} to ${winner.name}.`)
-        this.utils.flashText(this.timeline, winner.messageText, 'I win!')
-        this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
+        this.utils.flashText(this.timeline, winner.messageText, '"I win!"')
+        this.utils.flashText(this.timeline, loser.messageText, '"I lose!"')
 
         // move wager amount from loser to winner
         let wagerAmountText: Phaser.GameObjects.Text =
@@ -142,8 +142,8 @@ export default class SimpleGameScene extends Phaser.Scene
         person2.setSelected(this.timeline, false)
 
         // update messages
-        this.utils.flashText(this.timeline, winner.messageText, `Doin' well!`)
-        this.utils.flashText(this.timeline, loser.messageText, `I'm broke!`)
+        this.utils.flashText(this.timeline, winner.messageText, `"Doin' well!"`)
+        this.utils.flashText(this.timeline, loser.messageText, `"I'm broke!"`)
 
         this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`,
             () =>

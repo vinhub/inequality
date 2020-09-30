@@ -136,7 +136,7 @@ export default class InequalityGameScene extends Phaser.Scene
             // place persons around the circle uniformly
             let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, this.gameCircleCenter.x, this.gameCircleCenter.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
-            person.add(this, position.x, position.y, '')
+            person.add(this, position.x, position.y)
         }
 
         this.setupTimeline(true)
@@ -171,8 +171,8 @@ export default class InequalityGameScene extends Phaser.Scene
             this.addConnectingCurve(player1, player2, this.gameCircleCenter)
 
             // show heads / tails
-            this.utils.flashText(this.timeline, player1.messageText, 'Heads!')
-            this.utils.flashText(this.timeline, player2.messageText, 'Tails!')
+            this.utils.flashText(this.timeline, player1.messageText, '"Heads!"')
+            this.utils.flashText(this.timeline, player2.messageText, '"Tails!"')
 
             // select wager amount: random amount between minimum and maximum wager amounts, but can't wager more than what each one of them has
             const wagerAmountMax = Math.min(this.wagerAmountMax, player1.wealth, player2.wealth)
@@ -183,8 +183,8 @@ export default class InequalityGameScene extends Phaser.Scene
             const winner: Person = toss ? player1 : player2
             const loser: Person = toss ? player2 : player1
 
-            this.utils.flashText(this.timeline, winner.messageText, 'I win!')
-            this.utils.flashText(this.timeline, loser.messageText, 'I lose!')
+            this.utils.flashText(this.timeline, winner.messageText, '"I win!"')
+            this.utils.flashText(this.timeline, loser.messageText, '"I lose!"')
 
             // move wager amount from loser to winner
             this.moveMoney(loser, winner, wagerAmount, this.gameCircleCenter)

@@ -91,11 +91,12 @@ export default class Person
 		return imageColor
 	}
 
-	add(scene: Scene, x: number, y: number, message?: string)
+	add(scene: Scene, x: number, y: number)
 	{
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, message ?? '', Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.updateStateMessage()
 		curY += this.messageText.height
 
 		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
@@ -180,15 +181,15 @@ export default class Person
 		{
 			default:
 			case PersonState.Normal:
-				message = `Gettin' by.`
+				message = `"Gettin' by."`
 				break
 
 			case PersonState.Happy:
-				message = `Doin' well!`
+				message = `"Doin' well!"`
 				break
 
 			case PersonState.Unhappy:
-				message = `I'm broke!`
+				message = `"I'm broke!"`
 				break
 		}
 

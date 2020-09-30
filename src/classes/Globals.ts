@@ -18,7 +18,7 @@ export const Constants = {
     {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '24px',
-        color: '#000',
+        color: '#000000',
         fontStyle: 'strong',
         padding: { left: 0, bottom: 10 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
