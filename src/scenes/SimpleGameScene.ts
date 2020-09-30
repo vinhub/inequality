@@ -44,7 +44,9 @@ export default class SimpleGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Simple Coin Toss Game')
         curY += header.height()
 
-        this.descText = this.add.text(this.utils.leftX, curY, 'We have two players, A and B, each with $1. Press the "Toss the coin" button.', Constants.bodyTextStyle)
+        this.descText = this.add.text(this.utils.leftX, curY,
+            `You and a friend, both have $1 each. Each of you will choose "Heads" or "Tails" and then a coin toss will be simulated. It will randomly generate a "Heads" or "Tails" outcome. Press the "Toss the coin" button.`,
+            Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX)
 
         curY += this.descText.height + 30
 
@@ -67,29 +69,32 @@ export default class SimpleGameScene extends Phaser.Scene
         this.graphics = this.add.graphics()
 
         // create persons
-        const person1Name: string = 'A'
-        const person2Name: string = 'B'
-        let person1: Person = new Person(1, false, person1Name)
-        let person2: Person = new Person(1, false, person2Name)
+        const you: Person = new Person(1, false, `You`)
+        const friend: Person = new Person(1, false, `Your friend`)
 
-        person1.add(this, leftX + 100, topY + 60)
-        person2.add(this, leftX + width - 100, topY + 60)
+        you.add(this, leftX + 100, topY + 60)
+        friend.add(this, leftX + width - 100, topY + 60)
 
         // draw coin
-        let coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
+        const coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
 
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline()
 
         // show the persons selected and draw a line connecting them
-        person1.setSelected(this.timeline, true)
-        person2.setSelected(this.timeline, true)
-        this.addConnectingLine(person1, person2)
+        you.setSelected(this.timeline, true)
+        friend.setSelected(this.timeline, true)
+        this.addConnectingLine(you, friend)
+
+        // choice
+        const youChooseHeads: boolean = (Math.round(Math.random()) == 1)
+        const yourChoice: string = youChooseHeads ? 'Heads' : 'Tails'
+        const friendsChoice: string = youChooseHeads ? 'Tails' : 'Heads'
 
         // coin flip animation
-        this.utils.flashText(this.timeline, this.descText, 'A chooses Heads, B chooses Tails.')
-        this.utils.flashText(this.timeline, person1.messageText, '"Heads!"')
-        this.utils.flashText(this.timeline, person2.messageText, '"Tails!"')
+        this.utils.flashText(this.timeline, this.descText, `You choose ${yourChoice}, and your friend chooses ${friendsChoice}.`)
+        this.utils.flashText(this.timeline, you.messageText, `"${yourChoice}!"`)
+        this.utils.flashText(this.timeline, friend.messageText, `"${friendsChoice}!"`)
 
         const numFlips: number = Math.round(Math.random()) + 5 // 5 or 6 flips randomly
         this.timeline.add(
@@ -106,10 +111,10 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // show toss result
         const itsHeads: boolean = ((numFlips % 2) == 1)
-        const winner: Person = itsHeads ? person1 : person2
-        const loser: Person = itsHeads ? person2 : person1
+        const winner: Person = itsHeads ? (youChooseHeads ? you : friend) : (youChooseHeads ? friend : you)
+        const loser: Person = itsHeads ? (youChooseHeads ? friend : you) : (youChooseHeads ? you : friend)
         this.utils.flashText(this.timeline, this.descText,
-            `It\'s ${itsHeads ? 'Heads' : 'Tails'}! ${winner.name} wins, ${loser.name} loses. So $1 is transferred from ${loser.name} to ${winner.name}.`)
+            `It\'s ${itsHeads ? 'Heads' : 'Tails'}! So the winner is ${winner.name?.toLowerCase()}. So $1 is transferred from ${loser.name?.toLowerCase()} to ${winner.name?.toLowerCase()}.`)
         this.utils.flashText(this.timeline, winner.messageText, '"I win!"')
         this.utils.flashText(this.timeline, loser.messageText, '"I lose!"')
 
@@ -138,17 +143,17 @@ export default class SimpleGameScene extends Phaser.Scene
         loser.incrementWealth(this.utils, this.timeline, -1)
 
         // unselect them
-        person1.setSelected(this.timeline, false)
-        person2.setSelected(this.timeline, false)
+        you.setSelected(this.timeline, false)
+        friend.setSelected(this.timeline, false)
 
         // update messages
         this.utils.flashText(this.timeline, winner.messageText, `"Doin' well!"`)
-        this.utils.flashText(this.timeline, loser.messageText, `"I'm broke!"`)
+        this.utils.flashText(this.timeline, loser.messageText, `"Broke!"`)
 
-        this.utils.flashText(this.timeline, this.descText, `Now ${winner.name} has $2 and ${loser.name} has nothing.`,
+        this.utils.flashText(this.timeline, this.descText, `So finally, you have $${winner === you ? 2 : 0} and your friend has $${winner === friend ? 2 : 0}.`,
             () =>
             {
-                this.actionButton.setCallback('Got it? Now let\'s play a more interesting game >>>',
+                this.actionButton.setCallback('Got it? Now let\'s try this with a larger group of people >>>',
                     () =>
                     {
                         this.graphics.clear()
