@@ -158,7 +158,7 @@ export default class SimpleGameScene extends Phaser.Scene
                     {
                         this.graphics.clear()
                         this.timeline.resetTweens(true)
-                        this.utils.sceneTransition(this, 'InequalityGameScene', { startingWealth: 1, wagerAmountMin: 1, wagerAmountMax: 1 })
+                        this.utils.sceneTransition(this, 'InequalityIntroScene')
                     })
             })
     }
