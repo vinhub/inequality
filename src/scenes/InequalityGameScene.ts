@@ -275,11 +275,11 @@ export default class InequalityGameScene extends Phaser.Scene
                     if (this.isConverging())
                     {
                         this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.\
-                            You can continue to play more rounds or press the "Conclusion >>>" button to see the conclusion.`)
+                            You can continue to play more rounds or press the "Conclusion" button to see the conclusion.`)
 
                         this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
-                        this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Conclusion >>>',
+                        this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Conclusion',
                             () => { this.utils.sceneTransition(this, 'ConclusionScene') }, true, true).setOrigin(0, 0)) as TextButton
                     }
                 else

@@ -45,14 +45,14 @@ export default class InequalityIntroScene extends Phaser.Scene
             `3. A pyramid (Pareto distribution)?`,
             `4. Some other distribution?`,
             '',
-            `Press the "Play the Inequality Game >>>" button when you have made your guess.`
+            `Press the "Play the Inequality Game" button when you have made your guess.`
         ]
 
         let conclusionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, conclusionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, true)
 
         curY += conclusionTextObj.height + 20
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game >>>',
+        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
             () => { utils.sceneTransition(this, 'InequalityGameScene', { startingWealth: 1, wagerAmountMin: 1, wagerAmountMax: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
 
         curY += actionButton.height + 20

@@ -48,9 +48,9 @@ export default class SimpleGameScene extends Phaser.Scene
             `You and a friend, both have $1 each. Each of you will choose "Heads" or "Tails" and then a coin toss will be simulated. It will randomly generate a "Heads" or "Tails" outcome. Press the "Toss the coin" button.`,
             Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX)
 
-        curY += this.descText.height + 30
+        curY += this.descText.height + 40
 
-        const gameHeight = 300
+        const gameHeight = 240
 
         this.createGame(this.utils.leftX, curY, this.utils.rightX - this.utils.leftX, gameHeight)
 
@@ -68,15 +68,17 @@ export default class SimpleGameScene extends Phaser.Scene
     {
         this.graphics = this.add.graphics()
 
+        const centerX: number = leftX + width / 2
+
+        // draw coin
+        const coin: Phaser.GameObjects.Image = this.add.image(centerX, topY + 40, 'heads').setOrigin(0.5, 0.5)
+
         // create persons
         const you: Person = new Person(1, false, `You`)
         const friend: Person = new Person(1, false, `Your friend`)
 
-        you.add(this, leftX + 100, topY + 60)
-        friend.add(this, leftX + width - 100, topY + 60)
-
-        // draw coin
-        const coin: Phaser.GameObjects.Image = this.add.image(leftX + width / 2, topY + 50, 'heads').setOrigin(0.5, 0.5)
+        you.add(this, centerX - 120, topY + 80)
+        friend.add(this, centerX + 120, topY + 80)
 
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline()
@@ -153,7 +155,7 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, this.descText, `So finally, you have $${winner === you ? 2 : 0} and your friend has $${winner === friend ? 2 : 0}.`,
             () =>
             {
-                this.actionButton.setCallback('Got it? Now let\'s make it more interesting >>>',
+                this.actionButton.setCallback('Got it? Now let\'s make it more interesting',
                     () =>
                     {
                         this.graphics.clear()

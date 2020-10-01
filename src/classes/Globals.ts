@@ -9,45 +9,45 @@ export const Constants = {
 
     bodyTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '20px',
-        color: '#606060',
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '13px',
+        color: '#666',
         padding: { left: 0, bottom: 10 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     bodyBoldTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '24px',
-        color: '#000000',
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '13px',
+        color: '#000',
         fontStyle: 'strong',
         padding: { left: 0, bottom: 10 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     headerTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '24px',
-        color: '#606060',
-        padding: { left: 0, bottom: 10 }
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '14px',
+        color: '#333',
+        padding: { left: 0, bottom: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     smallTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '14px',
-        color: '#606060',
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '12px',
+        color: '#666',
         padding: { left: 0, top: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     buttonTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '24px',
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '14px',
         color: '#ffffff',
         backgroundColor: '#5bc0de',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
     } as Phaser.Types.GameObjects.Text.TextStyle,
     actionButtonTextStyle:
     {
-        fontFamily: 'Arial, Helvetica, sans-serif',
-        fontSize: '24px',
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '14px',
         color: '#ffffff',
         backgroundColor: '#5cb85c',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },

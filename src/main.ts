@@ -8,9 +8,9 @@ import ConclusionScene from './scenes/ConclusionScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: 'Evolution of Wealth Inequality',
-	width: 1000,
-	height: 800,
-	type: Phaser.AUTO,
+	width: '100%',
+	height: '100%',
+	type: Phaser.Scale.RESIZE,
 	parent: 'game',
 	scale: {
 		mode: Phaser.Scale.FIT,
@@ -31,7 +31,7 @@ game.scale.on('resize', resize, this)
 
 function resize(gameSize, baseSize, displaySize, resolution)
 {
-	game.scene.getScenes(true)[0].cameras.resize(gameSize.width, gameSize.height)
+//	game.scene.getScenes(true)[0].cameras.resize(gameSize.width, gameSize.height)
 }
 
 export default game

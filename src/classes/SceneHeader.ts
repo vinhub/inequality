@@ -15,6 +15,6 @@ export default class SceneHeader
 
     height(): number
     {
-        return this.headerText.height + this.line.height + 20
+        return this.headerText.height + this.line.height + 10
     }
 }
