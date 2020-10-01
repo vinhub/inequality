@@ -153,7 +153,7 @@ export default class SimpleGameScene extends Phaser.Scene
         this.utils.flashText(this.timeline, this.descText, `So finally, you have $${winner === you ? 2 : 0} and your friend has $${winner === friend ? 2 : 0}.`,
             () =>
             {
-                this.actionButton.setCallback('Got it? Now let\'s try this with a larger group of people >>>',
+                this.actionButton.setCallback('Got it? Now let\'s make it more interesting >>>',
                     () =>
                     {
                         this.graphics.clear()

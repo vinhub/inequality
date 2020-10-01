@@ -241,7 +241,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     switch (this.cRoundsCompleted)
                     {
                         case 0:
-                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.
+                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.\
                                 Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
                             this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
                             break
@@ -249,8 +249,8 @@ export default class InequalityGameScene extends Phaser.Scene
                         default:
                             if (this.isConverging())
                             {
-                                this.descTextObj.setText(`As you can see, even with random chance, wealth starts to concentrate in a small number of hands and
-                                    most people end up with nothing. You can continue to play more rounds or go to the next level.`)
+                                this.descTextObj.setText(`As you can see, even when using a totally randomized mechanism, wealth starts to concentrate in a small number of hands and\
+                                    a majority of people end up with nothing. You can continue to play more rounds to further convince yourself or go to the next level.`)
 
                                 this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
@@ -259,7 +259,7 @@ export default class InequalityGameScene extends Phaser.Scene
                             }
                             else
                             {
-                                this.descTextObj.setText(`With each subsequent round, smaller and smaller number of players accumulate most of the wealth
+                                this.descTextObj.setText(`With each subsequent round, smaller and smaller number of players accumulate most of the wealth\
                                     and more and more people end up with nothing. Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play another round.`)
 
                                 this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
@@ -274,7 +274,7 @@ export default class InequalityGameScene extends Phaser.Scene
                 {
                     if (this.isConverging())
                     {
-                        this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.
+                        this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.\
                             You can continue to play more rounds or press the "Conclusion >>>" button to see the conclusion.`)
 
                         this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
@@ -284,7 +284,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and 
+                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and \
                             a small number of people end up with more and more of the wealth. You'll need to play at least 10 rounds of this to see how the distribution changes over time.`)
 
                         this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
