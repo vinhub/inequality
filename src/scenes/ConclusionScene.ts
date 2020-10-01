@@ -55,10 +55,10 @@ export default class ConclusionScene extends Phaser.Scene
         curY += conclusionTextObj.height + 20
 
         let actionButton1: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play Again? >>>',
-            () => { utils.sceneTransition(this, 'IntroScene') }, true).setOrigin(0.5, 0)) as TextButton
+            () => { utils.sceneTransition(this, 'InequalityGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
         let actionButton2: TextButton = this.add.existing(new TextButton(this, actionButton1.x + actionButton1.width + 40, curY, 'Further Reading >>>',
-            () => { window.open('assets/further-reading.html', '_blank'); }, true).setOrigin(0.5, 0)) as TextButton
+            () => { window.open('assets/further-reading.html', '_blank'); }, true, false).setOrigin(0.5, 0)) as TextButton
 
         curY += actionButton1.height + 20
 

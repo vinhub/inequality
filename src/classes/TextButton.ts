@@ -7,7 +7,7 @@ export default class TextButton extends Phaser.GameObjects.Text
     private callback: () => void
     private isDisabled: boolean
 
-    constructor(scene: Scene, leftX: number, topY: number, text: string, callback: () => void, actionButton: boolean = false)
+    constructor(scene: Scene, leftX: number, topY: number, text: string, callback: () => void, actionButton: boolean = false, disableOnClick: boolean = false)
     {
         super(scene, leftX, topY, text, actionButton ? Constants.actionButtonTextStyle : Constants.buttonTextStyle);
 
@@ -23,7 +23,8 @@ export default class TextButton extends Phaser.GameObjects.Text
             {
                 if (this.isDisabled)
                     return
-                this.enterButtonDisabledState()
+                if (disableOnClick)
+                    this.enterButtonDisabledState()
                 this.callback()
             });
     }

@@ -110,7 +110,7 @@ export default class InequalityGameScene extends Phaser.Scene
         curY += gameHeight
 
         this.actionButton1 = this.add.existing(new TextButton(this, this.utils.leftX + gameWidth + 50, curY, 'Start',
-            () => { this.timeline.play() }, true).setOrigin(0, 0)) as TextButton
+            () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
     }
@@ -255,7 +255,7 @@ export default class InequalityGameScene extends Phaser.Scene
                                 this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
                                 this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Go to Next Level',
-                                    () => { this.scene.start(this.scene.key, { startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true).setOrigin(0, 0)) as TextButton
+                                    () => { this.scene.start(this.scene.key, { startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true, true).setOrigin(0, 0)) as TextButton
                             }
                             else
                             {
@@ -280,7 +280,7 @@ export default class InequalityGameScene extends Phaser.Scene
                         this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
                         this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Conclusion >>>',
-                            () => { this.utils.sceneTransition(this, 'ConclusionScene') }, true).setOrigin(0, 0)) as TextButton
+                            () => { this.utils.sceneTransition(this, 'ConclusionScene') }, true, true).setOrigin(0, 0)) as TextButton
                     }
                 else
                     {

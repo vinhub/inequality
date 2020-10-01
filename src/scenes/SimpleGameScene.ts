@@ -57,7 +57,7 @@ export default class SimpleGameScene extends Phaser.Scene
         curY += gameHeight
 
         this.actionButton = this.add.existing(new TextButton(this, this.utils.leftX + (this.utils.rightX - this.utils.leftX) / 2, curY, 'Toss the coin',
-            () => { this.timeline.play() }, true).setOrigin(0.5, 0)) as TextButton
+            () => { this.timeline.play() }, true, true).setOrigin(0.5, 0)) as TextButton
 
         curY += this.actionButton.height + 20
 
