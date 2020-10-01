@@ -29,9 +29,7 @@ export default class IntroScene extends Phaser.Scene
         const introText = [
             'Wealth inequality has been in the news a lot lately. Here is a very simple way to see how wealth inequality emerges in a society and what factors contribute to it.',
             '',
-            '',
             'The purpose of this exercise is purely to educate people about this important topic so they can make informed decisions about how to deal with it.',
-            '',
             '',
             'Let us start with a very simple game:',
             '',
@@ -52,5 +50,13 @@ export default class IntroScene extends Phaser.Scene
         curY += actionButton.height + 20
 
         let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
+    }
+
+    resize(gameSize, baseSize, displaySize, resolution)
+    {
+        var width = gameSize.width;
+        var height = gameSize.height;
+
+        this.cameras.resize(width, height);
     }
 }

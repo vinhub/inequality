@@ -91,9 +91,9 @@ export default class InequalityGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Wealth Inequality Game')
         curY += header.height()
 
-        const descText = this.startingWealth == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.
-             You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.` :
-            `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random. 
+        const descText = this.startingWealth == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.\
+            You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.` :
+            `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random.\
              Let us see if this changes the results. Press the "Start" button to start.`
 
         this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, true)

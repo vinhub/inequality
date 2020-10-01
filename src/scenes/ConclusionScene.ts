@@ -27,26 +27,21 @@ export default class ConclusionScene extends Phaser.Scene
         curY += header.height()
 
         const conclusionText = [
-            `As you can see, in every case, extreme wealth inequality emerges in spite of this being a completely randomized game.
+            `As you can see, in every case, extreme wealth inequality emerges in spite of this being a completely randomized game.\
             We did not need to introduce any other factor such as skill or hard work or social status etc. into the game and yet it emerged.`,
             '',
-            '',
-            `Here is the critical point to learn from this exercise: As a person\'s assets shrink, the maximum amount they can risk also shrinks.
-            And as a person\'s assets grow, the maximum amount they can risk also grows. This is the essential factor that enables those with higher assets
-            to grow their assets even further, while those whith fewer assets fall further and further behind. The extreme example of this is that once a person has 
+            `Here is the critical point to learn from this exercise: As a person\'s assets shrink, the maximum amount they can risk also shrinks.\
+            And as a person\'s assets grow, the maximum amount they can risk also grows. This is the essential factor that enables those with higher assets\
+            to grow their assets even further, while those whith fewer assets fall further and further behind. The extreme example of this is that once a person has \
             no assets, they can't even play the game anymore.`,
             '',
-            '',
-            `While one can argue that a moderate level of wealth inequality is inevitable and possibly even healthy for a society, extreme inequality has historically led to serious problems.
+            `While one can argue that a moderate level of wealth inequality is inevitable and possibly even healthy for a society, extreme inequality has historically led to serious problems.\
             So it is critical that we find ways to prevent such extremes.`,
-            '',
             '',
             'Credits:',
             'This game has been developed purely for educational purposes by Vinayak (Vin) Bhalerao at Redmond Labs Consulting (https://redmondlabs.com).',
             '',
-            '',
             `The game is based on the work of Dr. Howard Aldrich (https://howardaldrich.org). His paper on this topic can be seen at https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f.`,
-            '',
             '',
             'Thank you very much for your time!'
         ]
