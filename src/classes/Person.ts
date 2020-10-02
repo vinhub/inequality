@@ -146,7 +146,7 @@ export default class Person
 			{
 			targets: this.personImage,
 			scale: { from: this.scaleFactor, to: this.scaleFactor * 1.2 },
-			duration: 300,
+			duration: isSelected ? 300 : 0,
 			repeat: 0,
 			yoyo: true,
 			onStart: () =>

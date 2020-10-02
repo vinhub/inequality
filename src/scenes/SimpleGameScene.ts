@@ -174,7 +174,7 @@ export default class SimpleGameScene extends Phaser.Scene
                 targets: tempObj,
                 val: 1,
                 duration: 0,
-                delay: 300,
+                delay: 0,
                 repeat: 0,
                 yoyo: false,
                 onStart: () =>
