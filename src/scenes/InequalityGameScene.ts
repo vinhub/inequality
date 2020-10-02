@@ -146,7 +146,7 @@ export default class InequalityGameScene extends Phaser.Scene
         // create persons
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(this.startingWealth, true, scaleFactor)
+            this.persons[iPerson] = new Person(this.startingWealth, true, (iPerson == 0), scaleFactor)
         }
 
         // create the circle of persons
@@ -434,7 +434,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.chart = new Chart(this, leftX, topY + 20, width, 2 * height / 3, config).setOrigin(0, 0)
         this.add.existing(this.chart)
 
-        this.chart.chart.data.datasets[0].label = '(x: amount, y: number of people)'
+        this.chart.chart.data.datasets[0].label = '(x: $, y: # People)'
         this.chart.chart.data.datasets[0].borderWidth = 1
 
         this.chartDesc = new Phaser.GameObjects.Text(this, this.chart.x + 10, this.chart.y + this.chart.height, this.describeChart(), Constants.smallTextStyle)
@@ -463,7 +463,8 @@ export default class InequalityGameScene extends Phaser.Scene
     {
         const cBroke = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
         const maxWealth = this.persons.sort((p1: Person, p2: Person) => { return p1.wealth - p2.wealth })[this.persons.length - 1].wealth
-        const desc: string = `No. of broke people: ${cBroke}, Max. wealth: $${ maxWealth }`
+        const yourWealth = this.persons.find((person: Person) => { return person.isYou })?.wealth
+        const desc: string = `# Broke: ${cBroke}.  Richest person: $${maxWealth}.  You: $${yourWealth}.`
 
         return desc
     }

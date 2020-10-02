@@ -36,6 +36,14 @@ export const Constants = {
         color: '#666',
         padding: { left: 0, top: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
+    smallEmphasisTextStyle:
+    {
+        fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+        fontSize: '12px',
+        fontStyle: 'bold',
+        color: '#1e90ff',
+        padding: { left: 0, top: 4 }
+    } as Phaser.Types.GameObjects.Text.TextStyle,
     buttonTextStyle:
     {
         fontFamily: 'Verdana, Arial, Helvetica, sans-serif',

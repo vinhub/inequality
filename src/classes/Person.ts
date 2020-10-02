@@ -15,6 +15,7 @@ export default class Person
 	wealth: integer
 	name?: string
 	isSmall: boolean
+	isYou: boolean
 	scaleFactor: number
 
 	messageText: Phaser.GameObjects.Text
@@ -25,12 +26,13 @@ export default class Person
 
 	startingAmount: number
 
-	constructor(wealth: integer, isSmall: boolean, scaleFactor?: number, name?: string)
+	constructor(wealth: integer, isSmall: boolean, isYou: boolean, scaleFactor?: number, name?: string)
 	{
 		this.wealth = wealth
 		this.isSmall = isSmall
+		this.isYou = isYou
 		this.scaleFactor = scaleFactor ?? 1
-		this.name = name
+		this.name = isYou ? 'You' : name
 
 		this.wealthText = {} as any
 		this.personImage = {} as any
@@ -97,7 +99,7 @@ export default class Person
 	{
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
+		this.messageText = scene.add.text(x, curY, '', this.isYou ? Constants.smallEmphasisTextStyle : Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
 		this.updateStateMessage()
 		curY += this.messageText.height * this.scaleFactor
 
@@ -106,11 +108,11 @@ export default class Person
 
 		if (this.name)
 		{
-			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
+			this.nameText = scene.add.text(x, curY, this.name, this.isYou ? Constants.smallEmphasisTextStyle : Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
 			curY += this.nameText.height * this.scaleFactor
 		}
 
-		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
+		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, this.isYou ? Constants.smallEmphasisTextStyle : Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
 	}
 
 	setWealth(amount: number)
