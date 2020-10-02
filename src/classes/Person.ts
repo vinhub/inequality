@@ -15,6 +15,7 @@ export default class Person
 	wealth: integer
 	name?: string
 	isSmall: boolean
+	scaleFactor: number
 
 	messageText: Phaser.GameObjects.Text
 	nameText?: Phaser.GameObjects.Text
@@ -24,11 +25,12 @@ export default class Person
 
 	startingAmount: number
 
-	constructor(wealth: integer, isSmall: boolean, name?: string)
+	constructor(wealth: integer, isSmall: boolean, scaleFactor?: number, name?: string)
 	{
-		this.name = name
 		this.wealth = wealth
 		this.isSmall = isSmall
+		this.scaleFactor = scaleFactor ?? 1
+		this.name = name
 
 		this.wealthText = {} as any
 		this.personImage = {} as any
@@ -91,32 +93,32 @@ export default class Person
 		return imageColor
 	}
 
-	add(scene: Scene, x: number, y: number, scaleFactor: number)
+	add(scene: Scene, x: number, y: number)
 	{
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
+		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
 		this.updateStateMessage()
-		curY += this.messageText.height * scaleFactor
+		curY += this.messageText.height * this.scaleFactor
 
-		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0).setScale(scaleFactor)
-		curY += this.personImage.height * scaleFactor
+		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0).setScale(this.scaleFactor)
+		curY += this.personImage.height * this.scaleFactor
 
 		if (this.name)
 		{
-			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
-			curY += this.nameText.height * scaleFactor
+			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
+			curY += this.nameText.height * this.scaleFactor
 		}
 
-		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
+		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(this.scaleFactor)
 	}
 
 	setWealth(amount: number)
 	{
 		this.wealth = amount
-		this.wealthText.text = `($${this.wealth})`
+		this.wealthText.setText(`($${this.wealth})`).setScale(this.scaleFactor)
 		this.setState(false)
-		this.personImage.setTexture(this.imageKey())
+		this.personImage.setTexture(this.imageKey()).setScale(this.scaleFactor)
 	}
 
 	// add tweens to the timeline to increament (or decrement) wealth and update person display accordingly
@@ -141,16 +143,15 @@ export default class Person
 	setSelected(timeline: Phaser.Tweens.Timeline, isSelected: boolean)
 	{
 		timeline.add(
-		{
-			targets: this.wealthText,
-			scale: { from: 1, to: 1 },
-			duration: 0,
+			{
+			targets: this.personImage,
+			scale: { from: this.scaleFactor, to: this.scaleFactor * 1.2 },
+			duration: 300,
 			repeat: 0,
-			yoyo: false,
+			yoyo: true,
 			onStart: () =>
 			{
 				this.setState(isSelected)
-				//this.personImage.setTintFill(this.imageColor())
 			}
 		})
 	}
@@ -192,6 +193,6 @@ export default class Person
 				break
 		}
 
-		this.messageText.text = message
+		this.messageText.setText(message).setScale(this.scaleFactor)
     }
 }

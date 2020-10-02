@@ -27,7 +27,6 @@ export default class InequalityGameScene extends Phaser.Scene
 
     gameLevel: number
     cRoundsCompleted: number // number of rounds we have played
-    portraitMode: boolean
     scaleFactor: number
 
     constructor()
@@ -38,7 +37,6 @@ export default class InequalityGameScene extends Phaser.Scene
         this.startingWealth = 1 // we start with this amount per person
         this.wagerAmountMin = this.wagerAmountMax = 1 // loser of the toss sends this amount to winner
         this.cRoundsCompleted = 0
-        this.portraitMode = false
         this.scaleFactor = 1
 
         this.persons = new Array()
@@ -114,9 +112,7 @@ export default class InequalityGameScene extends Phaser.Scene
         const availableWidth: number = this.utils.width - 40
         const availableHeight: number = this.utils.height - curY - 40
 
-        this.portraitMode = (this.utils.width < this.utils.height)
-
-        if (this.portraitMode)
+        if (this.utils.portraitMode)
         {
             this.scaleFactor = Math.min(availableWidth / gameWidth, availableHeight / (2 * gameHeight), 1)
             gameWidth *= this.scaleFactor
@@ -150,7 +146,7 @@ export default class InequalityGameScene extends Phaser.Scene
         // create persons
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
         {
-            this.persons[iPerson] = new Person(this.startingWealth, true)
+            this.persons[iPerson] = new Person(this.startingWealth, true, scaleFactor)
         }
 
         // create the circle of persons
@@ -166,15 +162,15 @@ export default class InequalityGameScene extends Phaser.Scene
             // place persons around the circle uniformly
             let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, this.gameCircleCenter.x, this.gameCircleCenter.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
-            person.add(this, position.x, position.y, scaleFactor)
+            person.add(this, position.x, position.y)
         }
 
         this.actionButton1 = this.add.existing(new TextButton(this, leftX + width - 20, topY + height, 'Start',
             () => { this.timeline.play() }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)) as TextButton
 
         this.actionButton2 = new TextButton(this,
-            this.portraitMode ? this.actionButton1.getBottomLeft().x : this.actionButton1.getTopRight().x + 20,
-            this.portraitMode ? this.actionButton1.getBottomLeft().y + 10 : this.actionButton1.getTopRight().y,
+            this.utils.portraitMode ? this.actionButton1.getBottomLeft().x : this.actionButton1.getTopRight().x + 40,
+            this.utils.portraitMode ? this.actionButton1.getBottomLeft().y + 10 : this.actionButton1.getTopRight().y,
             'Next Level',
             () => { this.scene.start(this.scene.key, { gameLevel: 2, startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)
 

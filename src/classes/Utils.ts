@@ -8,6 +8,7 @@ export default class Utils
     bottomY: number
     width: number
     height: number
+    portraitMode: boolean
 
     constructor(scene: Phaser.Scene)
     {
@@ -22,6 +23,8 @@ export default class Utils
         this.topY = worldView.y + 20
         this.bottomY = worldView.y + main.height - 20
         this.height = main.height - 40
+
+        this.portraitMode = (this.width < this.height)
     }
 
     flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string | string[], onComplete?: () => any)

@@ -74,11 +74,11 @@ export default class SimpleGameScene extends Phaser.Scene
         const coin: Phaser.GameObjects.Image = this.add.image(centerX, topY + 40, 'heads').setOrigin(0.5, 0.5)
 
         // create persons
-        const you: Person = new Person(1, false, `You`)
-        const friend: Person = new Person(1, false, `Your friend`)
+        const you: Person = new Person(1, false, 1, `You`)
+        const friend: Person = new Person(1, false, 1, `Your friend`)
 
-        you.add(this, centerX - 120, topY + 80, 1)
-        friend.add(this, centerX + 120, topY + 80, 1)
+        you.add(this, centerX - 120, topY + 80)
+        friend.add(this, centerX + 120, topY + 80)
 
         // set up all the animations in the game
         this.timeline = this.tweens.createTimeline()
