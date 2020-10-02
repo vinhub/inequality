@@ -27,11 +27,5 @@ const config: Phaser.Types.Core.GameConfig = {
 }
 
 let game: Phaser.Game = new Phaser.Game(config)
-game.scale.on('resize', resize, this)
-
-function resize(gameSize, baseSize, displaySize, resolution)
-{
-//	game.scene.getScenes(true)[0].cameras.resize(gameSize.width, gameSize.height)
-}
 
 export default game

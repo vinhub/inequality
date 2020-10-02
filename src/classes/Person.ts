@@ -91,25 +91,24 @@ export default class Person
 		return imageColor
 	}
 
-	add(scene: Scene, x: number, y: number)
+	add(scene: Scene, x: number, y: number, scaleFactor: number)
 	{
 		let curY: number = y;
 
-		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.messageText = scene.add.text(x, curY, '', Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
 		this.updateStateMessage()
-		curY += this.messageText.height
+		curY += this.messageText.height * scaleFactor
 
-		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0)
-		//this.personImage.setTintFill(this.imageColor())
-		curY += this.personImage.height
+		this.personImage = scene.add.image(x, curY, this.imageKey()).setOrigin(0.5, 0).setScale(scaleFactor)
+		curY += this.personImage.height * scaleFactor
 
 		if (this.name)
 		{
-			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0)
-			curY += this.nameText.height
+			this.nameText = scene.add.text(x, curY, this.name, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
+			curY += this.nameText.height * scaleFactor
 		}
 
-		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0)
+		this.wealthText = scene.add.text(x, curY, `($${this.wealth})`, Constants.smallTextStyle).setOrigin(0.5, 0).setScale(scaleFactor)
 	}
 
 	setWealth(amount: number)

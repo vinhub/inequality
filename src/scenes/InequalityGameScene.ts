@@ -100,22 +100,42 @@ export default class InequalityGameScene extends Phaser.Scene
 
         curY += this.descTextObj.height + 20
 
-        const gameWidth = 500
-        const gameHeight = 500
+        let gameWidth = 500
+        let gameHeight = 500
+        const availableWidth: number = this.utils.width - 40
+        const availableHeight: number = this.utils.height - curY - 40
+        let scaleFactor: number = 1
 
-        this.createGame(this.utils.leftX + 20, curY, gameWidth, gameHeight)
-        this.createChart(this.utils.leftX + 20 + gameWidth, curY, this.utils.rightX - this.utils.leftX - gameWidth - 20, gameHeight)
+        if (this.utils.width < this.utils.height) // portrait mode
+        {
+            scaleFactor = Math.min(availableWidth / gameWidth, availableHeight / (2 * gameHeight))
+            gameWidth *= scaleFactor
+            gameHeight *= scaleFactor
+
+            this.createGame(this.utils.leftX + this.utils.width / 2 - gameWidth / 2, curY, gameWidth, gameHeight, scaleFactor)
+            curY += gameHeight
+
+            this.createChart(this.utils.leftX, curY, this.utils.width, this.utils.bottomY - curY)
+            curY = this.utils.bottomY
+        }
+        else // landscape mode
+        {
+            scaleFactor = Math.min(availableWidth / (gameWidth * 2), availableHeight)
+            gameWidth *= scaleFactor
+            gameHeight *= scaleFactor
+
+            this.createGame(this.utils.leftX + 20, curY, gameWidth, gameHeight, scaleFactor)
+
+            this.createChart(this.utils.leftX + 20 + gameWidth + 40, curY, this.utils.rightX - this.utils.leftX - gameWidth - 60, gameHeight)
+            curY += gameHeight
+        }
+
         this.updateChart()
-
-        curY += gameHeight
-
-        this.actionButton1 = this.add.existing(new TextButton(this, this.utils.leftX + gameWidth + 50, curY, 'Start',
-            () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
 
         let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
     }
 
-    createGame(leftX: number, topY: number, width: number, height: number)
+    createGame(leftX: number, topY: number, width: number, height: number, scaleFactor: number)
     {
         // create persons
         for (let iPerson: integer = 0; iPerson < Constants.numPersons; iPerson++)
@@ -124,9 +144,9 @@ export default class InequalityGameScene extends Phaser.Scene
         }
 
         // create the circle of persons
-        const radius: number = 220
-        this.gameCircleCenter = new Phaser.Geom.Point(leftX + radius, topY + radius) // center of circle
-        let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius, topY)
+        const radius: number = (width - 20) / 2
+        this.gameCircleCenter = new Phaser.Geom.Point(leftX + radius + 10, topY + radius) // center of circle
+        let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius + 10, topY)
 
         // add all the person images
         for (let iPerson: integer = 0; iPerson < this.persons.length; iPerson++)
@@ -136,8 +156,11 @@ export default class InequalityGameScene extends Phaser.Scene
             // place persons around the circle uniformly
             let position: Phaser.Geom.Point = Phaser.Math.RotateAround(point, this.gameCircleCenter.x, this.gameCircleCenter.y, Phaser.Math.PI2 * iPerson / this.persons.length)
 
-            person.add(this, position.x, position.y)
+            person.add(this, position.x, position.y, scaleFactor)
         }
+
+        this.actionButton1 = this.add.existing(new TextButton(this, leftX + width - 20, topY + height - 20, 'Start',
+            () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
 
         this.setupTimeline(true)
     }
@@ -399,13 +422,13 @@ export default class InequalityGameScene extends Phaser.Scene
             }
         }
 
-        this.chart = new Chart(this, leftX + width / 2, topY + height / 2, width, 2 * height / 3, config)
+        this.chart = new Chart(this, leftX, topY + 20, width, 2 * height / 3, config).setOrigin(0, 0)
         this.add.existing(this.chart)
 
         this.chart.chart.data.datasets[0].label = '(x: amount, y: number of people)'
         this.chart.chart.data.datasets[0].borderWidth = 1
 
-        this.chartDesc = new Phaser.GameObjects.Text(this, leftX + 40, topY + 5 * height / 6, this.describeChart(), Constants.smallTextStyle)
+        this.chartDesc = new Phaser.GameObjects.Text(this, this.chart.x + 10, this.chart.y + this.chart.height, this.describeChart(), Constants.smallTextStyle)
         this.add.existing(this.chartDesc)
     }
 
