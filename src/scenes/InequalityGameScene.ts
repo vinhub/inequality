@@ -98,8 +98,8 @@ export default class InequalityGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, `Wealth Inequality Game: Level ${this.gameLevel}`)
         curY += header.height()
 
-        const descText = this.startingWealth == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.\
-            You can see the wealth distribution chart on the right. Press the "Start" button to play the first round.` :
+        const descText = this.gameLevel == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.\
+            (We'll speed up the animation after the first pair.) We have also included the wealth distribution chart. Press the "Start" button to play the first round.` :
             `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random.\
              Let us see if this changes the results. Press the "Start" button to start.`
 
@@ -185,9 +185,6 @@ export default class InequalityGameScene extends Phaser.Scene
         // for subsequent rounds we need to speed up
         if (!firstRound)
             this.timeline.timeScale = 10
-
-        // for debugging purposes
-        this.timeline.timeScale = 10
 
         // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
         let players: Person[] = this.persons.filter((person: Person) => { return person.wealth > 0 }).sort(() => Math.random() - 0.5)
@@ -335,10 +332,11 @@ export default class InequalityGameScene extends Phaser.Scene
 
     addConnectingCurve(player1: Person, player2: Person, center: Phaser.Geom.Point)
     {
+        const tempObj = { val: 0 }
         this.timeline.add(
         {
-            targets: player1.personImage,
-            scale: { from: 1, to: 1 },
+            targets: tempObj,
+            val: 1,
             duration: 0,
             delay: 300,
             repeat: 0,
