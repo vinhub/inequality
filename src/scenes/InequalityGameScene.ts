@@ -24,15 +24,22 @@ export default class InequalityGameScene extends Phaser.Scene
     gameCircleCenter: Phaser.Geom.Point
     chart: Chart
     chartDesc: Phaser.GameObjects.Text
+
+    gameLevel: number
     cRoundsCompleted: number // number of rounds we have played
+    portraitMode: boolean
+    scaleFactor: number
 
     constructor()
 	{
         super('InequalityGameScene')
 
+        this.gameLevel = 1
         this.startingWealth = 1 // we start with this amount per person
         this.wagerAmountMin = this.wagerAmountMax = 1 // loser of the toss sends this amount to winner
         this.cRoundsCompleted = 0
+        this.portraitMode = false
+        this.scaleFactor = 1
 
         this.persons = new Array()
         this.descTextObj = {} as any
@@ -48,12 +55,14 @@ export default class InequalityGameScene extends Phaser.Scene
 
     init(data?: any)
     {
-        if (!data || !data.startingWealth)
+        if (!data || !data.gameLevel)
         {
+            this.gameLevel = 1
             this.startingWealth = this.wagerAmountMin = this.wagerAmountMax = 1
         }
         else
         {
+            this.gameLevel = data.gameLevel
             this.startingWealth = data.startingWealth
             this.wagerAmountMin = data.wagerAmountMin
             this.wagerAmountMax = data.wagerAmountMax
@@ -88,7 +97,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.utils = new Utils(this)
         let curY = this.utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Wealth Inequality Game')
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, `Wealth Inequality Game: Level ${this.gameLevel}`)
         curY += header.height()
 
         const descText = this.startingWealth == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game.\
@@ -104,15 +113,16 @@ export default class InequalityGameScene extends Phaser.Scene
         let gameHeight = 500
         const availableWidth: number = this.utils.width - 40
         const availableHeight: number = this.utils.height - curY - 40
-        let scaleFactor: number = 1
 
-        if (this.utils.width < this.utils.height) // portrait mode
+        this.portraitMode = (this.utils.width < this.utils.height)
+
+        if (this.portraitMode)
         {
-            scaleFactor = Math.min(availableWidth / gameWidth, availableHeight / (2 * gameHeight))
-            gameWidth *= scaleFactor
-            gameHeight *= scaleFactor
+            this.scaleFactor = Math.min(availableWidth / gameWidth, availableHeight / (2 * gameHeight), 1)
+            gameWidth *= this.scaleFactor
+            gameHeight *= this.scaleFactor
 
-            this.createGame(this.utils.leftX + this.utils.width / 2 - gameWidth / 2, curY, gameWidth, gameHeight, scaleFactor)
+            this.createGame(this.utils.leftX + this.utils.width / 2 - gameWidth / 2, curY, gameWidth, gameHeight, this.scaleFactor)
             curY += gameHeight
 
             this.createChart(this.utils.leftX, curY, this.utils.width, this.utils.bottomY - curY)
@@ -120,11 +130,11 @@ export default class InequalityGameScene extends Phaser.Scene
         }
         else // landscape mode
         {
-            scaleFactor = Math.min(availableWidth / (gameWidth * 2), availableHeight)
-            gameWidth *= scaleFactor
-            gameHeight *= scaleFactor
+            this.scaleFactor = Math.min(availableWidth / (gameWidth * 2), availableHeight / gameHeight, 1)
+            gameWidth *= this.scaleFactor
+            gameHeight *= this.scaleFactor
 
-            this.createGame(this.utils.leftX + 20, curY, gameWidth, gameHeight, scaleFactor)
+            this.createGame(this.utils.leftX + 20, curY, gameWidth, gameHeight, this.scaleFactor)
 
             this.createChart(this.utils.leftX + 20 + gameWidth + 40, curY, this.utils.rightX - this.utils.leftX - gameWidth - 60, gameHeight)
             curY += gameHeight
@@ -159,8 +169,14 @@ export default class InequalityGameScene extends Phaser.Scene
             person.add(this, position.x, position.y, scaleFactor)
         }
 
-        this.actionButton1 = this.add.existing(new TextButton(this, leftX + width - 20, topY + height - 20, 'Start',
-            () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
+        this.actionButton1 = this.add.existing(new TextButton(this, leftX + width - 20, topY + height, 'Start',
+            () => { this.timeline.play() }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)) as TextButton
+
+        this.actionButton2 = new TextButton(this,
+            this.portraitMode ? this.actionButton1.getBottomLeft().x : this.actionButton1.getTopRight().x + 20,
+            this.portraitMode ? this.actionButton1.getBottomLeft().y + 10 : this.actionButton1.getTopRight().y,
+            'Next Level',
+            () => { this.scene.start(this.scene.key, { gameLevel: 2, startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)
 
         this.setupTimeline(true)
     }
@@ -259,14 +275,14 @@ export default class InequalityGameScene extends Phaser.Scene
                 this.updateChart()
 
                 // update description
-                if (this.startingWealth == 1)
+                if (this.gameLevel == 1)
                 {
                     switch (this.cRoundsCompleted)
                     {
                         case 0:
                             this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing.\
-                                Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
-                            this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
+                                Press the "Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
+                            this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
                             break
 
                         default:
@@ -275,17 +291,16 @@ export default class InequalityGameScene extends Phaser.Scene
                                 this.descTextObj.setText(`As you can see, even when using a totally randomized mechanism, wealth starts to concentrate in a small number of hands and\
                                     a majority of people end up with nothing. You can continue to play more rounds to further convince yourself or go to the next level.`)
 
-                                this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
+                                this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
-                                this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Go to Next Level',
-                                    () => { this.scene.start(this.scene.key, { startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true, true).setOrigin(0, 0)) as TextButton
+                                this.actionButton2 = this.add.existing(this.actionButton2) as TextButton
                             }
                             else
                             {
                                 this.descTextObj.setText(`With each subsequent round, smaller and smaller number of players accumulate most of the wealth\
-                                    and more and more people end up with nothing. Press the "Play Round ${ this.cRoundsCompleted + 2 }" button to play another round.`)
+                                    and more and more people end up with nothing. Press the "Round ${ this.cRoundsCompleted + 2 }" button to play another round.`)
 
-                                this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
+                                this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
                                 {
                                     this.setupTimeline(false); this.timeline.play()
                                 })
@@ -300,17 +315,17 @@ export default class InequalityGameScene extends Phaser.Scene
                         this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result.\
                             You can continue to play more rounds or press the "Conclusion" button to see the conclusion.`)
 
-                        this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
+                        this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
-                        this.actionButton2 = this.add.existing(new TextButton(this, this.actionButton1.getTopRight().x + 20, this.actionButton1.getTopRight().y, 'Conclusion',
-                            () => { this.utils.sceneTransition(this, 'ConclusionScene') }, true, true).setOrigin(0, 0)) as TextButton
+                        this.actionButton2.setCallback('Conclusion', () => { this.utils.sceneTransition(this, 'ConclusionScene') })
+                        this.add.existing(this.actionButton2) as TextButton
                     }
                 else
                     {
                         this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and \
                             a small number of people end up with more and more of the wealth. You'll need to play at least 10 rounds of this to see how the distribution changes over time.`)
 
-                        this.actionButton1.setCallback(`Play Round ${this.cRoundsCompleted + 2}`, () =>
+                        this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
                         {
                             this.setupTimeline(false); this.timeline.play() 
                         })
