@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { BBCodeText } from 'phaser3-rex-plugins/templates/ui/ui-components.js'
 import { Constants } from '../classes/Globals'
 import Utils from '../classes/Utils'
 import SceneHeader from '../classes/SceneHeader';
@@ -7,13 +8,9 @@ import TextButton from '../classes/TextButton';
 
 export default class ConclusionScene extends Phaser.Scene
 {
-	constructor()
-	{
-		super('ConclusionScene')
-	}
-
-	preload()
+    constructor()
     {
+        super('ConclusionScene')
     }
 
     create()
@@ -33,15 +30,24 @@ export default class ConclusionScene extends Phaser.Scene
             '',
             `While one can argue that a moderate level of wealth inequality is inevitable and possibly even healthy for a society, extreme inequality has historically led to serious problems. This is why it is important for everyone to understand how inequality emerges in a society and find ways to contol it.`,
             '',
-            'Credits:',
-            'This game has been developed purely for educational purposes by Vinayak (Vin) Bhalerao at Redmond Labs Consulting (https://redmondlabs.com).',
+            '[b]Credits:[/b]',
+            `This game has been developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com] Redmond Labs Consulting [/area].`,
             '',
-            `The game is based on the work of Dr. Howard Aldrich (https://howardaldrich.org). His paper on this topic can be seen at https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f.`,
+            `It is based on the work of [area=url:https://howardaldrich.org] Dr. Howard Aldrich [/area]. Please refer to his [area=url:https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f] paper on this topic [/area] for more information.`,
             '',
             'Thank you very much for your time!'
         ]
 
-        let conclusionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, conclusionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
+        const conclusionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, conclusionText, Constants.bodyTextStyle)
+            .setWrapWidth(utils.rightX - utils.leftX).setWrapMode('word')
+            .drawAreaBounds(this.add.graphics(), Constants.blueColor)
+            .setInteractive()
+            .on('areaup', function (key)
+            {
+                window.open(key.substring(4, key.length), '_blank')
+            })
+
+        this.add.existing(conclusionTextObj)
 
         curY += conclusionTextObj.height + 20
 
