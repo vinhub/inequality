@@ -103,7 +103,7 @@ export default class InequalityGameScene extends Phaser.Scene
             `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random.\
              Let us see if this changes the results. Press the "Start" button to start.`
 
-        this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, true)
+        this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, false)
 
         curY += this.descTextObj.height + 20
 

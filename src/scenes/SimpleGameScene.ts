@@ -46,7 +46,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
         this.descText = this.add.text(this.utils.leftX, curY,
             `You and a friend, both have $1 each. Each of you will choose "Heads" or "Tails" and then a coin toss will be simulated. It will randomly generate a "Heads" or "Tails" outcome. Press the "Toss the coin" button.`,
-            Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX)
+            Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, false)
 
         curY += this.descText.height + 40
 

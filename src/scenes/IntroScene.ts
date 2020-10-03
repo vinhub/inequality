@@ -40,7 +40,8 @@ export default class IntroScene extends Phaser.Scene
             'Want to play it?'
         ]
 
-        let introTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, introText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, true)
+        let introTextObj: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, utils.leftX, curY, introText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
+        this.add.existing(introTextObj)
 
         curY += introTextObj.height + 20
 
