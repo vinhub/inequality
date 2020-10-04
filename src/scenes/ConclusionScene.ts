@@ -31,16 +31,15 @@ export default class ConclusionScene extends Phaser.Scene
             `While one can argue that a moderate level of wealth inequality is inevitable and possibly even healthy for a society, extreme inequality has historically led to serious problems. This is why it is important for everyone to understand how inequality emerges in a society and find ways to contol it.`,
             '',
             '[b]Credits:[/b]',
-            `This game has been developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com] Redmond Labs Consulting [/area].`,
+            `This game has been developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com][u][color=#1e90ff]Redmond Labs Consulting[/color][/u][/area].`,
             '',
-            `It is based on the work of [area=url:https://howardaldrich.org] Dr. Howard Aldrich [/area]. Please refer to his [area=url:https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f] paper on this topic [/area] for more information.`,
+            `It is based on the work of [area=url:https://howardaldrich.org][u][color=#1e90ff]Dr. Howard Aldrich[/color][/u][/area]. Please refer to his [area=url:https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f][u][color=#1e90ff]paper on this topic[/color][/u][/area] for more information.`,
             '',
             'Thank you very much for your time!'
         ]
 
         const conclusionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, conclusionText, Constants.bodyTextStyle)
             .setWrapWidth(utils.rightX - utils.leftX).setWrapMode('word')
-            .drawAreaBounds(this.add.graphics(), Constants.blueColor)
             .setInteractive()
             .on('areaup', function (key)
             {

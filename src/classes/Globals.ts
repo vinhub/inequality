@@ -12,7 +12,12 @@ export const Constants = {
         fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
         fontSize: '13px',
         color: '#666',
-        padding: { left: 0, bottom: 10 }
+        padding: { left: 0, bottom: 10 },
+        underline: {
+            color: '#1e90ff',
+            thickness: 1,
+            offset: 3
+        }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     bodyBoldTextStyle:
     {
