@@ -77,6 +77,63 @@ export default class Utils
         })
     }
 
+    flashTexts(timeline: Phaser.Tweens.Timeline, textObjs: Phaser.GameObjects.Text[], texts?: string[], onComplete?: () => any)
+    {
+        timeline.add(
+            {
+                targets: textObjs,
+                alpha: { from: 1, to: 0 },
+                ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 300,
+                delay: 300,
+                repeat: 0,
+                yoyo: false,
+                onComplete: () =>
+                {
+                    if (texts)
+                    {
+                        for (let iText = 0; iText < texts.length; iText++)
+                            textObjs[iText].setText(texts[iText])
+                    }
+                }
+            })
+
+        timeline.add(
+            {
+                targets: textObjs,
+                alpha: { from: 0, to: 1 },
+                backgroundColor: { from: 0xffffff, to: 0x00ffff },
+                ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 300,
+                repeat: 0,
+                yoyo: false,
+            })
+
+        timeline.add(
+            {
+                targets: textObjs,
+                alpha: { from: 1, to: 0 },
+                backgroundColor: { from: 0x00ffff, to: 0xffffff },
+                ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 300,
+                repeat: 0,
+                yoyo: false,
+            })
+
+        timeline.add(
+            {
+                targets: textObjs,
+                alpha: { from: 0, to: 1 },
+                backgroundColor: { from: 0xffffff, to: 0x00ffff },
+                ease: 'Power3',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 300,
+                repeat: 0,
+                yoyo: false,
+                onComplete: () => { if (onComplete) onComplete() },
+                completeDelay: 300
+            })
+    }
+
     sceneTransition(curScene: Phaser.Scene, transitionTo: string, data?: object | undefined)
     {
         curScene.cameras.main.fadeOut(500, 0xff, 0xff, 0xff)

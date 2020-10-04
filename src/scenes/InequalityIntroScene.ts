@@ -49,7 +49,7 @@ export default class InequalityIntroScene extends Phaser.Scene
         curY += conclusionTextObj.height + 20
 
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
-            () => { utils.sceneTransition(this, 'InequalityGameScene', { startingWealth: 1, wagerAmountMin: 1, wagerAmountMax: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
+            () => { utils.sceneTransition(this, 'InequalityGameScene', { gameLevel: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
 
         curY += actionButton.height + 20
 

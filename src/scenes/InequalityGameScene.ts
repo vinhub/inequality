@@ -53,17 +53,18 @@ export default class InequalityGameScene extends Phaser.Scene
 
     init(data?: any)
     {
-        if (!data || !data.gameLevel)
+        // set up level params
+        if (!data || !data.gameLevel || (data.gameLevel == 1))
         {
             this.gameLevel = 1
             this.startingWealth = this.wagerAmountMin = this.wagerAmountMax = 1
         }
-        else
+        else if (data.gameLevel == 2)
         {
-            this.gameLevel = data.gameLevel
-            this.startingWealth = data.startingWealth
-            this.wagerAmountMin = data.wagerAmountMin
-            this.wagerAmountMax = data.wagerAmountMax
+            this.gameLevel = 2
+            this.startingWealth = 5
+            this.wagerAmountMin = 1
+            this.wagerAmountMax = 5
         }
 
         this.cRoundsCompleted = 0
@@ -98,7 +99,7 @@ export default class InequalityGameScene extends Phaser.Scene
         let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, `Wealth Inequality Game: Level ${this.gameLevel}`)
         curY += header.height()
 
-        const descText = this.gameLevel == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game. (We'll speed up the animation after the first pair.) We have also included the wealth distribution chart. Press the "Start" button to play the first round.` :
+        const descText = this.gameLevel == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will ask them to pair up and play the same Coin Toss game. We will play multiple rounds of this. We have also included the wealth distribution chart. Press the "Start" button to play the first round.` :
             `Now we will start each person with $${this.startingWealth}. And at each coin toss, we will let them wager between $${this.wagerAmountMin} and $${this.wagerAmountMax} at random. Let us see if this changes the results. Press the "Start" button to start.`
 
         this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, false)
@@ -170,7 +171,7 @@ export default class InequalityGameScene extends Phaser.Scene
             this.utils.portraitMode ? this.actionButton1.getBottomLeft().x : this.actionButton1.getTopRight().x + 40,
             this.utils.portraitMode ? this.actionButton1.getBottomLeft().y + 10 : this.actionButton1.getTopRight().y,
             'Next Level',
-            () => { this.scene.start(this.scene.key, { gameLevel: 2, startingWealth: 5, wagerAmountMin: 1, wagerAmountMax: 3 }) }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)
+            () => { this.scene.start(this.scene.key, { gameLevel: 2 }) }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)
 
         this.setupTimeline(true)
     }
@@ -184,73 +185,63 @@ export default class InequalityGameScene extends Phaser.Scene
         if (!firstRound)
             this.timeline.timeScale = 10
 
-        // select all remaining players i.e. persons who have at least 1 dollar, and randomize their order
+        // select all players i.e. persons who have at least 1 dollar, and randomize their order. Then we will just pair them up in sequence.
         let players: Person[] = this.persons.filter((person: Person) => { return person.wealth > 0 }).sort(() => Math.random() - 0.5)
-        let numPlayersLeft: number = players.length
+        const cPairs: number = Math.floor(players.length / 2)
 
-        // loop over all remaining pairs
-        for (let iPair: number = 0; iPair < Math.floor(numPlayersLeft / 2); iPair++)
+        // connect the pairs
+        this.addConnectingCurves(players, this.gameCircleCenter)
+
+        const messageTexts: Phaser.GameObjects.Text[] = players.map((person: Person) => { return person.messageText })
+        const wealthTexts: Phaser.GameObjects.Text[] = players.map((person: Person) => { return person.wealthText })
+
+        // make their coin toss choices (evens: heads, odds: tails)
+        const choiceTexts: string[] = players.map((person: Person, index: number) => { return (index % 2 == 0) ? '"Heads!"' : '"Tails!"'})
+        this.utils.flashTexts(this.timeline, messageTexts, choiceTexts)
+
+        // select wager amounts: random amount between minimum and maximum wager amounts, but can't wager more than what each one of them has
+        const wagerAmounts: number[] = new Array(cPairs) as number[]
+        const winners: Person[] = new Array(cPairs) as Person[]
+        const losers: Person[] = new Array(cPairs) as Person[]
+        const resultTexts: string[] = new Array(players.length) as string[]
+
+        for (let iPair: number = 0; iPair < wagerAmounts.length; iPair++)
         {
-            // pop 2 players
-            const player1: Person = players.pop() as Person
-            const player2: Person = players.pop() as Person
+            const iPlayer1: number = iPair * 2
+            const iPlayer2: number = iPair * 2 + 1
+            const player1: Person = players[iPlayer1]
+            const player2: Person = players[iPlayer2]
 
-            // select them
-            player1.setSelected(this.timeline, true)
-            player2.setSelected(this.timeline, true)
-            this.addConnectingCurve(player1, player2, this.gameCircleCenter)
-
-            // show heads / tails
-            this.utils.flashText(this.timeline, player1.messageText, '"Heads!"')
-            this.utils.flashText(this.timeline, player2.messageText, '"Tails!"')
-
-            // select wager amount: random amount between minimum and maximum wager amounts, but can't wager more than what each one of them has
             const wagerAmountMax = Math.min(this.wagerAmountMax, player1.wealth, player2.wealth)
-            const wagerAmount: number = this.wagerAmountMin + Math.floor(Math.random() * (wagerAmountMax - this.wagerAmountMin))
+            wagerAmounts[iPair] = this.wagerAmountMin + Math.floor(Math.random() * (wagerAmountMax - this.wagerAmountMin))
 
             // set up coin toss, determine winner, transfer money from loser to winner
             const toss: boolean = (Math.random() > 0.5)
-            const winner: Person = toss ? player1 : player2
-            const loser: Person = toss ? player2 : player1
+            const iWinner: number = toss ? iPlayer1 : iPlayer2
+            const iLoser: number = toss ? iPlayer2 : iPlayer1
 
-            this.utils.flashText(this.timeline, winner.messageText, '"I win!"')
-            this.utils.flashText(this.timeline, loser.messageText, '"I lose!"')
+            winners[iPair] = players[iWinner]
+            losers[iPair] = players[iLoser]
 
-            // move wager amount from loser to winner
-            this.moveMoney(loser, winner, wagerAmount, this.gameCircleCenter)
-
-            winner.incrementWealth(this.utils, this.timeline, wagerAmount)
-            loser.incrementWealth(this.utils, this.timeline, -wagerAmount)
-
-            // unselect them
-            player1.setSelected(this.timeline, false)
-            player2.setSelected(this.timeline, false)
-
-            // clean up / set up next iteration
-            this.timeline.add(
-            {
-                targets: tempObj,
-                val: { from: 0, to: 1 },
-                duration: 0,
-                repeat: 0,
-                yoyo: false,
-                onStart: () =>
-                {
-                    // update chart
-                    this.updateChart()
-
-                    this.graphics.clear()
-
-                    for (let iPerson: number = 0; iPerson < this.persons.length; iPerson++)
-                    {
-                        this.persons[iPerson].updateStateMessage()
-                    }
-
-                    if (firstRound && (iPair == 0)) // speed up animation after the first one
-                        this.timeline.timeScale = 10
-                }
-            })
+            resultTexts[iWinner] = '"I win!"'
+            resultTexts[iLoser] = '"I lose!"'
         }
+
+        this.utils.flashTexts(this.timeline, messageTexts, resultTexts)
+
+        this.moveWinnings(winners, losers, wagerAmounts, this.gameCircleCenter)
+
+        this.utils.flashTexts(this.timeline, wealthTexts, undefined, () =>
+        {
+            this.graphics.clear()
+
+            for (let iPlayer: number = 0; iPlayer < players.length; iPlayer++)
+            {
+                this.persons[iPlayer].updateStateMessage()
+            }
+        })
+
+        this.utils.flashTexts(this.timeline, messageTexts)
 
         // set up next round
         this.timeline.add(
@@ -271,7 +262,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     switch (this.cRoundsCompleted)
                     {
                         case 0:
-                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing. Press the "Round ${ this.cRoundsCompleted + 2 }" button to play the another round.`)
+                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing. Press the "Round ${this.cRoundsCompleted + 2 }" button to play the another round. (We'll speed up the animation to save you time.) `)
                             this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
                             break
 
@@ -309,7 +300,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and a small number of people end up with more and more of the wealth. You'll need to play at least 10 rounds of this to see how the distribution changes over time.`)
+                        this.descTextObj.setText(`Initially you may see more of a normal distribution of wealth, but slowly people start to go broke one by one, and a small number of people end up with more and more of the wealth. You'll need to play at least 10-20 rounds of this to see how the distribution changes over time.`)
 
                         this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
                         {
@@ -323,7 +314,7 @@ export default class InequalityGameScene extends Phaser.Scene
         })
     }
 
-    addConnectingCurve(player1: Person, player2: Person, center: Phaser.Geom.Point)
+    addConnectingCurves(players: Person[], center: Phaser.Geom.Point)
     {
         const tempObj = { val: 0 }
         this.timeline.add(
@@ -336,17 +327,20 @@ export default class InequalityGameScene extends Phaser.Scene
             yoyo: false,
             onStart: () =>
             {
-                this.connectingCurve = this.createCurve(player1, player2, center)
-                this.graphics.lineStyle(1, Constants.blueColor, 1)
-                this.connectingCurve.draw(this.graphics)
+                for (let iPair: number = 0; iPair < Math.floor(players.length / 2); iPair++)
+                {
+                    this.connectingCurve = this.createCurve(players[2 * iPair], players[2 * iPair + 1], center)
+                    this.graphics.lineStyle(1, Constants.blueColor, 1)
+                    this.connectingCurve.draw(this.graphics)
+                }
             }
         })
     }
 
-    moveMoney(loser: Person, winner: Person, wagerAmount: number, center: Phaser.Geom.Point)
+    moveWinnings(winners: Person[], losers: Person[], wagerAmounts: number[], center: Phaser.Geom.Point)
     {
-        let wagerAmountText: Phaser.GameObjects.Text
-        let curve: Phaser.Curves.CubicBezier
+        let wagerAmountTexts: Phaser.GameObjects.Text[] = new Array(wagerAmounts.length) as Phaser.GameObjects.Text[]
+        let curves: Phaser.Curves.CubicBezier[] = new Array(wagerAmounts.length) as Phaser.Curves.CubicBezier[]
         const tempObj = { val: 0 }
 
         this.timeline.add(
@@ -359,18 +353,30 @@ export default class InequalityGameScene extends Phaser.Scene
             yoyo: false,
             onStart: () =>
             {
-                curve = this.createCurve(loser, winner, center)
-                const startPoint: Phaser.Math.Vector2 = curve.getStartPoint()
-                wagerAmountText = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${wagerAmount}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
-                this.add.existing(wagerAmountText)
+                for (let iPair: number = 0; iPair < wagerAmounts.length; iPair++)
+                {
+                    curves[iPair] = this.createCurve(losers[iPair], winners[iPair], center)
+                    const startPoint: Phaser.Math.Vector2 = curves[iPair].getStartPoint()
+                    const wagerAmountText: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, startPoint.x, startPoint.y, `$${wagerAmounts[iPair]}`, Constants.bodyTextStyle).setTintFill(Constants.greenColor)
+                    this.add.existing(wagerAmountText)
+                    wagerAmountTexts[iPair] = wagerAmountText
+                }
             },
             onUpdate: (tween: Phaser.Tweens.Tween, target: any) =>
             {
-                const position = curve.getPoint(target.val);
-                wagerAmountText.x = position.x;
-                wagerAmountText.y = position.y;
+                for (let iPair: number = 0; iPair < wagerAmounts.length; iPair++)
+                {
+                    const position = curves[iPair].getPoint(target.val);
+                    wagerAmountTexts[iPair].x = position.x;
+                    wagerAmountTexts[iPair].y = position.y;
+                }
             },
-            onComplete: () => { wagerAmountText.destroy() }
+            onComplete: () =>
+            {
+                wagerAmountTexts.forEach((wagerAmountText) => { wagerAmountText.destroy() })
+                winners.forEach((winner: Person, index: number) => { winner.setWealth(winner.wealth + wagerAmounts[index]) })
+                losers.forEach((loser: Person, index: number) => { loser.setWealth(loser.wealth - wagerAmounts[index]) })
+            }
         })
     }
 
