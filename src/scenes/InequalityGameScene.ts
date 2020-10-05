@@ -436,13 +436,19 @@ export default class InequalityGameScene extends Phaser.Scene
         this.chart.chart.data.datasets[0].label = '(x: $, y: # People)'
         this.chart.chart.data.datasets[0].borderWidth = 1
 
-        this.chartDesc = new Phaser.GameObjects.Text(this, this.chart.x + 10, this.chart.y + this.chart.height, this.describeChart(), Constants.smallTextStyle)
+        this.chartDesc = new Phaser.GameObjects.Text(this, this.chart.x + 10, this.chart.y + this.chart.height, '', Constants.smallTextStyle)
         this.add.existing(this.chartDesc)
     }
 
     updateChart()
     {
-        for (let amount: number = 0; amount < this.persons.length * this.startingWealth + 1; amount++)
+        const maxWealth = this.persons.sort((p1: Person, p2: Person) => { return p1.wealth - p2.wealth })[this.persons.length - 1].wealth
+        let xMax = this.persons.length * this.startingWealth
+
+        if (maxWealth < xMax / 2)
+            xMax = xMax / 2
+
+        for (let amount: number = 0; amount < xMax + 1; amount++)
         {
             const numPersons: integer = this.persons.filter((person: Person) => { return person.wealth == amount }).length
 
@@ -455,15 +461,14 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.chart.updateChart()
 
-        this.chartDesc.setText(this.describeChart())
+        this.chartDesc.setText(this.describeChart(maxWealth))
     }
 
-    describeChart(): string
+    describeChart(maxWealth: number): string
     {
         const cBroke = this.persons.filter((person: Person) => { return person.wealth == 0 }).length
-        const maxWealth = this.persons.sort((p1: Person, p2: Person) => { return p1.wealth - p2.wealth })[this.persons.length - 1].wealth
         const yourWealth = this.persons.find((person: Person) => { return person.isYou })?.wealth
-        const desc: string = `# Broke: ${cBroke}.  Richest person: $${maxWealth}.  You: $${yourWealth}.`
+        const desc: string = `% Broke: ${Math.round(cBroke * 100 / this.persons.length)}%.  Richest person: $${maxWealth}.  You: $${yourWealth}.`
 
         return desc
     }
