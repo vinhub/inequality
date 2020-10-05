@@ -152,6 +152,7 @@ export default class InequalityGameScene extends Phaser.Scene
         const radius: number = (width - 20) / 2
         this.gameCircleCenter = new Phaser.Geom.Point(leftX + radius + 10, topY + radius) // center of circle
         let point: Phaser.Geom.Point = new Phaser.Geom.Point(leftX + radius + 10, topY)
+        let curY = topY
 
         // add all the person images
         for (let iPerson: integer = 0; iPerson < this.persons.length; iPerson++)
@@ -164,14 +165,13 @@ export default class InequalityGameScene extends Phaser.Scene
             person.add(this, position.x, position.y)
         }
 
-        this.actionButton1 = this.add.existing(new TextButton(this, leftX + width - 20, topY + height, 'Start',
-            () => { this.timeline.play() }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)) as TextButton
+        curY += height + 10
 
-        this.actionButton2 = new TextButton(this,
-            this.utils.portraitMode ? this.actionButton1.getBottomLeft().x : this.actionButton1.getTopRight().x + 40,
-            this.utils.portraitMode ? this.actionButton1.getBottomLeft().y + 10 : this.actionButton1.getTopRight().y,
-            'Next Level',
-            () => { this.scene.start(this.scene.key, { gameLevel: 2 }) }, true, true).setScale(this.scaleFactor).setOrigin(0, 0)
+        this.actionButton1 = this.add.existing(new TextButton(this, this.utils.portraitMode ? this.utils.leftX : (this.utils.leftX + this.utils.width / 2), curY, 'Start',
+            () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
+
+        this.actionButton2 = new TextButton(this, this.utils.portraitMode ? this.utils.rightX : (this.actionButton1.x + this.actionButton1.width + 40), curY, 'Next Level',
+            () => { this.scene.start(this.scene.key, { gameLevel: 2 }) }, true, true).setOrigin(this.utils.portraitMode ? 1 : 0, 0)
 
         this.setupTimeline(true)
     }
