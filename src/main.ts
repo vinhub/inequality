@@ -4,7 +4,9 @@ import IntroScene from './scenes/IntroScene'
 import SimpleGameScene from './scenes/SimpleGameScene'
 import InequalityIntroScene from './scenes/InequalityIntroScene'
 import InequalityGameScene from './scenes/InequalityGameScene'
-import ConclusionScene from './scenes/ConclusionScene'
+import Discussion1Scene from './scenes/Discussion1Scene'
+import Discussion2Scene from './scenes/Discussion2Scene'
+import Discussion3Scene from './scenes/Discussion3Scene'
 import CreditsScene from './scenes/CreditsScene'
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -23,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [IntroScene, SimpleGameScene, InequalityIntroScene, InequalityGameScene, ConclusionScene, CreditsScene],
+	scene: [IntroScene, SimpleGameScene, InequalityIntroScene, InequalityGameScene, Discussion1Scene, Discussion2Scene, Discussion3Scene, CreditsScene],
 	transparent: true,
 }
 

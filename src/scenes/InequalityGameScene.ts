@@ -104,12 +104,12 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.descTextObj = this.add.text(this.utils.leftX, curY, descText, Constants.bodyTextStyle).setWordWrapWidth(this.utils.rightX - this.utils.leftX, false)
 
-        curY += this.descTextObj.height + 20
+        curY += this.descTextObj.height + 10
 
         let gameWidth = 500
         let gameHeight = 500
-        const availableWidth: number = this.utils.width - 40
-        const availableHeight: number = this.utils.height - curY - 40
+        const availableWidth: number = this.utils.width - 30
+        const availableHeight: number = this.utils.height - curY - 30
 
         if (this.utils.portraitMode)
         {
@@ -118,7 +118,7 @@ export default class InequalityGameScene extends Phaser.Scene
             gameHeight *= this.scaleFactor
 
             this.createGame(this.utils.leftX + this.utils.width / 2 - gameWidth / 2, curY, gameWidth, gameHeight, this.scaleFactor)
-            curY += gameHeight
+            curY += gameHeight + 20
 
             this.createChart(this.utils.leftX, curY, this.utils.width, this.utils.bottomY - curY)
             curY = this.utils.bottomY
@@ -291,16 +291,16 @@ export default class InequalityGameScene extends Phaser.Scene
                 {
                     if (this.isConverging())
                     {
-                        this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result. You can play more rounds or move on to the conclusion.`)
+                        this.descTextObj.setText(`Even with a larger starting amount and more randomness in the wager amounts, we still get the same result. You can play more rounds or move on to the discussion.`)
 
                         this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
 
-                        this.actionButton2.setCallback('Conclusion', () => { this.utils.sceneTransition(this, 'ConclusionScene') })
+                        this.actionButton2.setCallback('Discussion', () => { this.utils.sceneTransition(this, 'Discussion1Scene') })
                         this.add.existing(this.actionButton2) as TextButton
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see a normal distribution of wealth, but slowly people go broke one by one, and the same distribution emerges. Play 10 or more rounds before moving to the conclusion.`)
+                        this.descTextObj.setText(`Initially you may see a normal distribution of wealth, but slowly people go broke one by one, and the same distribution emerges. Play 10 or more rounds before moving on.`)
 
                         this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
                         {
