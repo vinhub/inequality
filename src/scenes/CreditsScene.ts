@@ -53,25 +53,25 @@ export default class CreditsScene extends Phaser.Scene
 
         const url: string = 'https://inequality.redmondlabs.com'
         const subject: string = 'The Evolution of Wealth Inequality: An Interactive Guide.'
-        const desc: string = 'Wealth inequality is in the news a lot these days. How and why does it emerge? Here is a fun interactive guide that really helps to understand this important topic. '
+        const desc: string = 'Wealth inequality is in the news a lot these days. How and why does it emerge? Here is a fun, interactive guide that is really helpful for understanding this important topic.'
 
         const fbButton: TextButton = this.add.existing(new TextButton(this, shareTextObj.x + shareTextObj.width + 10, curY, 'Facebook',
             () =>
             {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}${url}`, '_blank')
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}`, '_blank')
             }, false, false).setOrigin(0, 0)) as TextButton
 
 
         const twitterButton: TextButton = this.add.existing(new TextButton(this, fbButton.x + fbButton.width + 10, curY, 'Twitter',
             () =>
             {
-                window.open(`https://twitter.com/intent/tweet?source=${url}&text=${desc}${url}`, '_blank')
+                window.open(`https://twitter.com/intent/tweet?source=${url}&text=${desc} ${url}`, '_blank')
             }, false, false).setOrigin(0, 0)) as TextButton
 
         const mailButton: TextButton = this.add.existing(new TextButton(this, twitterButton.x + twitterButton.width + 10, curY, 'EMail',
             () =>
             {
-                window.open(`mailto:?subject=${subject}&body=${desc}${url}`, '_blank')
+                window.open(`mailto:?subject=${subject}&body=${desc} ${url}`, '_blank')
             }, false,false).setOrigin(0, 0)) as TextButton
 
         curY += fbButton.height + 20
