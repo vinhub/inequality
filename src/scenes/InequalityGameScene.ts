@@ -96,7 +96,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.utils = new Utils(this)
         let curY = this.utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, `Wealth Inequality Game: Level ${this.gameLevel}`)
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, `The Wealth Inequality Game: Level ${this.gameLevel}`)
         curY += header.height()
 
         const descText = this.gameLevel == 1 ? `Here we have ${Constants.numPersons} players, each with $${this.startingWealth}. We will pair them up and play multiple rounds of the same game. The wealth distribution chart is also provided. Press "Start" to play the first round.` :

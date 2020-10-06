@@ -41,7 +41,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
         let curY = this.utils.topY
 
-        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'Simple Coin Toss Game')
+        let header: SceneHeader = new SceneHeader(this, this.utils.leftX, curY, this.utils.rightX, 'A Simple Coin Toss Game')
         curY += header.height()
 
         this.descText = this.add.text(this.utils.leftX, curY,

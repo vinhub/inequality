@@ -23,11 +23,11 @@ export default class IntroScene extends Phaser.Scene
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Evolution of Wealth Inequality')
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'The Evolution of Wealth Inequality')
         curY += header.height()
 
         const introText = [
-            'Wealth inequality has been in the news a lot lately. Here is a very simple way to see how wealth inequality emerges in a society and what factors contribute to it.',
+            'Wealth inequality has been in the news a lot lately. Here is an interactive guide to help you see how wealth inequality emerges in a society and what factors contribute to it.',
             '',
             'The purpose of this exercise is purely to educate people about this important topic so they can make informed decisions about how to deal with it.',
             '',

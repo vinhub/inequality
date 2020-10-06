@@ -20,7 +20,7 @@ export default class Discussion2Scene extends Phaser.Scene
         let utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Discussion: Evolution of Wealth Inequality')
+        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Discussion - 2')
         curY += header.height()
 
         const discussionText = [
