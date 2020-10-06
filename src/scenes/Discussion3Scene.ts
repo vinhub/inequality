@@ -49,7 +49,7 @@ export default class Discussion3Scene extends Phaser.Scene
 
         curY += discussionTextObj.height + 20
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Credits',
+        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Final Thoughts',
             () => { utils.sceneTransition(this, 'CreditsScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
         curY += actionButton.height + 20

@@ -1,4 +1,5 @@
 import TextButton from './TextButton'
+import { Constants } from './Globals'
 
 export default class Utils
 {
@@ -25,6 +26,15 @@ export default class Utils
         this.height = main.height - 40
 
         this.portraitMode = (this.width < this.height)
+
+        if (!this.portraitMode)
+        {
+            Constants.bodyTextStyle.fontSize = '18px'
+            Constants.bodyBoldTextStyle.fontSize = '18px'
+            Constants.headerTextStyle.fontSize = '20px'
+            Constants.buttonTextStyle.fontSize = '20px'
+            Constants.actionButtonTextStyle.fontSize = '20px'
+        }
     }
 
     flashText(timeline: Phaser.Tweens.Timeline, textObj: Phaser.GameObjects.Text, text?: string | string[], onComplete?: () => any)

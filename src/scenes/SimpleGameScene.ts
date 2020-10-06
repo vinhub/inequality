@@ -150,7 +150,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
         // update messages
         this.utils.flashText(this.timeline, winner.messageText, `"Doin' well!"`)
-        this.utils.flashText(this.timeline, loser.messageText, `"Broke!"`)
+        this.utils.flashText(this.timeline, loser.messageText, `"I'm broke!"`)
 
         this.utils.flashText(this.timeline, this.descText, `So finally, you have $${winner === you ? 2 : 0} and your friend has $${winner === friend ? 2 : 0}.`,
             () =>
