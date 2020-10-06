@@ -10,7 +10,7 @@ export const Constants = {
     bodyTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '13px',
+        fontSize: '14px',
         color: '#666',
         padding: { left: 0, bottom: 10 },
         underline: {
@@ -22,7 +22,7 @@ export const Constants = {
     bodyBoldTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '13px',
+        fontSize: '14px',
         color: '#000',
         fontStyle: 'strong',
         padding: { left: 0, bottom: 10 }
@@ -37,14 +37,14 @@ export const Constants = {
     smallTextStyle:
     {
         fontFamily: 'calibri, Arial, Helvetica, sans-serif',
-        fontSize: '13px',
+        fontSize: '14px',
         color: '#666',
         padding: { left: 0, top: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     smallEmphasisTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '13px',
+        fontSize: '14px',
         fontStyle: 'bold',
         color: '#1e90ff',
         padding: { left: 0, top: 4 }

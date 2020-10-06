@@ -58,7 +58,7 @@ export default class CreditsScene extends Phaser.Scene
         const fbButton: TextButton = this.add.existing(new TextButton(this, shareTextObj.x + shareTextObj.width + 10, curY, 'Facebook',
             () =>
             {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}`, '_blank')
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}&display=popup`, '_blank', 'toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=500')
             }, false, false).setOrigin(0, 0)) as TextButton
 
 
@@ -71,10 +71,10 @@ export default class CreditsScene extends Phaser.Scene
         const mailButton: TextButton = this.add.existing(new TextButton(this, twitterButton.x + twitterButton.width + 10, curY, 'EMail',
             () =>
             {
-                window.open(`mailto:?subject=${subject}&body=${desc} ${url}`, '_blank')
+                window.open(`mailto:?subject=${subject}&body=${desc}  ${url}`, '_blank')
             }, false,false).setOrigin(0, 0)) as TextButton
 
-        curY += fbButton.height + 20
+        curY += fbButton.height + 30
 
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Play Again?',
             () => { utils.sceneTransition(this, 'InequalityGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
