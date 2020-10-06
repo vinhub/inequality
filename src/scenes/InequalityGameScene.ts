@@ -83,8 +83,6 @@ export default class InequalityGameScene extends Phaser.Scene
         this.load.image('normal-face-small', 'assets/normal-face-small.png')
         this.load.image('happy-face-small', 'assets/happy-face-small.png')
         this.load.image('unhappy-face-small', 'assets/unhappy-face-small.png')
-        this.load.image('heads', 'assets/heads.png')
-        this.load.image('tails', 'assets/tails.png')
     }
 
     create()
