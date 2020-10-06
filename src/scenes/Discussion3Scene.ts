@@ -37,7 +37,7 @@ export default class Discussion3Scene extends Phaser.Scene
             'This brings up the options of withdrawing from the game or protecting against competition through local isolation or creation of IP, or other competitive barriers.',
         ]
 
-        const discussionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, discussionText, Constants.smallTextStyle)
+        const discussionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, discussionText, Constants.bodyTextStyle)
             .setWrapWidth(utils.rightX - utils.leftX).setWrapMode('word')
             .setInteractive()
             .on('areaup', function (key)

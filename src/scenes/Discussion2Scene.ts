@@ -33,7 +33,7 @@ export default class Discussion2Scene extends Phaser.Scene
             'Consider the role of financial institutions, credit agencies, and other sources of capital. Large organizations, for instance, have access to huge amounts of credit and, in some cases, are not allowed to fail. In a similar fashion, some people have better access to credit than others and are thus better able to handle economic misfortune. In essence, the game provides a level playing field by denying everyone access to credit; but in the real world, people have unequal access to credit and thus different chances of amassing wealth or going broke.',
         ]
 
-        const discussionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, discussionText, Constants.smallTextStyle)
+        const discussionTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY, discussionText, Constants.bodyTextStyle)
             .setWrapWidth(utils.rightX - utils.leftX).setWrapMode('word')
             .setInteractive()
             .on('areaup', function (key)
@@ -43,7 +43,7 @@ export default class Discussion2Scene extends Phaser.Scene
 
         this.add.existing(discussionTextObj)
 
-        curY += discussionTextObj.height + 20
+        curY += discussionTextObj.height + 15
 
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Continue Discussion',
             () => { utils.sceneTransition(this, 'Discussion3Scene') }, true, true).setOrigin(0.5, 0)) as TextButton

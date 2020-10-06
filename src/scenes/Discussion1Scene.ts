@@ -32,7 +32,7 @@ export default class Discussion1Scene extends Phaser.Scene
             'To understand how this simulation game relates to real-world processes that generate inequality, let us consider how modifications of the rules might alter the outcome.',
         ]
 
-        const discussionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, discussionText, Constants.smallTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
+        const discussionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, discussionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
 
         curY += discussionTextObj.height + 20
 
