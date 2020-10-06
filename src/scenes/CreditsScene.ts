@@ -49,7 +49,7 @@ export default class CreditsScene extends Phaser.Scene
 
         curY += creditsTextObj.height + 20
 
-        const shareTextObj: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, utils.leftX, curY + 5, 'Share: ', Constants.bodyTextStyle)
+        const shareTextObj: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, utils.leftX, curY + 6, 'Share: ', Constants.bodyTextStyle)
         this.add.existing(shareTextObj)
 
         const url: string = 'https://inequality.redmondlabs.com'
@@ -60,20 +60,20 @@ export default class CreditsScene extends Phaser.Scene
             () =>
             {
                 window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}${url}`, '_blank')
-            }, true, true).setOrigin(0, 0)) as TextButton
+            }, false, false).setOrigin(0, 0)) as TextButton
 
 
         const twitterButton: TextButton = this.add.existing(new TextButton(this, fbButton.x + fbButton.width + 10, curY, 'Twitter',
             () =>
             {
                 window.open(`https://twitter.com/intent/tweet?source=${url}&text=${desc}${url}`, '_blank')
-            }, true, true).setOrigin(0, 0)) as TextButton
+            }, false, false).setOrigin(0, 0)) as TextButton
 
         const mailButton: TextButton = this.add.existing(new TextButton(this, twitterButton.x + twitterButton.width + 10, curY, 'EMail',
             () =>
             {
                 window.open(`mailto:?subject=${subject}&body=${desc}${url}`, '_blank')
-            }, true, true).setOrigin(0, 0)) as TextButton
+            }, false,false).setOrigin(0, 0)) as TextButton
 
         curY += fbButton.height + 20
 
