@@ -49,7 +49,7 @@ export default class CreditsScene extends Phaser.Scene
 
         curY += creditsTextObj.height + 20
 
-        const shareTextObj: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, utils.leftX, curY + 6, 'Share: ', Constants.bodyTextStyle)
+        const shareTextObj: BBCodeText = new BBCodeText(this, utils.leftX, curY + 6, '[b]Share: [/b]', Constants.bodyTextStyle)
         this.add.existing(shareTextObj)
 
         const url: string = 'https://inequality.redmondlabs.com'
