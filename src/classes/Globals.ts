@@ -10,7 +10,7 @@ export const Constants = {
     bodyTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '15px',
+        fontSize: '13px',
         color: '#666',
         padding: { left: 0, bottom: 10 },
         underline: {
@@ -22,7 +22,7 @@ export const Constants = {
     bodyBoldTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '15px',
+        fontSize: '13px',
         color: '#000',
         fontStyle: 'strong',
         padding: { left: 0, bottom: 10 }
@@ -30,21 +30,21 @@ export const Constants = {
     headerTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '18px',
+        fontSize: '16px',
         color: '#333',
         padding: { left: 0, bottom: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     smallTextStyle:
     {
         fontFamily: 'calibri, Arial, Helvetica, sans-serif',
-        fontSize: '15px',
+        fontSize: '13px',
         color: '#666',
         padding: { left: 0, top: 4 }
     } as Phaser.Types.GameObjects.Text.TextStyle,
     smallEmphasisTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '15px',
+        fontSize: '13px',
         fontStyle: 'bold',
         color: '#1e90ff',
         padding: { left: 0, top: 4 }
@@ -52,7 +52,7 @@ export const Constants = {
     buttonTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '18px',
+        fontSize: '16px',
         color: '#ffffff',
         backgroundColor: '#5bc0de',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
@@ -60,7 +60,7 @@ export const Constants = {
     actionButtonTextStyle:
     {
         fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
-        fontSize: '18px',
+        fontSize: '16px',
         color: '#ffffff',
         backgroundColor: '#5cb85c',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
