@@ -49,6 +49,34 @@ export default class CreditsScene extends Phaser.Scene
 
         curY += creditsTextObj.height + 20
 
+        const shareTextObj: Phaser.GameObjects.Text = new Phaser.GameObjects.Text(this, utils.leftX, curY + 5, 'Share: ', Constants.bodyTextStyle)
+        this.add.existing(shareTextObj)
+
+        const url: string = 'https://inequality.redmondlabs.com'
+        const subject: string = 'The Evolution of Wealth Inequality: An Interactive Guide.'
+        const desc: string = 'Wealth inequality is in the news a lot these days. How and why does it emerge? Here is a fun interactive guide that really helps to understand this important topic. '
+
+        const fbButton: TextButton = this.add.existing(new TextButton(this, shareTextObj.x + shareTextObj.width + 10, curY, 'Facebook',
+            () =>
+            {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${desc}${url}`, '_blank')
+            }, true, true).setOrigin(0, 0)) as TextButton
+
+
+        const twitterButton: TextButton = this.add.existing(new TextButton(this, fbButton.x + fbButton.width + 10, curY, 'Twitter',
+            () =>
+            {
+                window.open(`https://twitter.com/intent/tweet?source=${url}&text=${desc}${url}`, '_blank')
+            }, true, true).setOrigin(0, 0)) as TextButton
+
+        const mailButton: TextButton = this.add.existing(new TextButton(this, twitterButton.x + twitterButton.width + 10, curY, 'EMail',
+            () =>
+            {
+                window.open(`mailto:?subject=${subject}&body=${desc}${url}`, '_blank')
+            }, true, true).setOrigin(0, 0)) as TextButton
+
+        curY += fbButton.height + 20
+
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Play Again?',
             () => { utils.sceneTransition(this, 'InequalityGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
