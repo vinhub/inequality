@@ -79,8 +79,6 @@ export default class CreditsScene extends Phaser.Scene
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + utils.width / 2, curY, 'Play Again?',
             () => { utils.sceneTransition(this, 'InequalityGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
-        curY += actionButton.height + 20
-
         let footer: SceneFooter = new SceneFooter(this, utils)
     }
 }

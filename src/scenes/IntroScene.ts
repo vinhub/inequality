@@ -48,8 +48,6 @@ export default class IntroScene extends Phaser.Scene
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Next',
             () => { utils.sceneTransition(this, 'SimpleGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
-        curY += actionButton.height + 20
-
         let footer: SceneFooter = new SceneFooter(this, utils)
     }
 

@@ -51,8 +51,6 @@ export default class InequalityIntroScene extends Phaser.Scene
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
             () => { utils.sceneTransition(this, 'InequalityGameScene', { gameLevel: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
 
-        curY += actionButton.height + 20
-
         let footer: SceneFooter = new SceneFooter(this, utils)
     }
 }

@@ -260,7 +260,12 @@ export default class InequalityGameScene extends Phaser.Scene
                     switch (this.cRoundsCompleted)
                     {
                         case 0:
-                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing. Press "Round ${this.cRoundsCompleted + 2 }" to play another round. (We'll speed up the animation now.) `)
+                            this.descTextObj.setText(`At the end of the first round, we have half the players with $${2 * this.startingWealth} and half the players with nothing. Press "Round ${this.cRoundsCompleted + 2 }" to play another round. (We'll speed up the animation now.)`)
+                            this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
+                            break
+
+                        case 1:
+                            this.descTextObj.setText(`Notice that those who are broke can't play the game anymore because they don't have anything to wager! Press "Round ${this.cRoundsCompleted + 2}" to play another round.`)
                             this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () => { this.setupTimeline(false); this.timeline.play() })
                             break
 
