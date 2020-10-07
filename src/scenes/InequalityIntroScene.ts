@@ -39,7 +39,7 @@ export default class InequalityIntroScene extends Phaser.Scene
             '',
             'Note that we are using just the randomized coin toss as the basis for deciding the transfer of money. There is no skill or hardwork or status or any other factor involved.',
             '',
-            `Before we start, what is your guess about what the distribution of wealth will look like at the end? (x: wealth, y: # people):`
+            `Before we start, what distribution of wealth do you think we will end up with? (x: wealth, y: # people):`
         ]
 
         const conclusionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, conclusionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
@@ -57,13 +57,13 @@ export default class InequalityIntroScene extends Phaser.Scene
 
         curY += img3.height + 10
 
-        const nextText = `Press the "Play the Inequality Game" button when you have made your guess.`
+        const nextText = `Press "Play the Game" after making your guess.`
 
         const nextTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, nextText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
 
         curY += nextTextObj.height + 10
 
-        const actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
+        const actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Game',
             () => { utils.sceneTransition(this, 'InequalityGameScene', { gameLevel: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
 
         const footer: SceneFooter = new SceneFooter(this, utils)
