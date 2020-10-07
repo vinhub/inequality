@@ -14,16 +14,20 @@ export default class InequalityIntroScene extends Phaser.Scene
 
 	preload()
     {
+        this.load.image('dist-normal', 'assets/dist-normal.gif')
+        this.load.image('dist-uniform', 'assets/dist-uniform.gif')
+        this.load.image('dist-pareto', 'assets/dist-pareto.gif')
+        this.load.image('dist-unknown', 'assets/dist-unknown.gif')
     }
 
     create()
     {
         this.cameras.main.fadeIn(500, 0xff, 0xff, 0xff)
 
-        let utils: Utils = new Utils(this)
+        const utils: Utils = new Utils(this)
         let curY = utils.topY;
 
-        let header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Making the Game More Interesting')
+        const header: SceneHeader = new SceneHeader(this, utils.leftX, curY, utils.rightX, 'Making the Game More Interesting')
         curY += header.height()
 
         const conclusionText = [
@@ -33,24 +37,35 @@ export default class InequalityIntroScene extends Phaser.Scene
             `2. We will ask the group of people to pair up and for each pair to play the same coin toss game.`,
             `3. We will play multiple rounds of this and see how the distribution of money changes over time.`,
             '',
-            'Before we start, what is your guess about how the distribution of wealth will change as the game progresses? Note that we are using just the randomized coin toss as the basis for deciding the transfer of money. There is no skill or hardwork or status or any other factor involved.',
+            'Note that we are using just the randomized coin toss as the basis for deciding the transfer of money. There is no skill or hardwork or status or any other factor involved.',
             '',
-            `Will we end up with:`,
-            `1. A normal (Gaussian) distribution?`,
-            `2. A flat (Uniform) distribution?`,
-            `3. A pyramid (Pareto distribution)?`,
-            `4. Some other distribution?`,
-            '',
-            `Press the "Play the Inequality Game" button when you have made your guess.`
+            `Before we start, what is your guess about what the distribution of wealth will look like at the end? (x: wealth, y: # people):`
         ]
 
-        let conclusionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, conclusionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
+        const conclusionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, conclusionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
 
-        curY += conclusionTextObj.height + 20
+        curY += conclusionTextObj.height + 10
 
-        let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
+        // add images for the distributions
+        const img1: Phaser.GameObjects.Image = this.add.image(utils.leftX + 20, curY, 'dist-normal').setOrigin(0, 0)
+        const img2: Phaser.GameObjects.Image = this.add.image(img1.getBottomRight().x + 40, curY, 'dist-uniform').setOrigin(0, 0)
+
+        curY += img1.height + 10
+
+        const img3: Phaser.GameObjects.Image = this.add.image(utils.leftX + 20, curY, 'dist-pareto').setOrigin(0, 0)
+        const img4: Phaser.GameObjects.Image = this.add.image(img3.getBottomRight().x + 40, curY, 'dist-unknown').setOrigin(0, 0)
+
+        curY += img3.height + 10
+
+        const nextText = `Press the "Play the Inequality Game" button when you have made your guess.`
+
+        const nextTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, nextText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
+
+        curY += nextTextObj.height + 10
+
+        const actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Play the Inequality Game',
             () => { utils.sceneTransition(this, 'InequalityGameScene', { gameLevel: 1 }) }, true, true).setOrigin(0.5, 0)) as TextButton
 
-        let footer: SceneFooter = new SceneFooter(this, utils)
+        const footer: SceneFooter = new SceneFooter(this, utils)
     }
 }
