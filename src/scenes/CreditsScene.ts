@@ -27,11 +27,11 @@ export default class CreditsScene extends Phaser.Scene
             'Ultimately, you should come to realize that the final distribution of wealth and your personal chances of becoming a winner are not flukes, but rather the result of one\'s current status and the rules of play that determine who wins and why. You should also realize that even in the real world, where skill and effort do matter, your ability to get ahead and chances of falling behind are also determined by taken-for-granted rules and structures of opportunities.',
             '',
             '[b]Credits:[/b]',
-            `This game has been developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com][u][color=#1e90ff]Redmond Labs Consulting[/color][/u][/area].`,
+            `This game has been and continues to be developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com][u][color=#1e90ff]Redmond Labs Consulting[/color][/u][/area]. Watch this space for future updates.`,
             '',
             `It is based on the work of [area=url:https://howardaldrich.org][u][color=#1e90ff]Dr. Howard Aldrich[/color][/u][/area]. Please refer to his [area=url:https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f][u][color=#1e90ff]paper on this topic[/color][/u][/area] for more information.`,
             '',
-            `I was also inspired by Nicky Case's [area=url:https://ncase.me/trust/][u][color=#1e90ff]"The Evolution of Trust"[/color][/u][/area].`,
+            `It was also inspired by Nicky Case's [area=url:https://ncase.me/trust/][u][color=#1e90ff]"The Evolution of Trust"[/color][/u][/area].`,
             '',
             'Thank you very much for your time!'
         ]
