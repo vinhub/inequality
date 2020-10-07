@@ -3,6 +3,8 @@ import { Constants } from './Globals'
 
 export default class Utils
 {
+    screenLeftX: number
+    screenRightX: number
     leftX: number
     rightX: number
     topY: number
@@ -17,13 +19,15 @@ export default class Utils
         const main = scene.cameras.main
         const worldView = main.worldView
 
+        this.screenLeftX = worldView.x
+        this.screenRightX = worldView.x + main.width
         this.leftX = worldView.x + 20
         this.rightX = worldView.x + main.width - 20
         this.width = main.width - 40
 
         this.topY = worldView.y + 20
-        this.bottomY = worldView.y + main.height - 20
-        this.height = main.height - 40
+        this.bottomY = worldView.y + main.height
+        this.height = main.height - 20
 
         this.portraitMode = (this.width < this.height)
 

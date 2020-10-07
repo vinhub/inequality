@@ -53,6 +53,6 @@ export default class InequalityIntroScene extends Phaser.Scene
 
         curY += actionButton.height + 20
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, utils)
     }
 }

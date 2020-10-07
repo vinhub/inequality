@@ -19,14 +19,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH
 	},
-	physics: {
-		default: 'arcade',
-		arcade: {
-			gravity: { y: 200 }
-		}
-	},
 	scene: [IntroScene, SimpleGameScene, InequalityIntroScene, InequalityGameScene, Discussion1Scene, Discussion2Scene, Discussion3Scene, CreditsScene],
-	transparent: true,
+	transparent: true
 }
 
 let game: Phaser.Game = new Phaser.Game(config)

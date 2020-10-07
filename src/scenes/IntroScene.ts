@@ -50,7 +50,7 @@ export default class IntroScene extends Phaser.Scene
 
         curY += actionButton.height + 20
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, utils)
     }
 
     resize(gameSize, baseSize, displaySize, resolution)

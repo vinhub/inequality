@@ -61,7 +61,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
         curY += this.actionButton.height + 20
 
-        let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, this.utils)
     }
 
     createGame(leftX: number, topY: number, width: number, height: number)

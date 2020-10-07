@@ -50,6 +50,6 @@ export default class Discussion2Scene extends Phaser.Scene
 
         curY += actionButton.height + 20
 
-        let footer: SceneFooter = new SceneFooter(this, utils.leftX, curY, utils.rightX, utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, utils)
     }
 }

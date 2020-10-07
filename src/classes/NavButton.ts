@@ -10,7 +10,7 @@ export default class NavButton extends Phaser.GameObjects.Arc
 
         this.isActive = isActive
 
-        this.setFillStyle(isActive ? 0x5bc0de : 0x000000)
+        this.setFillStyle(isActive ? 0x5bc0de : 0x808080)
         this.setStrokeStyle(1, 0x0000ff)
 
         this.setInteractive({ useHandCursor: true })
@@ -25,7 +25,7 @@ export default class NavButton extends Phaser.GameObjects.Arc
 
     enterButtonRestState() 
     {
-        this.setFillStyle(this.isActive ? 0x5bc0de : 0x000000)
+        this.setFillStyle(this.isActive ? 0x5bc0de : 0x808080)
     }
 
     enterButtonHoverState()

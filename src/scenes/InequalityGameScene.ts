@@ -135,7 +135,7 @@ export default class InequalityGameScene extends Phaser.Scene
 
         this.updateChart()
 
-        let footer: SceneFooter = new SceneFooter(this, this.utils.leftX, curY, this.utils.rightX, this.utils.bottomY)
+        let footer: SceneFooter = new SceneFooter(this, this.utils)
     }
 
     createGame(leftX: number, topY: number, width: number, height: number, scaleFactor: number)
