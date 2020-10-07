@@ -303,7 +303,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }
                 else
                     {
-                        this.descTextObj.setText(`Initially you may see a normal distribution of wealth, but slowly people go broke one by one, and the same distribution emerges. Play 10 or more rounds before moving on.`)
+                        this.descTextObj.setText(`Initially you may see a normal distribution of wealth, but slowly people go broke one by one, and the distribution becomes lopsided. Play 10 or more rounds before moving on.`)
 
                         this.actionButton1.setCallback(`Round ${this.cRoundsCompleted + 2}`, () =>
                         {
