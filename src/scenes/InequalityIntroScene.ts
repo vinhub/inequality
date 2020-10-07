@@ -37,7 +37,7 @@ export default class InequalityIntroScene extends Phaser.Scene
             `2. We will ask the group of people to pair up and for each pair to play the same coin toss game.`,
             `3. We will play multiple rounds of this and see how the distribution of money changes over time.`,
             '',
-            'Note that we are using just the randomized coin toss as the basis for deciding the transfer of money. There is no skill or hardwork or status or any other factor involved.',
+            'Note that we are using just the randomized coin toss as the basis for the transfer of money. There is no skill, hardwork, status or any other factor involved.',
             '',
             `Before we start, what distribution of wealth do you think we will end up with? (x: wealth, y: # people):`
         ]
