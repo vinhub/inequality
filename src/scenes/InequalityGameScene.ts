@@ -168,7 +168,7 @@ export default class InequalityGameScene extends Phaser.Scene
         this.actionButton1 = this.add.existing(new TextButton(this, this.utils.portraitMode ? this.utils.leftX : (this.utils.leftX + this.utils.width / 2), curY, 'Start',
             () => { this.timeline.play() }, true, true).setOrigin(0, 0)) as TextButton
 
-        this.actionButton2 = new TextButton(this, this.utils.portraitMode ? this.utils.rightX : (this.actionButton1.x + this.actionButton1.width + 40), curY, 'Next Level',
+        this.actionButton2 = new TextButton(this, this.utils.portraitMode ? this.utils.rightX : (this.actionButton1.x + this.actionButton1.width + 50), curY, 'Next Level',
             () => { this.scene.start(this.scene.key, { gameLevel: 2 }) }, true, true).setOrigin(this.utils.portraitMode ? 1 : 0, 0)
 
         this.setupTimeline(true)
