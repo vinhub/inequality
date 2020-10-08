@@ -29,7 +29,8 @@ export default class IntroScene extends Phaser.Scene
         const introText = [
             'Wealth inequality has been in the news a lot lately. Here is an interactive guide to help you see how wealth inequality emerges in a society and what factors contribute to it.',
             '',
-            'The purpose of this exercise is purely to educate people about this important topic so they can make informed decisions about how to deal with it.',
+            '(The purpose of this guide is purely to educate people about this important topic so they can make informed decisions about how to deal with it. ' +
+            'Also note that this is essentially just the first chapter in this guide. We hope to add more and more nucances to it over time.)',
             '',
             'Let us start with a very simple game:',
             '',

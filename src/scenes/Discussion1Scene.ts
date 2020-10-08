@@ -23,13 +23,16 @@ export default class Discussion1Scene extends Phaser.Scene
         curY += header.height()
 
         const discussionText = [
-            `As you can see, in every case, the distribution of wealth becomes extremely lopsided (Pareto) in spite of this being a completely randomized game. We did not need to introduce any other factor such as skill or hard work or social status etc. into the game.`,
+            `As you can see, in every case, the distribution of wealth becomes extremely lopsided (known as a Pareto distribution) in spite of this being a completely randomized game. ` +
+            `Were you able to guess that correctly?`,
             '',
-            `Here is the critical point to learn from this exercise: As a person\'s assets shrink, the maximum amount they can risk also shrinks. And as a person\'s assets grow, the maximum amount they can risk also grows. This is the essential factor that enables those with higher assets to grow their assets even further, while those whith fewer assets fall further and further behind. And once a person has no assets, they can't even play the game anymore.`,
+            `Here is the critical point to learn from this exercise: As a person\'s assets shrink, the maximum amount they can risk also shrinks. ` +
+            `And as a person\'s assets grow, the maximum amount they can risk also grows. ` +
+            `This is the essential factor that enables those with higher assets to grow their assets even further, while those whith fewer assets fall further and further behind. ` +
+            `In the extreme case, where a person has no assets, they can't even play the game anymore. `,
             '',
-            `While one can argue that a moderate level of wealth inequality is inevitable and possibly even healthy for a society, extreme inequality has historically led to serious problems. This is why it is important for everyone to understand how inequality emerges in a society and find ways to contol it.`,
-            '',
-            'To understand how this simulation relates to real-world processes that generate inequality, let us consider how modifications of the rules might alter the outcome.',
+            `While using a coin toss for deciding how to transfer money is not realistic, the factor above still holds true in the real world. ` +
+            'To further understand how this simulation relates to real-world processes that generate inequality, let us consider how modifications of the rules might alter the outcome.',
         ]
 
         const discussionTextObj: Phaser.GameObjects.Text = this.add.text(utils.leftX, curY, discussionText, Constants.bodyTextStyle).setWordWrapWidth(utils.rightX - utils.leftX, false)
