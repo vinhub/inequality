@@ -64,5 +64,21 @@ export const Constants = {
         color: '#ffffff',
         backgroundColor: '#5cb85c',
         padding: { left: 12, right: 12, top: 6, bottom: 6 },
-    } as Phaser.Types.GameObjects.Text.TextStyle
+    } as Phaser.Types.GameObjects.Text.TextStyle,
+    navButtonTextStyleActive:
+        {
+            fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
+            fontSize: '14px',
+            fontStyle: 'bold',
+            color: '#000000',
+            padding: { left: 0, top: 0 }
+        } as Phaser.Types.GameObjects.Text.TextStyle,
+    navButtonTextStyleInactive:
+        {
+            fontFamily: 'Calibri, Arial, Helvetica, sans-serif',
+            fontSize: '14px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+            padding: { left: 0, top: 0 }
+        } as Phaser.Types.GameObjects.Text.TextStyle,
 } as const

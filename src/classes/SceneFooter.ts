@@ -18,7 +18,7 @@ export default class SceneFooter
         for (let iScene: number = 0; iScene < scenes.length; iScene++)
         {
             const sceneKey: string = scenes[iScene].scene.key
-            scene.add.existing(new NavButton(scene, curX, curY, () => { utils.sceneTransition(scene, sceneKey) }, scene.scene.key == sceneKey).setOrigin(0, 0))
+            scene.add.existing(new NavButton(scene, curX, curY, (iScene + 1).toString(), () => { utils.sceneTransition(scene, sceneKey) }, scene.scene.key == sceneKey).setOrigin(0, 0))
             curX += 40
         }
     }
