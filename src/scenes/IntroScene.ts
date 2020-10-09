@@ -51,7 +51,7 @@ export default class IntroScene extends Phaser.Scene
 
         curY = utils.bottomY - 50
 
-        this.add.text(utils.leftX + utils.width / 2, curY, '(Use the buttons below to move back and forth.)', Constants.bodyTextStyle).setOrigin(0.5, 1).setWordWrapWidth(utils.rightX - utils.leftX, false)
+        this.add.text(utils.leftX + utils.width / 2, curY, '(Note: The buttons below can be used to move back and forth.)', Constants.bodyTextStyle).setOrigin(0.5, 1).setWordWrapWidth(utils.rightX - utils.leftX, false)
 
         let footer: SceneFooter = new SceneFooter(this, utils)
     }
