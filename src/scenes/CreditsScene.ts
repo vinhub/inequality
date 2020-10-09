@@ -24,10 +24,10 @@ export default class CreditsScene extends Phaser.Scene
         curY += header.height()
 
         const creditsText = [
-            'Ultimately, you should come to realize that the final distribution of wealth and your personal chances of becoming a winner are not flukes, but rather the result of one\'s status at the beginning and the rules of play that determine who wins and why. You should also realize that even in the real world, where skill and effort do matter, your ability to get ahead and chances of falling behind are also determined by taken-for-granted rules and structures of opportunities.',
+            'Ultimately, you should come to realize that the final distribution of wealth and your personal chances of becoming a winner are not flukes, but rather the result of one\'s status at the beginning and the rules of play that determine who wins and why. You should also realize that even in the real world, where skill and effort do matter, your ability to get ahead and chances of falling behind are also heavily influenced by taken-for-granted rules and structures of opportunities.',
             '',
             '[b]Credits:[/b]',
-            `This game has been and continues to be developed by Vinayak (Vin) Bhalerao at [area=url:https://redmondlabs.com][u][color=#1e90ff]Redmond Labs Consulting[/color][/u][/area]. Watch this space for future updates.`,
+            `This game has been and continues to be developed by [area=url:https://www.linkedin.com/in/vinbhalerao/][u][color=#1e90ff]Vinayak (Vin) Bhalerao[/color][/u][/area] at [area=url:https://redmondlabs.com][u][color=#1e90ff]Redmond Labs Consulting[/color][/u][/area]. Watch this space for future updates.`,
             '',
             `It is based on the work of [area=url:https://howardaldrich.org][u][color=#1e90ff]Dr. Howard Aldrich[/color][/u][/area]. Please refer to his [area=url:https://eiexchange.com/content/229-coin-toss-game-examines-interplay-of-skill-and-f][u][color=#1e90ff]paper on this topic[/color][/u][/area] for more information.`,
             '',
