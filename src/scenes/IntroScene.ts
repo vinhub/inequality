@@ -49,6 +49,10 @@ export default class IntroScene extends Phaser.Scene
         let actionButton: TextButton = this.add.existing(new TextButton(this, utils.leftX + (utils.rightX - utils.leftX) / 2, curY, 'Next',
             () => { utils.sceneTransition(this, 'SimpleGameScene') }, true, true).setOrigin(0.5, 0)) as TextButton
 
+        curY = utils.bottomY - 50
+
+        this.add.text(utils.leftX + utils.width / 2, curY, '(Use the buttons below to move back and forth.)', Constants.bodyTextStyle).setOrigin(0.5, 1).setWordWrapWidth(utils.rightX - utils.leftX, false)
+
         let footer: SceneFooter = new SceneFooter(this, utils)
     }
 

@@ -411,7 +411,8 @@ export default class InequalityGameScene extends Phaser.Scene
             options: {
                 title: {
                     display: true,
-                    text: 'Wealth Distribution Chart'
+                    text: 'Wealth Distribution Chart',
+                    padding: 0
                 },
                 scales: {
                     yAxes: [{
@@ -419,7 +420,7 @@ export default class InequalityGameScene extends Phaser.Scene
                     }]
                 },
                 layout: {
-                    padding: { left: 0, right: 0 }
+                    padding: { left: 0, right: 0, top: 5, bottom: 0 }
                 }
             },
             data: {

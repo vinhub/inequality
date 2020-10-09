@@ -46,7 +46,7 @@ export default class SimpleGameScene extends Phaser.Scene
 
         this.descText = this.add.text(this.utils.leftX, curY,
             [
-                `Here is you and your friend, both with $1 each. Each of you will choose "Heads" or "Tails". ` +
+                `Here are you and your friend, both with $1 each. Each of you will choose "Heads" or "Tails". ` +
                 `(This is just a simulation, so we will automatically make random choices for both of you, you can just follow along.) `,
                 '',
                 `Then, we will simulate a coin toss, which will randomly generate a "Heads" or "Tails" outcome. ` +
