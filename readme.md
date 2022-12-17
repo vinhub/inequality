@@ -1,5 +1,8 @@
 # Inequality
-> A game / tutorial on how wealth inequality emerges naturally in a society and some possible approaches to correct it.
+A game / interactive guide to learn about how wealth inequality emerges naturally in a society and some possible approaches to correct it.
+
+Beta release: https://inequality.redmondlabs.com/
+
 
 ## Prerequisites
 
